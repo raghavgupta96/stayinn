@@ -1,5 +1,6 @@
-# stayInn
+#stayInn
 This is for the full stack development of a React powered webapp called StayInn
+
 
 # Branch Format (Changes may be made):
 
