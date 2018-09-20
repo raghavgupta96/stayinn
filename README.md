@@ -9,7 +9,7 @@ Master -> Testing -> Sandbox (Development) -> Personal Branches
 # Team for Development: 
 
 React UI Devs:
-- Gideon
+- Gideon U.
 - Lawrence
 - Philip
 
