@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Theme from '../../../theme'
+import Theme from '../../../theme';
 import { MuiThemeProvider } from '@material-ui/core';
-import Button from '@material-ui/core/Button'
 
 class NavBar extends Component {
   constructor(props) {
@@ -27,4 +26,4 @@ class NavBar extends Component {
   }
 }
 
-export default NavBar
+export default NavBar;

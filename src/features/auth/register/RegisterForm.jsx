@@ -1,5 +1,7 @@
-import React from 'react'
+import React from 'react';
 import { Form, Segment } from 'semantic-ui-react';
+import { Field } from 'redux-form';
+import TextInput from '../../../app/common/TextInput';
 
 const RegisterForm = () => {
   return (
@@ -21,6 +23,12 @@ const RegisterForm = () => {
             <Field
                 name="password"
                 type="password"
+                component={TextInput}
+                placeholder="Password"
+            />
+            <Field
+                name="confirm password"
+                type="confirm password"
                 component={TextInput}
                 placeholder="Password"
             />
