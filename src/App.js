@@ -23,7 +23,7 @@ class App extends Component {
   render() {
     return (
       <MuiThemeProvider theme={theme}>
-      <NavBar/>
+      <NavBar theme={theme}/>
       </MuiThemeProvider>
     )
   }
