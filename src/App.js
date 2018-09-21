@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import NavBar from '../src/features/nav/NavBar/NavBar';
-import './App.css';
+import NavBar from './features/nav/NavBar/NavBar';
+import LoginForm from './features/LoginForm/LoginForm';
 
 class App extends Component {
   render() {
     return (
-      <NavBar/>
+      <div>
+        <NavBar/>
+        <LoginForm/>
+      </div>
     )
   }
 }
