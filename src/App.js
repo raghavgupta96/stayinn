@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
-import NavBar from './features/nav/NavBar/NavBar';
-import LoginForm from './features/LoginForm/LoginForm';
+import React, { Component } from "react";
+import "./App.css";
+import EventDashBoard from "./features/event/eventdashboard/EventDashboard";
 
 class App extends Component {
   render() {
     return (
       <div>
-        <NavBar/>
-        <LoginForm/>
+        <EventDashBoard />
       </div>
-    )
+    );
   }
 }
 
