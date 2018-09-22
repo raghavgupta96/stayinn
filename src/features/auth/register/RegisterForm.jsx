@@ -47,15 +47,17 @@ class RegisterForm extends Component {
 
                 <Paper>
                   <Typography>Password</Typography>
-                  <Input/>
-                </Paper>
-                
-                <Paper>
-                  <Typography>Confirm Password</Typography>
-                  <Input/>
+                  <Input />
                 </Paper>
 
-                <Button type="submit" color="default">Submit</Button>
+                <Paper>
+                  <Typography>Confirm Password</Typography>
+                  <Input />
+                </Paper>
+
+                <Button type="submit" color="default">
+                  Submit
+                </Button>
               </FormControl>
             </div>
           </form>
