@@ -1,5 +1,5 @@
 import React from "react";
-import NavBar from "../../nav/navbar/NavBar";
+import NavBar from "../../nav/NavBar/NavBar";
 import Grid from "@material-ui/core/Grid";
 
 const EventDashboard = () => {
