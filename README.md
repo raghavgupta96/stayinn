@@ -42,7 +42,7 @@ Product Owner: Vivian
 3. Create a personal branch from sandbox with "git branch (your_branch_name)" command
 
 # Proposed Structure (Hierarchy of Files):
-
+<pre>
 > src
   > app
     > common
