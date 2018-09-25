@@ -43,5 +43,28 @@ Product Owner: Vivian
 
 # Proposed Structure (Hierarchy of Files):
 
-TBD // @Richard waiting for your proposal - Rag
-
+> src
+  > app
+    > common
+      > form
+      > util
+    > config
+      > Firebase.js
+    > layout
+      > App.jsx
+    > reducers
+    > store
+      > ConfigureStore.js
+  > features
+    > auth
+      > login
+      > register
+    > home
+    > hotel 
+      > filterResult
+      > searchResult
+      > searchResultList
+    > modals
+    > navbar
+    > payment
+    > user
