@@ -13,8 +13,10 @@ const NavBar = (theme) => {
           <Typography variant="headline" color="inherit" style={{ flex: 1 }}> 
           StayInn
           </Typography>
-          <Button as={NavLink} to='/login' color='inherit'>Login</Button> |
-          <Button as={NavLink} to='/signup' color='inherit'>Signup</Button> 
+            {/* not sure if as={NavLink} is the right way... */}
+            {/* <Button as={NavLink} to='/login' color='inherit'>Login</Button> | */}
+            <Button href='/login' color='inherit'>Login</Button> 
+            <Button href='/signup' color='inherit'>Signup</Button> 
         </Toolbar>
       </AppBar>
   )
