@@ -4,7 +4,7 @@ import theme from "./theme";
 import NavBar from "./features/nav/navbar/NavBar";
 import { Route } from "react-router-dom";
 import RegisterForm from "./features/auth/register/RegisterForm";
-import LoginForm from "./features/loginform/LoginForm";
+import LoginForm from "./features/auth/login/LoginForm";
 
 // import "./App.css";
 

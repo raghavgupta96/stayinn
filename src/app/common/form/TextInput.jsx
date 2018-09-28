@@ -11,4 +11,4 @@ const Textinput = ({input, width, type, placeholder, meta:{touched, error}}) => 
   )
 }
 
-export default Textinput
+export default Textinput;

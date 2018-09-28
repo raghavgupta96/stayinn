@@ -16,7 +16,7 @@ const NavBar = theme => {
             {/* not sure if as={NavLink} is the right way... */}
             {/* <Button as={NavLink} to='/login' color='inherit'>Login</Button> | */}
             <Button href='/login' color='inherit'>Login</Button> 
-            <Button href='/signup' color='inherit'>Signup</Button> 
+            <Button href='/register' color='inherit'>Signup</Button> 
         </Toolbar>
       </AppBar>
   )

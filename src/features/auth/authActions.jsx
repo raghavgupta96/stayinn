@@ -1,11 +1,17 @@
-import { LOGIN_USER, SIGN_OUT_USER } from "./authConstants";
+import { SIGN_OUT_USER } from "./authConstants";
 // import { closeModal } from "../modals/modalActions";
 
 export const login = creds => {
-  return dispatch => {
-    dispatch({ type: LOGIN_USER, payload: { creds } });
-    // dispatch(closeModal());
-  };
+  return async (dispatch, getState, { getFirebase }) => {
+    const firebase = getFirebase();
+
+    try {
+      await firebase.auth().signInWithEmailAndPassword(creds.email, creds.password);
+      console.log("You're In!");
+    } catch (error) {
+      console.log(error);
+    }
+  }
 };
 
 export const logout = () => {
