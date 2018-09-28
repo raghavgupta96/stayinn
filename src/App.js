@@ -5,6 +5,7 @@ import NavBar from "./features/nav/navbar/NavBar";
 import { Route } from "react-router-dom";
 import RegisterForm from "./features/auth/register/RegisterForm";
 import LoginForm from "./features/loginform/LoginForm";
+import SearchBox from './features/search/searchbox/SearchBox'
 
 // import "./App.css";
 
@@ -17,6 +18,7 @@ class App extends Component {
           </MuiThemeProvider>
           <Route path='/register' component={RegisterForm}/>
           <Route path='/login' component={LoginForm}/>
+          <SearchBox/>
         </div>
     );
   }
