@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 
 /* Simple Login Form
 
@@ -20,38 +20,40 @@ class LoginForm extends Component {
     password: ""
   };
 
-  emailChangeHandler (event) {
-    this.setState({email: event.target.value});
-  };
-
-  passwordChangeHandler (event) {
-    this.setState({password: event.target.value});
-  };
-
-  submitHandler () {
-    alert(`Email: ${this.state.email}\nPassword: ${this.state.password}`)
+  emailChangeHandler(event) {
+    this.setState({ email: event.target.value });
   }
 
-  render (props) {
+  passwordChangeHandler(event) {
+    this.setState({ password: event.target.value });
+  }
+
+  submitHandler() {
+    alert(`Email: ${this.state.email}\nPassword: ${this.state.password}`);
+  }
+
+  render(props) {
     return (
       <form onSubmit={() => this.submitHandler()}>
         <div>
-          <TextField id="email"
-                     label="Email"
-                     value={this.state.email}
-                     onChange={(e) => this.emailChangeHandler(e)}
+          <TextField
+            id="email"
+            label="Email"
+            value={this.state.email}
+            onChange={e => this.emailChangeHandler(e)}
           />
-          <TextField id="password"
-                     label="Password"
-                     type="password"
-                     value={this.state.password}
-                     onChange={(e) => this.passwordChangeHandler(e)}
+          <TextField
+            id="password"
+            label="Password"
+            type="password"
+            value={this.state.password}
+            onChange={e => this.passwordChangeHandler(e)}
           />
           <Button type="submit">Submit</Button>
         </div>
       </form>
     );
-  };
+  }
 }
 
 export default LoginForm;
