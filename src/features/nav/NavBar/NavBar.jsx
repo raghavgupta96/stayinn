@@ -12,17 +12,14 @@ const NavBar = theme => {
       <Toolbar>
         <Typography variant="headline" color="inherit" style={{ flex: 1 }}>
           StayInn
-        </Typography>
-        <Button to="/login" component={NavLink} color="inherit">
-          Login
-        </Button>
-        |
-        <Button to="/register" component={NavLink} color="inherit">
-          Register
-        </Button>
-      </Toolbar>
-    </AppBar>
-  );
-};
+          </Typography>
+            {/* not sure if as={NavLink} is the right way... */}
+            {/* <Button as={NavLink} to='/login' color='inherit'>Login</Button> | */}
+            <Button href='/login' color='inherit'>Login</Button> 
+            <Button href='/signup' color='inherit'>Signup</Button> 
+        </Toolbar>
+      </AppBar>
+  )
+}
 
 export default withRouter(NavBar);
