@@ -6,6 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from '@material-ui/core/Typography';
 import Autocomplete from "react-google-autocomplete";
 
+
 class SearchBox extends Component {
   constructor(props) {
     super(props);
@@ -17,6 +18,7 @@ class SearchBox extends Component {
   };
   render() {
     return (
+      
       <Grid container direction="column">
         {/* <link  href="/path/to/hotel-datepicker.css" rel="stylesheet"/>
             <script src="/path/to/fecha.js"></script>
