@@ -9,13 +9,14 @@
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-redux": "^5.0.7",
+    "react-redux-firebase": "^2.0.6",
     "react-redux-form": "^1.16.10",
     "react-router-dom": "^4.3.1",
-    "react-redux-firebase": "^2.0.6",
     "react-scripts": "1.1.5",
     "redux": "^4.0.0",
     "redux-firestore": "^0.3.2",
-    "redux-form": "^7.3.0"
+    "redux-form": "^7.3.0",
+    "typeface-roboto": "0.0.54"
   },
   "scripts": {
     "start": "react-scripts start",
