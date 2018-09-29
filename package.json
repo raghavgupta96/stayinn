@@ -16,7 +16,8 @@
     "react-scripts": "1.1.5",
     "redux": "^4.0.0",
     "redux-firestore": "^0.3.2",
-    "redux-form": "^7.3.0"
+    "redux-form": "^7.3.0",
+    "typeface-roboto": "0.0.54"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -2,51 +2,67 @@ import Calendar from "../../../app/calendar/Calendar";
 import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import Autocomplete from 'react-google-autocomplete';
-
-// const API_KEY = GOOGLE_API_KEY;
-// const API_KEY = "AIzaSyBAaov165t1KK89TiqHPLjM1poFNHJk8OY"
+import Grid from "@material-ui/core/Grid";
+import Typography from '@material-ui/core/Typography';
+import Autocomplete from "react-google-autocomplete";
 
 class SearchBox extends Component {
   constructor(props) {
     super(props);
-    this.state = { location: '' };
+    this.state = { };
   }
-    submit = () => {
+  submit = () => {
     console.log("submitted");
     //do functional here
   };
   render() {
     return (
-
-      <div>
-        <Autocomplete
-        style={{width: '90%'}}
-        onPlaceSelected={(place) => {
-          // console.log(place);
-          this.setState({ place });
-          console.log(this.state);
-        }}
-        types={['(regions)']}
-        componentRestrictions={{country: "us"}}
-        />
-
-      
-        <TextField
-          id="standard-search"
-          label="Where are you going?"
-          type="search"
-          margin="normal"
-        />
-        <Calendar />
-        <Button variant="contained" onClick={this.submit}>
-          submit
-        </Button>
-        <TextField 
-       id="standard-select-currency-native"
-       select
-       label="" />
-      </div>
+      <Grid container direction="column">
+        {/* <link  href="/path/to/hotel-datepicker.css" rel="stylesheet"/>
+            <script src="/path/to/fecha.js"></script>
+            <script src="/path/to/hotel-datepicker.min.js"></script> */}
+        <Grid item>
+          <Autocomplete
+          style={{width: '90%'}}
+          onPlaceSelected={(place) => {
+            // console.log(place);
+            this.setState({ place });
+            //testing
+            console.log(this.state.place.name);
+          }}
+          types={['(regions)']}
+          componentRestrictions={{country: "us"}}
+          />
+        </Grid>
+        <Grid item>
+          <TextField
+            id="standard-search"
+            label="Where are you going?"
+            type="search"
+            margin="normal"
+          />
+        </Grid>
+        {/* <IconButton>
+                <CalendarToday type="date"/>
+            </IconButton> */}
+        <Grid item>
+          <Calendar label="Check-in" />
+        </Grid>
+        <Grid item>
+          <Calendar label="Check-out" />
+        </Grid>
+        <Grid item container direction="row">
+            <Typography >
+            Room/Persons:
+            </Typography>
+          <TextField id="standard-select-currency-native" select label="" />
+        </Grid>
+        <Grid item>
+          <Button variant="contained" onClick={this.submit}>
+            submit
+          </Button>
+        </Grid>
+      </Grid>
     );
   }
 }
