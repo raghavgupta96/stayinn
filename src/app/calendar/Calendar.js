@@ -16,13 +16,13 @@ const styles = theme => ({
 });
 
 function DateAndTimePickers(props) {
-  const { classes } = props;
+  const { classes, label } = props;
 
   return (
     <form className={classes.container} noValidate>
       <TextField
         id="datetime-local"
-        label="Next appointment"
+        label={label}
         type="datetime-local"
         defaultValue="2017-05-24T10:30"
         className={classes.textField}
