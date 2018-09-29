@@ -11,7 +11,7 @@ const NavBar = (theme) => {
     <AppBar position="static">
         <Toolbar>
           <Typography variant="headline" color="inherit" style={{ flex: 1 }}> 
-          StayInn
+            StayInn
           </Typography>
             {/* not sure if as={NavLink} is the right way... */}
             {/* <Button as={NavLink} to='/login' color='inherit'>Login</Button> | */}

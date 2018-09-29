@@ -6,6 +6,9 @@ import NavBar from './features/nav/NavBar/NavBar'
 import { Route, Switch } from 'react-router-dom'
 import Signup from './features/auth/register/RegisterForm'
 import Login from './features/auth/login/LoginForm'
+import HomePage from './features/home/HomePage'
+import UserDashboard from './features/user/UserDashboard'
+import FilterUi from './features/filter/Filter.ui'
 
 
 class App extends Component {
@@ -13,6 +16,10 @@ class App extends Component {
     return (
       <MuiThemeProvider theme={theme}>
       <NavBar theme={theme}/>
+      <Switch>
+        {/* Adding exact to prevent home page showing when there is '/' in web address */}
+        <Route exact path='/' component={HomePage}/>
+      </Switch>
       <Route 
         path="/(.+)" // forward slash with everything else, searching matching route
         render={() =>(
@@ -22,13 +29,12 @@ class App extends Component {
                 {/* No circumstances where two routes are supposed to load at the samet time */}
                 <Route path='/signup' component={Signup}/>
                 <Route path='/login' component={Login}/>
+                <Route path='/userDashboard' component={UserDashboard}/>
+                <Route path='/searchResult' component={FilterUi}/>
               </Switch>
           </div>   
         )}
       />
-      {/* <Switch>
-        <Route path='/signup' component={Signup}/>
-      </Switch> */}
       </MuiThemeProvider>
 
 
