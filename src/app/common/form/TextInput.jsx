@@ -11,4 +11,8 @@ const Textinput = ({input, width, type, placeholder, meta:{touched, error}}) => 
   )
 }
 
+<<<<<<< HEAD
 export default Textinput;
+=======
+export default Textinput
+>>>>>>> 7750501874291861ad226b8b024723595b0b1c35

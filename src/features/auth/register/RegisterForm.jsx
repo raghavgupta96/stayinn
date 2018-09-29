@@ -10,14 +10,21 @@ import Paper from "@material-ui/core/Paper";
 
 
 import { Field , reduxForm} from 'redux-form';
-import TextInput from '../../../app/common/form/TextInput';
 import { connect } from 'react-redux';
 import { registerUser } from '../authActions';
+import TextInput from '../../../app/common/form/TextInput';
 import PlaceInput from '../../../app/common/form/PlaceInput';
+import { combineValidators, isRequired } from 'revalidate'
 
 const actions = {
   registerUser
 }
+
+const validate = combineValidators({
+  displayName: isRequired('display'),
+  email: isRequired('email'),
+  password: isRequired('password')
+})
 
 // The form is created with material UI
 // Probably need to incorporate Redux into it
@@ -80,7 +87,7 @@ const actions = {
 //   }
 // }
 
-const RegisterForm = ({handleSubmit, registerUser}) => {
+const RegisterForm = ({handleSubmit, registerUser, error, invalid, submitting}) => {
   return (
     <div>
       <form size="large" onSubmit={handleSubmit(registerUser)}>
@@ -120,10 +127,11 @@ const RegisterForm = ({handleSubmit, registerUser}) => {
             component={TextInput}
             placeholder="Phone Number"
           />
-          <input type="submit"></input>
+          {error && <label>{error}</label>}           
+          <input disabled={invalid || submitting} type="submit"></input>
       </form>
     </div>
   );
 };
 
-export default connect(null, actions)(reduxForm({form: 'registerForm'})(RegisterForm));
+export default connect(null, actions)(reduxForm({form: 'registerForm',validate})(RegisterForm));

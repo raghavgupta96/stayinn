@@ -1,4 +1,4 @@
-import { SIGN_OUT_USER } from "./authConstants";
+import { LOGIN_USER, SIGN_OUT_USER } from "./authConstants";
 // import { closeModal } from "../modals/modalActions";
 import { SubmissionError } from 'redux-form'
 
@@ -54,5 +54,8 @@ export const registerUser = (user) => async (
     await firestore.set(`users/${createdUser.uid}`, {...newUser});
   } catch (error) {
     console.log(error);
+    throw new SubmissionError({
+      _error: error.message
+    });
   }
 };
