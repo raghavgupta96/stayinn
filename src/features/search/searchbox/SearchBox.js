@@ -8,9 +8,10 @@ import Autocomplete from 'react-google-autocomplete';
 // const API_KEY = "AIzaSyBAaov165t1KK89TiqHPLjM1poFNHJk8OY"
 
 class SearchBox extends Component {
-    state = {
-        place : ""
-    }
+  constructor(props) {
+    super(props);
+    this.state = { location: '' };
+  }
     submit = () => {
     console.log("submitted");
     //do functional here
@@ -19,14 +20,18 @@ class SearchBox extends Component {
     return (
 
       <div>
-              <Autocomplete
-      style={{width: '90%'}}
-      onPlaceSelected={(place) => {
-        console.log(place);
-      }}
-      types={['(regions)']}
-      componentRestrictions={{country: "ru"}}
-      />
+        <Autocomplete
+        style={{width: '90%'}}
+        onPlaceSelected={(place) => {
+          // console.log(place);
+          this.setState({ place });
+          console.log(this.state);
+        }}
+        types={['(regions)']}
+        componentRestrictions={{country: "us"}}
+        />
+
+      
         <TextField
           id="standard-search"
           label="Where are you going?"
