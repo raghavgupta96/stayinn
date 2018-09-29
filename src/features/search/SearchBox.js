@@ -29,7 +29,7 @@ class SearchBox extends Component {
 
           <Autocomplete
             style={{
-              width: "66%"
+              width: "100%"
             }}
             onPlaceSelected={place => {
               // console.log(place);
