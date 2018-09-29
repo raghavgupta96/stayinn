@@ -13,6 +13,7 @@ import { Field , reduxForm} from 'redux-form';
 import TextInput from '../../../app/common/form/TextInput';
 import { connect } from 'react-redux';
 import { registerUser } from '../authActions';
+import PlaceInput from '../../../app/common/form/PlaceInput';
 
 const actions = {
   registerUser
@@ -104,7 +105,7 @@ const RegisterForm = ({handleSubmit, registerUser}) => {
           <Field
             name="address"
             type="text"
-            component={TextInput}
+            component={PlaceInput}
             placeholder="Address"
           />
           <Field

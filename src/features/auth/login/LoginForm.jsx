@@ -4,6 +4,7 @@ import { Field, reduxForm } from 'redux-form';
 import TextInput from '../../../app/common/form/TextInput';
 //import TextField from "@material-ui/core/TextField";
 //import Button from "@material-ui/core/Button";
+import FormLabel from '@material-ui/core/FormLabel';
 import { connect } from 'react-redux';
 /* Simple Login Form
 
@@ -64,7 +65,7 @@ const actions = {
 // export default LoginForm;
 
 
-const LoginForm = ({login, handleSubmit}) => {
+const LoginForm = ({login, error, handleSubmit}) => {
   return (
     <div>
       <form size="large" onSubmit={handleSubmit(login)}>
@@ -79,7 +80,12 @@ const LoginForm = ({login, handleSubmit}) => {
           component={TextInput}
           type="password"
           placeholder="password"
-        />      
+        />  
+        {error && 
+          <FormLabel>
+            {error}
+          </FormLabel>
+        }    
         <input type="submit"></input>
       </form>
     </div>
