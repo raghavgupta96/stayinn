@@ -2,9 +2,12 @@
 This is for the full stack development of a React powered webapp called StayInn
 
 # Branch Format (Changes may be made):
-
-Master -> Testing -> Sandbox (Development) -> Personal Branches
-
+<pre>
+Master -> Testing -> Development
+                  -> SubDev (Profile/User)        -> Personal branch 
+                  -> SubDev (Search/SearchResult) -> Personal branch
+                  -> SubDev (Payment/Checkout)    -> Personal branch
+</pre>
 # Team for Development: 
 
 React UI Devs:
