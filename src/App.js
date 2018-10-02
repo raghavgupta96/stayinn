@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Container } from "semantic-ui-react";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import theme from "./theme";
-import NavBar from "./features/nav/NavBar/NavBar";
+import NavBar from "./features/nav/navbar/NavBar";
 import { Route, Switch } from "react-router-dom";
 import Signup from "./features/auth/register/RegisterForm";
 import Login from "./features/auth/login/LoginForm";
