@@ -17,6 +17,7 @@ class SearchBox extends Component {
   };
   render() {
     return (
+      
       <Grid container direction="column">
         {/* <link  href="/path/to/hotel-datepicker.css" rel="stylesheet"/>
             <script src="/path/to/fecha.js"></script>
