@@ -5,28 +5,41 @@ import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Autocomplete from "react-google-autocomplete";
+import Paper from "@material-ui/core/Paper";
+import { withStyles } from "@material-ui/core/styles";
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1
+  },
+  paper: {
+    width: "60%",
+    padding: 20,
+    marginTop: 100,
+    margin: 20,
+    color: theme.palette.text.secondary
+  },
+  item: {
+    paddingLeft: 100
+  }
+});
 
 class SearchBox extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
+
   submit = () => {
     console.log("submitted");
     //do functional here
   };
   render() {
+    const { classes } = this.props;
     return (
-      // <Grid container direction="row" alignContent="flex-start" xl="3">
-      //   <Grid item>
-      <Grid container direction="column" spacing={24} alignItems="center">
-        {/* <link  href="/path/to/hotel-datepicker.css" rel="stylesheet"/>
-            <script src="/path/to/fecha.js"></script>
-            <script src="/path/to/hotel-datepicker.min.js"></script> */}
-        <Grid item>
-          {/* -------Jun's Google auto complete codes that don't quite work with 
-            with the over all code yet----- */}
-
+      <Grid container spacing={16} className={classes.root} alignItems="center">
+        <Grid container spacing={8} sm={2} />
+        <Paper className={classes.paper}>
           <Autocomplete
             style={{
               width: "100%"
@@ -40,30 +53,66 @@ class SearchBox extends Component {
             types={["(regions)"]}
             componentRestrictions={{ country: "us" }}
           />
-        </Grid>
-        <Grid item />
-        {/* <IconButton>
-                <CalendarToday type="date"/>
-            </IconButton> */}
-        <Grid item>
-          <Calendar label="Check-in" />
-        </Grid>
-        <Grid item>
-          <Calendar label="Check-out" />
-        </Grid>
-        <Grid item>
-          <Grid container direction="row" alignItems="center">
+          <Grid
+            item
+            sm={3}
+            style={{
+              width: "100%",
+              marginLeft: 450,
+              marginRight: 450,
+              marginTop: 20,
+              marginBottom: 20
+            }}
+          >
+            <Calendar label="Check-in" />
+          </Grid>
+          <Grid
+            item
+            sm={3}
+            style={{
+              width: "100%",
+              marginLeft: 450,
+              marginRight: 450,
+              marginTop: 20,
+              marginBottom: 20
+            }}
+          >
+            <Calendar label="Check-out" />
+          </Grid>
+
+          <Grid
+            item
+            sm={3}
+            style={{
+              width: "100%",
+              marginLeft: 450,
+              marginRight: 450,
+              marginTop: 20,
+              marginBottom: 20
+            }}
+          >
             <Typography variant="title" gutterBottom>
               Room/Persons:
             </Typography>
             <TextField id="standard-select-currency-native" select />
           </Grid>
-        </Grid>
-        <Grid item>
-          <Button size="medium" variant="contained" onClick={this.submit}>
-            submit
-          </Button>
-        </Grid>
+
+          <Grid
+            item
+            sm={3}
+            style={{
+              width: "100%",
+              marginLeft: 450,
+              marginRight: 450,
+              marginTop: 20,
+              marginBottom: 20
+            }}
+          >
+            <Button size="medium" variant="contained" onClick={this.submit}>
+              submit
+            </Button>
+          </Grid>
+        </Paper>
       </Grid>
       //   </Grid>
       // </Grid>
@@ -71,4 +120,4 @@ class SearchBox extends Component {
   }
 }
 
-export default SearchBox;
+export default withStyles(styles)(SearchBox);
