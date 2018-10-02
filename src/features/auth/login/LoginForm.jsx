@@ -4,6 +4,7 @@ import { Field, reduxForm } from 'redux-form';
 import TextInput from '../../../app/common/form/TextInput';
 //import TextField from "@material-ui/core/TextField";
 //import Button from "@material-ui/core/Button";
+import FormLabel from '@material-ui/core/FormLabel';
 import { connect } from 'react-redux';
 
 //material ui imports
@@ -131,7 +132,6 @@ const renderLoginButton = ({
 // }
 
 // export default LoginForm;
-
 
 const LoginForm = ({classes,login, handleSubmit}) => {
   //const {classes} = this.props;
