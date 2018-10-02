@@ -40,9 +40,6 @@ class SearchBox extends Component {
       <Grid container spacing={16} className={classes.root} alignItems="center">
         <Grid container spacing={8} sm={2} />
         <Paper className={classes.paper}>
-          {/* <link  href="/path/to/hotel-datepicker.css" rel="stylesheet"/>
-            <script src="/path/to/fecha.js"></script>
-            <script src="/path/to/hotel-datepicker.min.js"></script> */}
           <Autocomplete
             style={{
               width: "100%"
