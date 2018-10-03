@@ -1,14 +1,23 @@
 import { LOGIN_USER, SIGN_OUT_USER } from "./authConstants";
 // import { closeModal } from "../modals/modalActions";
 import { SubmissionError } from 'redux-form'
+import {auth} from 'firebase'
+import { request } from "https";
 
 export const login = creds => {
   return async (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
+    const user = firebase.auth().currentUser;
+    const verified = user.emailVerified;
 
     try {
-      await firebase.auth().signInWithEmailAndPassword(creds.email, creds.password);
-      console.log("You're In!");
+      console.log(creds);
+      if (verified){
+        await firebase.auth().signInWithEmailAndPassword(creds.email, creds.password);
+        console.log("You're In!");
+      } else {
+        console.log("Email not verified man!")
+      }
     } catch (error) {
       console.log(error);
       throw new SubmissionError({
@@ -38,6 +47,11 @@ export const registerUser = (user) => async (
       .createUserWithEmailAndPassword(user.email, user.password);
     console.log(createdUser);
     // update the auth profile
+    await createdUser.sendEmailVerification().then(function() {
+      // Email sent.
+    }).catch(function(error) {
+      // An error happened.
+    });
     await createdUser.updateProfile({
         displayName: user.displayName,
         phoneNumber: user.phoneNumber,
@@ -59,3 +73,5 @@ export const registerUser = (user) => async (
     });
   }
 };
+
+

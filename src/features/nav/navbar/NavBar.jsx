@@ -4,6 +4,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
 
 // style={{ flex: 1 }} pushes the subsequent things to the right
 const NavBar = theme => {
@@ -11,15 +12,19 @@ const NavBar = theme => {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="headline" color="inherit" style={{ flex: 1 }}>
-          StayInn
-          </Typography>
-            {/* not sure if as={NavLink} is the right way... */}
-            {/* <Button as={NavLink} to='/login' color='inherit'>Login</Button> | */}
-            <Button href='/login' color='inherit'>Login</Button> 
-            <Button href='/register' color='inherit'>Signup</Button> 
-        </Toolbar>
-      </AppBar>
-  )
-}
+          <IconButton href="/Home">StayInn</IconButton>
+        </Typography>
+        {/* not sure if as={NavLink} is the right way... */}
+        {/* <Button as={NavLink} to='/login' color='inherit'>Login</Button> | */}
+        <Button href="/login" color="inherit">
+          Login
+        </Button>
+        <Button href="/signup" color="inherit">
+          Signup
+        </Button>
+      </Toolbar>
+    </AppBar>
+  );
+};
 
 export default withRouter(NavBar);
