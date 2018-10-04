@@ -66,7 +66,7 @@ class SearchBox extends Component {
           <Paper
             className={classes.paper}
             style={{
-              backgroundColor: "#409BE6"
+              //backgroundColor: "#409BE6"
             }}
           >
             <Grid container>
@@ -78,7 +78,7 @@ class SearchBox extends Component {
                   gutterBottom
                   color="inherit"
                   style={{
-                    color: "#ffffff",
+                    //color: "#ffffff",
                     fontFamily: "Times",
                     fontWeight: "bold"
                   }}
@@ -99,7 +99,7 @@ class SearchBox extends Component {
                     width: "100%",
                     innerHeight: "100",
                     height: 45,
-                    backgroundColor: "#E6F6FF",
+                    //backgroundColor: "#E6F6FF",
                     fontSize: 18,
                     fontFamily: "Times"
                   }}
@@ -116,7 +116,7 @@ class SearchBox extends Component {
               <Grid item sm={2}>
                 <Paper
                   style={{
-                    backgroundColor: "#E6F6FF",
+                    //backgroundColor: "#E6F6FF",
                     marginRight: 20
                   }}
                 >
@@ -135,7 +135,7 @@ class SearchBox extends Component {
               <Grid item sm={2}>
                 <Paper
                   style={{
-                    backgroundColor: "#E6F6FF",
+                    //backgroundColor: "#E6F6FF",
                     marginRight: 20
                   }}
                 >
@@ -143,9 +143,6 @@ class SearchBox extends Component {
                     id="date"
                     label="Checkout Date"
                     type="date"
-                    style={{
-                      color: "#ffffff"
-                    }}
                     value={this.state.checkoutDate}
                     InputLabelProps={{
                       shrink: true
@@ -159,7 +156,7 @@ class SearchBox extends Component {
                   size="medium"
                   style={{
                     backgroundColor: "#ffffff",
-                    color: "#409BE6",
+                    //color: "#409BE6",
                     height: 47
                   }}
                   variant="contained"
