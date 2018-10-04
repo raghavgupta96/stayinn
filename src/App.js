@@ -10,6 +10,7 @@ import HomePage from "./features/home/HomePage";
 import UserDashboard from "./features/user/UserDashboard";
 import FilterUi from "./features/filter/Filter.ui";
 import SearchBox from "./features/search/SearchBox";
+import PaymentLayout from "./features/payment/PaymentLayout";
 
 class App extends Component {
   render() {
@@ -32,6 +33,7 @@ class App extends Component {
                 <Route path="/userDashboard" component={UserDashboard} />
                 <Route path="/searchResult" component={FilterUi} />
                 <Route path="/Home" component={SearchBox} />
+                <Route path="/payment" component={PaymentLayout} />
               </Switch>
             </div>
           )}
