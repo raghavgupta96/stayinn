@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 import { login } from '../authActions';
 import { Field, reduxForm } from 'redux-form';
-import TextInput from '../../../app/common/form/TextInput';
-//import TextField from "@material-ui/core/TextField";
-//import Button from "@material-ui/core/Button";
-import FormLabel from '@material-ui/core/FormLabel';
 import { connect } from 'react-redux';
 
 //material ui imports
@@ -15,16 +11,6 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
-/* Simple Login Form
-   Should be changed to stateless when redux is
-   integrated into application, but for now
-   keep as stateful component.
-
-   Issues:
-   1) No mockup, so no styling. Ask Design team about mockup.
-   2) Handlers should be passed down as props.
-   3) State should be stored on redux.
-*/
 const actions = {
   login
 }
