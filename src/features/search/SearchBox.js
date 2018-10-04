@@ -94,7 +94,8 @@ class SearchBox extends Component {
                   style={{
                     width: "100%",
                     innerHeight: "100",
-                    height: 45
+                    height: 45,
+                    backgroundColor: "#E6F6FF"
                   }}
                   onPlaceSelected={place => {
                     // console.log(place);
@@ -151,7 +152,7 @@ class SearchBox extends Component {
                 <Button
                   size="medium"
                   style={{
-                    backgroundColor: "white",
+                    backgroundColor: "#ffffff",
                     color: "#409BE6",
                     height: 47
                   }}
