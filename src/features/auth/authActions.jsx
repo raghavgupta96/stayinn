@@ -16,7 +16,7 @@ export const login = creds => {
         await firebase.auth().signInWithEmailAndPassword(creds.email, creds.password);
         console.log("You're In!");
       } else {
-        console.log("Email not verified man!")
+        console.log("Email not verified homie!")
       }
     } catch (error) {
       console.log(error);

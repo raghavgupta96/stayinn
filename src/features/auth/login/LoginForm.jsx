@@ -89,49 +89,6 @@ const renderLoginButton = ({
   {...custom}
   />
 )
-// class LoginForm extends Component {
-//   // state = {
-//   //   email: "",
-//   //   password: ""
-//   // };
-
-//   // emailChangeHandler(event) {
-//   //   this.setState({ email: event.target.value });
-//   // }
-
-//   // passwordChangeHandler(event) {
-//   //   this.setState({ password: event.target.value });
-//   // }
-
-//   // submitHandler() {
-//   //   alert(`Email: ${this.state.email}\nPassword: ${this.state.password}`);
-//   // }
-
-//   render(props) {
-//     return (
-//       <form onSubmit={() => this.submitHandler()}>
-//         <div>
-//           <TextField
-//             id="email"
-//             label="Email"
-//             value={this.state.email}
-//             onChange={e => this.emailChangeHandler(e)}
-//           />
-//           <TextField
-//             id="password"
-//             label="Password"
-//             type="password"
-//             value={this.state.password}
-//             onChange={e => this.passwordChangeHandler(e)}
-//           />
-//           <Button type="submit">Submit</Button>
-//         </div>
-//       </form>
-//     );
-//   }
-// }
-
-// export default LoginForm;
 
 const LoginForm = ({classes,login, handleSubmit}) => {
   //const {classes} = this.props;
