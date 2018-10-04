@@ -142,11 +142,6 @@ class SearchBox extends Component {
                 />
               </Grid>
               <Grid item sm={2}>
-                <Paper
-                  style={{
-                    marginRight: 20
-                  }}
-                >
                   <TextField
                     id="date"
                     label="Checkin Date"
@@ -157,14 +152,8 @@ class SearchBox extends Component {
                     }}
                     onChange={this._handleCheckinDate}
                   />
-                </Paper>
               </Grid>
               <Grid item sm={2}>
-                <Paper
-                  style={{
-                    marginRight: 20
-                  }}
-                >
                   <TextField
                     id="date"
                     label="Checkout Date"
@@ -175,7 +164,6 @@ class SearchBox extends Component {
                     }}
                     onChange={this._handleCheckoutDate}
                   />
-                </Paper>
               </Grid>
               <Grid item sm={1}>
                 <Button
