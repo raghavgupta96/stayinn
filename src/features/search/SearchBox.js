@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import Autocomplete from "react-google-autocomplete";
 import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
+import SearchIcon from '@material-ui/icons/Search'
 
 const styles = theme => ({
   root: {
@@ -82,7 +83,7 @@ class SearchBox extends Component {
               </Grid>
               <Grid item sm={1}>
                 <Button size="medium" variant="contained" onClick={this.submit}>
-                  search
+                <SearchIcon/>
                 </Button>
               </Grid>
             </Grid>
