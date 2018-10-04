@@ -13,8 +13,11 @@ const styles = theme => ({
     flexGrow: 1
   },
   paper: {
-    width: "60%",
-    padding: 20,
+    width: "100%",
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 20,
+    paddingBottom: 20,
     marginTop: 100,
     margin: 20,
     color: theme.palette.text.secondary
@@ -37,85 +40,55 @@ class SearchBox extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <Grid container spacing={16} className={classes.root} alignItems="center">
-        <Grid container spacing={8} sm={2} />
-        <Paper className={classes.paper}>
-          <Autocomplete
-            style={{
-              width: "100%"
-            }}
-            onPlaceSelected={place => {
-              // console.log(place);
-              this.setState({ place });
-              //testing
-              console.log(this.state.place.name);
-            }}
-            types={["(regions)"]}
-            componentRestrictions={{ country: "us" }}
-          />
-          <Grid
-            item
-            sm={3}
-            style={{
-              width: "100%",
-              marginLeft: 450,
-              marginRight: 450,
-              marginTop: 20,
-              marginBottom: 20
-            }}
-          >
-            <Calendar label="Check-in" />
-          </Grid>
-          <Grid
-            item
-            sm={3}
-            style={{
-              width: "100%",
-              marginLeft: 450,
-              marginRight: 450,
-              marginTop: 20,
-              marginBottom: 20
-            }}
-          >
-            <Calendar label="Check-out" />
-          </Grid>
-
-          <Grid
-            item
-            sm={3}
-            style={{
-              width: "100%",
-              marginLeft: 450,
-              marginRight: 450,
-              marginTop: 20,
-              marginBottom: 20
-            }}
-          >
-            <Typography variant="title" gutterBottom>
-              Room/Persons:
-            </Typography>
-            <TextField id="standard-select-currency-native" select />
-          </Grid>
-
-          <Grid
-            item
-            sm={3}
-            style={{
-              width: "100%",
-              marginLeft: 450,
-              marginRight: 450,
-              marginTop: 20,
-              marginBottom: 20
-            }}
-          >
-            <Button size="medium" variant="contained" onClick={this.submit}>
-              submit
-            </Button>
-          </Grid>
-        </Paper>
+      <Grid container className={classes.root} spacing={16}>
+        <Grid item sm={1} />
+        <Grid item sm={9}>
+          <Paper className={classes.paper}>
+            <Grid container>
+              <Grid container>
+                  <Typography variant="title" gutterBottom>
+                    Room/Persons:
+                  </Typography>
+                <TextField id="standard-select-currency-native" select />
+              </Grid>
+              <Grid
+                item
+                sm={9}
+                style={{
+                  paddingTop: 20,
+                  paddingRight: 10
+                }}
+              >
+                <Autocomplete
+                  style={{
+                    width: "100%",
+                    innerHeight: "100"
+                  }}
+                  onPlaceSelected={place => {
+                    // console.log(place);
+                    this.setState({ place });
+                    //testing
+                    console.log(this.state.place.name);
+                  }}
+                  types={["(regions)"]}
+                  componentRestrictions={{ country: "us" }}
+                />
+              </Grid>
+              <Grid item sm={1}>
+                <Calendar label="Check-in" />
+              </Grid>
+              <Grid item sm={1}>
+                <Calendar label="Check-out" />
+              </Grid>
+              <Grid item sm={1}>
+                <Button size="medium" variant="contained" onClick={this.submit}>
+                  search
+                </Button>
+              </Grid>
+            </Grid>
+          </Paper>
+        </Grid>
       </Grid>
-      //   </Grid>
-      // </Grid>
     );
   }
 }

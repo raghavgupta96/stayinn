@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Container } from "semantic-ui-react";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import theme from "./theme";
 import NavBar from "./features/nav/navbar/NavBar";
