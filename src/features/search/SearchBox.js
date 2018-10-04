@@ -70,7 +70,9 @@ class SearchBox extends Component {
             }}
           >
             <Grid container>
-              <Grid container>
+              <Grid container style={{
+                paddingBottom: 5
+              }}>
                 <Typography
                   variant="title"
                   gutterBottom
