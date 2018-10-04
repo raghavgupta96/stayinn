@@ -31,12 +31,35 @@ const styles = theme => ({
 class SearchBox extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      checkinDate: null,
+      checkoutDate: null,
+      badsNumber: [
+        {number: 1},
+        {number: 2}
+      ]
+    };
+  }
+
+  _handleCheckinDate = (e) => {
+    this.setState({
+      checkinDate: e.target.value
+    })
+    console.log(this.state.checkinDate)
+  }
+
+  _handleCheckoutDate = (e) => {
+    this.setState({
+      checkoutDate: e.target.value
+    })
+    console.log(this.state.checkoutDate)
   }
 
   submit = () => {
     console.log("submitted");
     //do functional here
+    console.log("Checkin Date"+this.state.checkinDate)
+    console.log("Checkout Date"+this.state.checkoutDate)
   };
   render() {
     const { classes } = this.props;
@@ -48,13 +71,13 @@ class SearchBox extends Component {
             <Grid container>
               <Grid container>
                   <Typography variant="title" gutterBottom>
-                    Room/Persons:
+                    Room Size:
                   </Typography>
                 <TextField id="standard-select-currency-native" select />
               </Grid>
               <Grid
                 item
-                sm={9}
+                sm={6}
                 style={{
                   paddingTop: 20,
                   paddingRight: 10
@@ -75,11 +98,29 @@ class SearchBox extends Component {
                   componentRestrictions={{ country: "us" }}
                 />
               </Grid>
-              <Grid item sm={1}>
-                <Calendar label="Check-in" />
+              <Grid item sm={2}>
+                <TextField
+                  id="date"
+                  label="Checkin Date"
+                  type="date"
+                  value={this.state.checkinDate}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  onChange={this._handleCheckinDate}
+                />
               </Grid>
-              <Grid item sm={1}>
-                <Calendar label="Check-out" />
+              <Grid item sm={2}>
+                <TextField
+                  id="date"
+                  label="Checkout Date"
+                  type="date"
+                  value={this.state.checkoutDate}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  onChange={this._handleCheckoutDate}
+                />
               </Grid>
               <Grid item sm={1}>
                 <Button size="medium" variant="contained" onClick={this.submit}>
