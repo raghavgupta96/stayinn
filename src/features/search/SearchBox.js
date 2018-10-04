@@ -1,4 +1,3 @@
-import Calendar from "../../app/calendar/Calendar";
 import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -7,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Autocomplete from "react-google-autocomplete";
 import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
-import SearchIcon from '@material-ui/icons/Search'
+import SearchIcon from "@material-ui/icons/Search";
 
 const styles = theme => ({
   root: {
@@ -34,32 +33,29 @@ class SearchBox extends Component {
     this.state = {
       checkinDate: null,
       checkoutDate: null,
-      badsNumber: [
-        {number: 1},
-        {number: 2}
-      ]
+      badsNumber: [{ number: 1 }, { number: 2 }]
     };
   }
 
-  _handleCheckinDate = (e) => {
+  _handleCheckinDate = e => {
     this.setState({
       checkinDate: e.target.value
-    })
-    console.log(this.state.checkinDate)
-  }
+    });
+    console.log(this.state.checkinDate);
+  };
 
-  _handleCheckoutDate = (e) => {
+  _handleCheckoutDate = e => {
     this.setState({
       checkoutDate: e.target.value
-    })
-    console.log(this.state.checkoutDate)
-  }
+    });
+    console.log(this.state.checkoutDate);
+  };
 
   submit = () => {
     console.log("submitted");
     //do functional here
-    console.log("Checkin Date"+this.state.checkinDate)
-    console.log("Checkout Date"+this.state.checkoutDate)
+    console.log("Checkin Date" + this.state.checkinDate);
+    console.log("Checkout Date" + this.state.checkoutDate);
   };
   render() {
     const { classes } = this.props;
@@ -67,26 +63,38 @@ class SearchBox extends Component {
       <Grid container className={classes.root} spacing={16}>
         <Grid item sm={1} />
         <Grid item sm={9}>
-          <Paper className={classes.paper}>
+          <Paper
+            className={classes.paper}
+            style={{
+              backgroundColor: "#409BE6"
+            }}
+          >
             <Grid container>
               <Grid container>
-                  <Typography variant="title" gutterBottom>
-                    Room Size:
-                  </Typography>
+                <Typography
+                  variant="title"
+                  gutterBottom
+                  color="inherit"
+                  style={{
+                    color: "#ffffff"
+                  }}
+                >
+                  Room Size:
+                </Typography>
                 <TextField id="standard-select-currency-native" select />
               </Grid>
               <Grid
                 item
-                sm={6}
+                sm={7}
                 style={{
-                  paddingTop: 20,
-                  paddingRight: 10
+                  paddingRight: 20
                 }}
               >
                 <Autocomplete
                   style={{
                     width: "100%",
-                    innerHeight: "100"
+                    innerHeight: "100",
+                    height: 45
                   }}
                   onPlaceSelected={place => {
                     // console.log(place);
@@ -99,32 +107,58 @@ class SearchBox extends Component {
                 />
               </Grid>
               <Grid item sm={2}>
-                <TextField
-                  id="date"
-                  label="Checkin Date"
-                  type="date"
-                  value={this.state.checkinDate}
-                  InputLabelProps={{
-                    shrink: true,
+                <Paper
+                  style={{
+                    backgroundColor: "#E6F6FF",
+                    marginRight: 20
                   }}
-                  onChange={this._handleCheckinDate}
-                />
+                >
+                  <TextField
+                    id="date"
+                    label="Checkin Date"
+                    type="date"
+                    value={this.state.checkinDate}
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                    onChange={this._handleCheckinDate}
+                  />
+                </Paper>
               </Grid>
               <Grid item sm={2}>
-                <TextField
-                  id="date"
-                  label="Checkout Date"
-                  type="date"
-                  value={this.state.checkoutDate}
-                  InputLabelProps={{
-                    shrink: true,
+                <Paper
+                  style={{
+                    backgroundColor: "#E6F6FF",
+                    marginRight: 20
                   }}
-                  onChange={this._handleCheckoutDate}
-                />
+                >
+                  <TextField
+                    id="date"
+                    label="Checkout Date"
+                    type="date"
+                    style={{
+                      color: "#ffffff"
+                    }}
+                    value={this.state.checkoutDate}
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                    onChange={this._handleCheckoutDate}
+                  />
+                </Paper>
               </Grid>
               <Grid item sm={1}>
-                <Button size="medium" variant="contained" onClick={this.submit}>
-                <SearchIcon/>
+                <Button
+                  size="medium"
+                  style={{
+                    backgroundColor: "white",
+                    color: "#409BE6",
+                    height: 47
+                  }}
+                  variant="contained"
+                  onClick={this.submit}
+                >
+                  <SearchIcon />
                 </Button>
               </Grid>
             </Grid>
