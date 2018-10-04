@@ -4,10 +4,12 @@ import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 
 //material ui imports
+import renderTextField from '../../../app/common/form/TextInput';
+import renderPasswordField from '../../../app/common/form/PasswordInput';
+import SubmitButton from '../../../app/common/form/SubmitButton';
 import withStyles from '@material-ui/core/styles/withStyles'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper';
-import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
@@ -27,57 +29,11 @@ const styles = theme => ({
     height: 300,
     width: 400,
   },
-  button: {
-    paddingTop: 30,
-  }
+  
 })
 
-//rendering the UI components
-const renderTextField = ({
-  input, label, meta: { touched, error }, ...custom
-}) => (
-  <TextField
-   style={{height: 50}}
-   label={label}
-   floatingLabelText={label}
-   errorText={touched && error}
-   {...input}
-   {...custom}
-   margin="normal"
-   fullWidth
-   />
-)
 
-const renderPasswordField = ({
-  input, label, meta: { touched, error }, ...custom
-})=> (
-  <TextField 
-   required
-   style={{paddingBottom: 10}}
-   type="password"
-   label="Password"
-   hintText={label}
-   floatingLabelText={label}
-   errorText={touched && error}
-   {...input}
-   {...custom}
-   margin="normal"
-   fullWidth/>
-)
-const renderLoginButton = ({
-  ...custom
-}) => (
-  <Button 
-  variant="contained" 
-  justify="right" 
-  color="primary" 
-  type="submit"
-  {...custom}
-  />
-)
-
-const LoginForm = ({classes,login, handleSubmit}) => {
-  //const {classes} = this.props;
+const LoginForm = ({classes, login, handleSubmit}) => {
 
   return (
     <div>
@@ -87,7 +43,7 @@ const LoginForm = ({classes,login, handleSubmit}) => {
           <Grid item xs={4}></Grid>
           <Grid item xs={4}>
             <Paper className={classes.paper}>
-              <Typography variant="display2" >Login</Typography>
+              <Typography variant="display1" >Login</Typography>
               <Field 
                   name="email"
                   component={renderTextField}
@@ -97,7 +53,7 @@ const LoginForm = ({classes,login, handleSubmit}) => {
                   name="password"
                   component={renderPasswordField}
                 />
-              <Button className={classes.button} component={renderLoginButton}>
+              <Button component={SubmitButton}>
                 Login 
               </Button>
             </Paper>
