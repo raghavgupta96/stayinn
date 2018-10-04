@@ -1,0 +1,10 @@
+.PaymentLayout {
+  /*Container*/
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+
+  /*Box Model*/
+  padding: 8px;
+  margin: 8px;
+}

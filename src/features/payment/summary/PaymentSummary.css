@@ -1,0 +1,53 @@
+.PaymentSummary {
+  /*Container*/
+  display: flex;
+  flex-flow: column nowrap;
+
+  /*Cosmetics*/
+  box-shadow: 0 2px 10px -3px black;
+}
+
+.PaymentSummary h2 {
+  /*Box Model*/
+  margin: 0;
+  
+  /*Cosmetics*/
+  font-size: 1.25em;
+}
+
+.PaymentSummary p {
+  /*Box Model*/
+  margin: 0;
+}
+
+.PaymentSummaryContent {
+  /*Box Model*/
+  margin: 16px;
+}
+
+.PaymentSummaryContent > section {
+  /*Box Model*/
+  margin: 32px 0;
+}
+
+.PaymentSummaryCalculation > div {
+  /*Container*/
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+.PaymentSummaryTotal {
+  /*Container*/
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+
+  /*Box Model*/
+  padding: 16px;
+
+  /*Cosmetics*/
+  background-color: #E6F6FF;
+  font-size: 1.5em;
+
+}
