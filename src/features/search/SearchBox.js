@@ -76,7 +76,9 @@ class SearchBox extends Component {
                   gutterBottom
                   color="inherit"
                   style={{
-                    color: "#ffffff"
+                    color: "#ffffff",
+                    fontFamily: "Times",
+                    fontWeight: "bold"
                   }}
                 >
                   Room Size:
@@ -95,7 +97,9 @@ class SearchBox extends Component {
                     width: "100%",
                     innerHeight: "100",
                     height: 45,
-                    backgroundColor: "#E6F6FF"
+                    backgroundColor: "#E6F6FF",
+                    fontSize: 18,
+                    fontFamily: "Times"
                   }}
                   onPlaceSelected={place => {
                     // console.log(place);
