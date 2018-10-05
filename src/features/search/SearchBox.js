@@ -43,7 +43,6 @@ const styles = theme => ({
   },
   googleSearch: {
     width: "100%",
-    innerHeight: "100",
     height: "45px",
     fontSize: "18px",
     fontFamily: "Times",
