@@ -1,11 +1,13 @@
 import React from 'react';
-
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
-
 import './PaymentForm.css';
+//import Stripe from 'stripe';
+import connect from 'react-redux';
+import firestoreConnect from 'react-redux-firebase';
+//<script src="https://js.stripe.com/v3/"></script>
 
 const expiryYearSelectStart = 2018;
 const expiryYearSelectEnd = 2030;
@@ -119,7 +121,8 @@ const paymentForm = props => {
             onChange={event => handlers.setCard({ ...card, expiryMonth: event.target.value })}
           >
             {selectYears}
-          </Select>
+          </Select>   
+
         </section>
         <section className="PaymentFormControls">
           <Button onClick={() => handlers.checkout(card)}>Checkout</Button>
@@ -130,5 +133,4 @@ const paymentForm = props => {
     </div>
   )
 };
-
-export default paymentForm;
+export default paymentForm;//connect(firestoreConnect([{collection: 'users.card'}]))
