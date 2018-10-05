@@ -1,4 +1,6 @@
 .PaymentForm {
+
+
   /*Container*/
   display: flex;
   flex-flow: column nowrap;
@@ -7,14 +9,39 @@
   box-shadow: 0 2px 10px -3px black;
 }
 
-.TravelerInformation {
-
+.PaymentStyle{
+  /*Box Model*/
+  margin: 16px;
 }
 
-.PaymentFormPayment {
+.TravelerInformation > p {
+  /*Cosmetics*/
+  color: brown
+}
 
+.TravelerNameField {
+  /*Container*/
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+}
+.TravelerInfoField{
+  /*Container*/
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.PaymentCardInfo{
+  display: flex;
+  flex-flow: column nowrap;
 }
 
 .PaymentFormControls {
-
+  /*Container*/
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  /*Box Model*/
+  padding: 8px;
+  margin: 8px;
 }

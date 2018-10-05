@@ -1,11 +1,23 @@
 import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
 
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
+import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
+import FormControl from '@material-ui/core/FormControl';
+
 
 import './PaymentForm.css';
+
+const styles = theme => ({
+  formControl: {
+    margin: theme.spacing.unit,
+    minWidth: 260,   
+  },
+});
 
 const expiryYearSelectStart = 2018;
 const expiryYearSelectEnd = 2030;
@@ -54,24 +66,30 @@ const paymentForm = props => {
 
   return (
     <div className="PaymentForm">
-      <form>
+      <form className = "PaymentStyle" autoComplete="off">
         <section className="TravelerInformation">
           <h1>Traveler Information</h1>
-          <TextField
-            id="firstname"
-            label="First Name"
-            value={traveler.firstname}
-            onChange={event => handlers.setTraveler({ ...traveler, firstname: event.target.value })}
-          />
-          <TextField
-            id="lastname"
-            label="Last Name"
-            value={traveler.lastname}
-            onChange={event => handlers.setTraveler({ ...traveler, lastname: event.target.value })}
-          />
+          <p>Options with * mark must be filled!</p>
+
+          <div className="TravelerNameField">
+            <TextField
+              id="firstName"
+              label="First Name*"
+              value={traveler.firstName}
+              onChange={event => handlers.setTraveler({ ...traveler, firstName: event.target.value })}
+            />
+            <TextField
+              id="lastname"
+              label="Last Name*"
+              value={traveler.lastname}
+              onChange={event => handlers.setTraveler({ ...traveler, lastname: event.target.value })}
+            />
+          </div>
+
+          <div className="TravelerInfoField">
           <TextField
             id="email"
-            label="Email"
+            label="Email*"
             value={traveler.email}
             onChange={event => handlers.setTraveler({ ...traveler, email: event.target.value })}
           />
@@ -87,43 +105,57 @@ const paymentForm = props => {
             value={traveler.specialrequest}
             onChange={event => handlers.setTraveler({ ...traveler, specialrequest: event.target.value })}
           />
+          </div>
         </section>
         <section className="PaymentInformation">
           <h1>Payment Information</h1>
+
+          <div className = "PaymentCardInfo">
           <TextField
             id="cardname"
-            label="Cardholder's Name"
+            label="Cardholder's Name*"
             value={card.cardname}
             onChange={event => handlers.setCard({ ...card, cardname: event.target.value })}
           />
           <TextField
             id="cardnumber"
-            label="Card Number"
+            label="Card Number*"
             value={card.cardnumber}
             onChange={event => handlers.setCard({ ...card, cardnumber: event.target.value })}
           />
+          </div>
           <TextField
             id="cvc"
-            label="CVC Code"
+            label="CVC Code*"
             value={card.cvc}
             onChange={event => handlers.setCard({ ...card, cvc: event.target.value })}
           />
-          <Select>
-            value={card.expirymonth}
-            onChange={event => handlers.setCard({ ...card, expiryMonth: event.target.value })}
-          >
-            {selectMonths}
-          </Select>
+          <FormControl className={styles.formControl}>
+            <InputLabel htmlFor="MonthLabel">Month*</InputLabel>
+            <Select>
+
+              value={card.expirymonth}
+              onChange={event => handlers.setCard({ ...card, expiryMonth: event.target.value })}
+              input={<Input id="MonthLabel" />}
+            >
+              {selectMonths}
+            </Select>
+          </FormControl>
+
+          <FormControl className={styles.formControl}>
+          <InputLabel htmlFor="YearLabel">Year*</InputLabel>
           <Select>
             value={card.expiryYear}
             onChange={event => handlers.setCard({ ...card, expiryMonth: event.target.value })}
+            input={<Input id="YearLabel" />}
           >
             {selectYears}
           </Select>
+          </FormControl>
         </section>
         <section className="PaymentFormControls">
-          <Button onClick={() => handlers.checkout(card)}>Checkout</Button>
-          <Button onClick={handlers.cancel}>Cancel</Button>
+          <Button variant="contained" color="primary" onClick={() => handlers.checkout(card)}>Checkout</Button>
+          <Button variant="contained" onClick={handlers.cancel}>Cancel</Button>
         </section>
 
       </form>
@@ -131,4 +163,4 @@ const paymentForm = props => {
   )
 };
 
-export default paymentForm;
+export default withStyles(styles)(paymentForm);
