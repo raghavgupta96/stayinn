@@ -33,7 +33,8 @@ const styles = theme => ({
   container: {
     display: "flex",
     flexWrap: "wrap",
-    margin: "10px"
+    margin: "10px",
+    marginTop: "0px"
   },
   textField: {
     marginLeft: theme.spacing.unit,
@@ -45,11 +46,16 @@ const styles = theme => ({
     innerHeight: "100",
     height: "45px",
     fontSize: "18px",
-    fontFamily: "Times"
+    fontFamily: "Times",
+    border: "none",
+    borderBottomStyle: "solid",
+    borderBottomWidth: "1px",
+    outline: "0"
   },
   button: {
-    backgroundColor: "#ffffff",
-    height: "47px"
+    backgroundColor: "#409BE6",
+    height: "47px",
+    color: "#ffffff"
   },
   typography: {
     fontFamily: "Times",
