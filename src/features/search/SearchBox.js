@@ -15,19 +15,46 @@ const styles = theme => ({
   root: {
     flexGrow: 1
   },
-  paper: {
+  mainpaper: {
     width: "100%",
-    paddingLeft: 15,
-    paddingRight: 15,
-    paddingBottom: 15,
-    paddingTop: 10,
-    marginTop: 100,
-    margin: 20,
-    color: theme.palette.text.secondary
+    padding: "15px",
+    paddingTop: "10px",
+    marginTop: "100px"
+  },
+  box: {
+    paddingRight: "20px"
   },
   formControl: {
-    minWidth: 50,
-    paddingTop: 5
+    minWidth: "50px",
+    paddingTop: "8px",
+    paddingLeft: "5px",
+    marginBottom: "5px"
+  },
+  container: {
+    display: "flex",
+    flexWrap: "wrap",
+    margin: "10px"
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 200
+  },
+  googleSearch: {
+    width: "100%",
+    innerHeight: "100",
+    height: "45px",
+    fontSize: "18px",
+    fontFamily: "Times"
+  },
+  button: {
+    backgroundColor: "#ffffff",
+    height: "47px"
+  },
+  typography: {
+    fontFamily: "Times",
+    fontSize: "20px",
+    paddingTop: "10px"
   }
 });
 
@@ -70,67 +97,47 @@ class SearchBox extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <Grid container className={classes.root} spacing={16}>
-        <Grid item sm={1} />
-        <Grid item sm={9}>
-          <Paper className={classes.paper}>
+      <Grid container className={classes.root} spacing={16} xs={12}>
+        <Grid item xs={1} />
+        <Grid item xs={9}>
+          <Paper className={classes.mainpaper}>
             <Grid container>
-              <Grid sm={12}>
-                <Grid
-                  container
-                  style={{
-                    paddingBottom: 5
-                  }}
-                >
-                  <Grid sm={1}>
-                    <Typography
-                      variant="title"
-                      gutterBottom
-                      color="inherit"
-                      style={{
-                        fontFamily: "Times",
-                        fontSize: 20,
-                        lineHeight: 1,
-                        paddingTop: 10
-                      }}
-                    >
-                      Room Size:
-                    </Typography>
-                  </Grid>
-                  <Grid sm={2}>
-                    <FormControl className={classes.formControl}>
-                      <Select
-                        value={this.state.roomnumber}
-                        onChange={this.handleChange}
-                        displayEmpty
-                        name="roomnumber"
-                        className={classes.selectEmpty}
-                      >
-                        <MenuItem value="">1</MenuItem>
-                        <MenuItem value={1}>1</MenuItem>
-                        <MenuItem value={2}>2</MenuItem>
-                        <MenuItem value={3}>3</MenuItem>
-                        <MenuItem value={4}>4</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
+              <Grid container>
+                <Grid item>
+                  <Typography
+                    gutterBottom
+                    variant="title"
+                    className={classes.typography}
+                  >
+                    Room Size:
+                  </Typography>
                 </Grid>
+                <FormControl className={classes.formControl}>
+                  <Select
+                    value={this.state.roomnumber}
+                    onChange={this.handleChange}
+                    displayEmpty
+                    name="roomnumber"
+                    className={classes.selectEmpty}
+                  >
+                    <MenuItem value="">1</MenuItem>
+                    <MenuItem value={1}>1</MenuItem>
+                    <MenuItem value={2}>2</MenuItem>
+                    <MenuItem value={3}>3</MenuItem>
+                    <MenuItem value={4}>4</MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
               <Grid
                 item
-                sm={7}
+                xs={9}
+                className={classes.box}
                 style={{
-                  paddingRight: 20
+                  paddingRight: "20px"
                 }}
               >
                 <Autocomplete
-                  style={{
-                    width: "100%",
-                    innerHeight: "100",
-                    height: 45,
-                    fontSize: 18,
-                    fontFamily: "Times"
-                  }}
+                  className={classes.googleSearch}
                   onPlaceSelected={place => {
                     // console.log(place);
                     this.setState({ place });
@@ -141,7 +148,8 @@ class SearchBox extends Component {
                   componentRestrictions={{ country: "us" }}
                 />
               </Grid>
-              <Grid item sm={2}>
+              <Grid item xs={1}>
+                <form className={classes.container} noValidate>
                   <TextField
                     id="date"
                     label="Checkin Date"
@@ -152,8 +160,10 @@ class SearchBox extends Component {
                     }}
                     onChange={this._handleCheckinDate}
                   />
+                </form>
               </Grid>
-              <Grid item sm={2}>
+              <Grid item xs={1}>
+                <form className={classes.container} noValidate>
                   <TextField
                     id="date"
                     label="Checkout Date"
@@ -164,14 +174,11 @@ class SearchBox extends Component {
                     }}
                     onChange={this._handleCheckoutDate}
                   />
+                </form>
               </Grid>
-              <Grid item sm={1}>
+              <Grid item xs={1}>
                 <Button
-                  size="medium"
-                  style={{
-                    backgroundColor: "#ffffff",
-                    height: 47
-                  }}
+                  className={classes.button}
                   variant="contained"
                   onClick={this.submit}
                 >
