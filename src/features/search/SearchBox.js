@@ -135,7 +135,7 @@ class SearchBox extends Component {
               </Grid>
               <Grid
                 item
-                xs={9}
+                xs={7}
                 className={classes.box}
                 style={{
                   paddingRight: "20px"
@@ -153,7 +153,7 @@ class SearchBox extends Component {
                   componentRestrictions={{ country: "us" }}
                 />
               </Grid>
-              <Grid item xs={1}>
+              <Grid item xs={2}>
                 <form className={classes.container} noValidate>
                   <TextField
                     id="date"
@@ -167,7 +167,7 @@ class SearchBox extends Component {
                   />
                 </form>
               </Grid>
-              <Grid item xs={1}>
+              <Grid item xs={2}>
                 <form className={classes.container} noValidate>
                   <TextField
                     id="date"
