@@ -105,7 +105,7 @@ class SearchBox extends Component {
     return (
       <Grid container className={classes.root} spacing={16} xs={12}>
         <Grid item xs={1} />
-        <Grid item xs={9}>
+        <Grid item xs={10}>
           <Paper className={classes.mainpaper}>
             <Grid container>
               <Grid container>
@@ -194,6 +194,7 @@ class SearchBox extends Component {
             </Grid>
           </Paper>
         </Grid>
+        <Grid item xs={1} />
       </Grid>
     );
   }
