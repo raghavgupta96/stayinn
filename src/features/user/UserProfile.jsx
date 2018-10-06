@@ -22,7 +22,6 @@ class UserProfile extends Component {
       <h2>photoURL: {window.photoURL}</h2> */}
       <h2>Name: {auth.displayName}</h2>
       <h2>Email: {auth.email}</h2>
-      <h2>Photo: {auth.photoURL}</h2>      
     </div>
   );
 };
