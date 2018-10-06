@@ -8,7 +8,7 @@ import Login from "./features/auth/login/LoginForm";
 import HomePage from "./features/home/HomePage";
 import UserDashboard from "./features/user/UserDashboard";
 import FilterUi from "./features/filter/Filter.ui";
-import SearchBox from "./features/search/SearchBox";
+import SearchBox from "./features/search/SearchBox.jsx";
 
 class App extends Component {
   render() {

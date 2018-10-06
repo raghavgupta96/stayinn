@@ -1,5 +1,5 @@
 import React from 'react'
-import SearchBox from '../search/SearchBox'
+import SearchBox from '../search/SearchBox.jsx'
 
 const HomePage = () => {
   return (
