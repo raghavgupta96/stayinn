@@ -6,9 +6,10 @@ import { Route, Switch } from "react-router-dom";
 import Signup from "./features/auth/register/RegisterForm";
 import Login from "./features/auth/login/LoginForm";
 import HomePage from "./features/home/HomePage";
-import UserDashboard from "./features/user/UserDashboard";
+import UserProfile from "./features/user/UserProfile";
 import FilterUi from "./features/filter/Filter.ui";
-import SearchBox from "./features/search/SearchBox.jsx";
+//import SearchBox from "./features/search/SearchBox";
+import PaymentLayout from "./features/payment/PaymentLayout";
 
 class App extends Component {
   render() {
@@ -28,9 +29,9 @@ class App extends Component {
                 {/* No circumstances where two routes are supposed to load at the samet time */}
                 <Route path="/signup" component={Signup} />
                 <Route path="/login" component={Login} />
-                <Route path="/userDashboard" component={UserDashboard} />
+                <Route path="/profile" component={UserProfile} />
                 <Route path="/searchResult" component={FilterUi} />
-                <Route path="/Home" component={SearchBox} />
+                <Route path="/payment" component={PaymentLayout} />
               </Switch>
             </div>
           )}
