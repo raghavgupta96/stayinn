@@ -10,7 +10,7 @@
 .PaymentSummary h2 {
   /*Box Model*/
   margin: 0;
-  
+
   /*Cosmetics*/
   font-size: 1.25em;
 }
@@ -47,7 +47,6 @@
   padding: 16px;
 
   /*Cosmetics*/
-  background-color: #E6F6FF;
+  background-color: #e6f6ff;
   font-size: 1.5em;
-
 }

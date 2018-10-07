@@ -1,15 +1,18 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 
-const renderTextField = ({
+const renderPasswordField = ({
   input,
   label,
   meta: { touched, error },
   ...custom
 }) => (
   <TextField
-    style={{ height: 50 }}
-    label={label}
+    required
+    style={{ paddingBottom: 10 }}
+    type="password"
+    label="Password"
+    hintText={label}
     floatingLabelText={label}
     errorText={touched && error}
     {...input}
@@ -19,4 +22,4 @@ const renderTextField = ({
   />
 );
 
-export default renderTextField;
+export default renderPasswordField;
