@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { connect } from "react-redux"
+import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { withFirebase } from "react-redux-firebase";
 import AppBar from "@material-ui/core/AppBar";
@@ -8,18 +8,17 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 
-const mapState = (state) => ({
+const mapState = state => ({
   auth: state.firebase.auth,
   profile: state.firebase.profile
-})
+});
 
 // style={{ flex: 1 }} pushes the subsequent things to the right
 class NavBar extends Component {
-
   handleSignOut = () => {
     this.props.firebase.logout();
-    this.props.history.push('/');
-  }
+    this.props.history.push("/");
+  };
   render() {
     // auth contains all user information (Ex: email, user, displayName, etc.)
     const { auth, profile } = this.props;
@@ -32,7 +31,7 @@ class NavBar extends Component {
           <Typography variant="headline" color="inherit" style={{ flex: 1 }}>
             <IconButton href="/">StayInn</IconButton>
           </Typography>
-          { authenticated ? (
+          {authenticated ? (
             <div>
               <Button href="/profile" color="inherit">
                 {auth.displayName}
@@ -40,21 +39,28 @@ class NavBar extends Component {
               <Button href="/" color="inherit" onClick={this.handleSignOut}>
                 Sign Out
               </Button>
-              </div>
-            ) : (
-              <div>
+            </div>
+          ) : (
+            <div>
               <Button href="/login" color="inherit">
                 Login
               </Button>
               <Button href="/signup" color="inherit">
                 Signup
               </Button>
-              </div>            
+            </div>
           )}
         </Toolbar>
       </AppBar>
     );
   }
-};
+}
 
-export default withRouter(withFirebase(connect(mapState, null)(NavBar)));
+export default withRouter(
+  withFirebase(
+    connect(
+      mapState,
+      null
+    )(NavBar)
+  )
+);
