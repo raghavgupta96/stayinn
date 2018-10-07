@@ -10,7 +10,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
-import SearchResult from './SearchResult'
+import SearchResult from "./SearchResult";
 
 const styles = theme => ({
   root: {
@@ -72,16 +72,30 @@ class SearchBox extends Component {
       checkoutDate: null,
       roomnumber: "",
       hotels: [
+<<<<<<< HEAD:src/features/search/SearchBox.js
         { name: "Hilton",
           hID: "1sdfsdfsdasdfasfewdsvae",
+=======
+        {
+          name: "Hilton",
+          hID: "sdfsdfsdasdfasfewdsvae",
+>>>>>>> e52209bd0ebd81092ee2c460b198c4a2daa9ca22:src/features/search/SearchBox.jsx
           room_cap: 4,
-          photoUrl: "https://shinola.imgix.net/media/wysiwyg/landingpages/shinola-hotel/hotel-render-desktop-retina.jpg?ixlib=php-1.1.0&w=2560",
+          photoUrl:
+            "https://shinola.imgix.net/media/wysiwyg/landingpages/shinola-hotel/hotel-render-desktop-retina.jpg?ixlib=php-1.1.0&w=2560",
           key: 1
         },
+<<<<<<< HEAD:src/features/search/SearchBox.js
         { name: "Hilton, San Jose",
           hID: "2XCxddsdasdfasfewdsvae",
+=======
+        {
+          name: "Hilton, San Jose",
+          hID: "XCxddsdasdfasfewdsvae",
+>>>>>>> e52209bd0ebd81092ee2c460b198c4a2daa9ca22:src/features/search/SearchBox.jsx
           room_cap: 2,
-          photoUrl: "https://shinola.imgix.net/media/wysiwyg/landingpages/shinola-hotel/hotel-render-desktop-retina.jpg?ixlib=php-1.1.0&w=2560",
+          photoUrl:
+            "https://shinola.imgix.net/media/wysiwyg/landingpages/shinola-hotel/hotel-render-desktop-retina.jpg?ixlib=php-1.1.0&w=2560",
           key: 2
         }, 
         { name: "Hotel 8, San Jose",
