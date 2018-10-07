@@ -73,17 +73,29 @@ class SearchBox extends Component {
       roomnumber: "",
       hotels: [
         { name: "Hilton",
-          hID: "sdfsdfsdasdfasfewdsvae",
+          hID: "1sdfsdfsdasdfasfewdsvae",
           room_cap: 4,
           photoUrl: "https://shinola.imgix.net/media/wysiwyg/landingpages/shinola-hotel/hotel-render-desktop-retina.jpg?ixlib=php-1.1.0&w=2560",
           key: 1
         },
         { name: "Hilton, San Jose",
-          hID: "XCxddsdasdfasfewdsvae",
+          hID: "2XCxddsdasdfasfewdsvae",
           room_cap: 2,
           photoUrl: "https://shinola.imgix.net/media/wysiwyg/landingpages/shinola-hotel/hotel-render-desktop-retina.jpg?ixlib=php-1.1.0&w=2560",
           key: 2
-        }
+        }, 
+        { name: "Hotel 8, San Jose",
+          hID: "3XCxddsdasdfasfewdsvae",
+          room_cap: 1,
+          photoUrl: "https://shinola.imgix.net/media/wysiwyg/landingpages/shinola-hotel/hotel-render-desktop-retina.jpg?ixlib=php-1.1.0&w=2560",
+          key: 3
+        },
+          { name: "Mobil 6",
+          hID: "4XCxddsdasdfasfewdsvae",
+          room_cap: 3,
+          photoUrl: "https://shinola.imgix.net/media/wysiwyg/landingpages/shinola-hotel/hotel-render-desktop-retina.jpg?ixlib=php-1.1.0&w=2560",
+          key: 4
+        },
       ]
     };
   }
