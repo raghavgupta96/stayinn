@@ -110,22 +110,25 @@ const paymentForm = props => {
             value={card.cvc}
             onChange={event => handlers.setCard({ ...card, cvc: event.target.value })}
           />
-          <Select>
-            value={card.expirymonth}
-            onChange={event => handlers.setCard({ ...card, expiryMonth: event.target.value })}
-          >
-            {selectMonths}
-          </Select>
-          <Select>
-            value={card.expiryYear}
-            onChange={event => handlers.setCard({ ...card, expiryMonth: event.target.value })}
-          >
-            {selectYears}
-          </Select>   
+          <label>
+            Expiry date:
+            <Select>
+              value={card.expirymonth}
+              onChange={event => handlers.setCard({ ...card, expiryMonth: event.target.value })}
+            >
+              {selectMonths}
+            </Select>
+            <Select>
+              value={card.expiryYear}
+              onChange={event => handlers.setCard({ ...card, expiryMonth: event.target.value })}
+            >
+              {selectYears}
+            </Select>   
+          </label>
 
         </section>
         <section className="PaymentFormControls">
-          <Button onClick={() => handlers.checkout(card)}>Checkout</Button>
+          <Button color="primary" onClick={() => handlers.checkout(card)}>Submit</Button>
           <Button onClick={handlers.cancel}>Cancel</Button>
         </section>
 
