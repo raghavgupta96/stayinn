@@ -5,7 +5,13 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import { configureStore } from './app/store/configureStore'
+import { configureStore } from './app/store/configureStore';
+import { getFireBase } from 'react-redux-firebase';
+import { getFireStore } from 'redux-firestore';
+import  thunk  from 'redux-thunk';
+import compose from 'redux';
+import {createStore,applyMiddleware} from 'redux'
+
 
 const store = configureStore();
 
