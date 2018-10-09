@@ -8,7 +8,7 @@ import Login from "./features/auth/login/LoginForm";
 import HomePage from "./features/home/HomePage";
 import UserProfile from "./features/user/UserProfile";
 import FilterUi from "./features/filter/Filter.ui";
-//import SearchBox from "./features/search/SearchBox";
+import SearchBox from "./features/search/SearchBox";
 import PaymentLayout from "./features/payment/PaymentLayout";
 
 class App extends Component {
@@ -32,6 +32,7 @@ class App extends Component {
                 <Route path="/profile" component={UserProfile} />
                 <Route path="/searchResult" component={FilterUi} />
                 <Route path="/payment" component={PaymentLayout} />
+                <Route path="/home" component={SearchBox} />
               </Switch>
             </div>
           )}
