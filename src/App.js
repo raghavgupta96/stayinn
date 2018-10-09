@@ -2,26 +2,41 @@ import React, { Component } from "react";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import theme from "./theme";
 import NavBar from "./features/nav/navbar/NavBar";
-import { Route } from "react-router-dom";
-import RegisterForm from "./features/auth/register/RegisterForm";
-import LoginForm from "./features/loginform/LoginForm";
-import SearchBox from './features/search/searchbox/SearchBox'
-import Filter_ui from "./features/filter/Filter_ui";
-
-// import "./App.css";
+import { Route, Switch } from "react-router-dom";
+import Signup from "./features/auth/register/RegisterForm";
+import Login from "./features/auth/login/LoginForm";
+import HomePage from "./features/home/HomePage";
+import UserProfile from "./features/user/UserProfile";
+import FilterUi from "./features/filter/Filter.ui";
+import SearchBox from "./features/search/SearchBox";
+import PaymentLayout from "./features/payment/PaymentLayout";
 
 class App extends Component {
   render() {
     return (
-        <div>
-          <MuiThemeProvider theme={theme}>
-            <NavBar theme={theme} />
-          </MuiThemeProvider>
-          <Route path='/register' component={RegisterForm}/>
-          <Route path='/login' component={LoginForm}/>
-          <SearchBox/>
-          <Filter_ui />
-        </div>
+      <MuiThemeProvider theme={theme}>
+        <NavBar theme={theme} />
+        <Switch>
+          {/* Adding exact to prevent home page showing when there is '/' in web address */}
+          <Route exact path="/" component={HomePage} />
+        </Switch>
+        <Route
+          path="/(.+)" // forward slash with everything else, searching matching route
+          render={() => (
+            <div>
+              <Switch>
+                {/* Using switch to make sure every page load separately */}
+                {/* No circumstances where two routes are supposed to load at the samet time */}
+                <Route path="/signup" component={Signup} />
+                <Route path="/login" component={Login} />
+                <Route path="/profile" component={UserProfile} />
+                <Route path="/searchResult" component={FilterUi} />
+                <Route path="/payment" component={PaymentLayout} />
+              </Switch>
+            </div>
+          )}
+        />
+      </MuiThemeProvider>
     );
   }
 }

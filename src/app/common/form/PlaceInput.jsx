@@ -16,6 +16,7 @@
 
 //     handleScriptLoaded = () => this.setState({scriptLoaded: true});
 
+
 //   render() {
 //         const {input, width, onSelect, placeholder, options, meta: {touched, error}} = this.props;
 //     return (
@@ -31,10 +32,11 @@
 //             onSelect={onSelect}
 //             styles={styles}
 //         />}
-
+    
 //       {touched && error && <Label basic color='red'>{error}</Label>}
 
 //       </Form.Field>
+
 
 //     )
 //   }

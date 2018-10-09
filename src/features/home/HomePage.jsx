@@ -1,8 +1,10 @@
-import React from "react";
-import SearchBox from "../search/SearchBox";
+import React from 'react'
+import SearchBox from '../search/SearchBox'
 
 const HomePage = () => {
-  return <SearchBox />;
-};
+  return (
+    <SearchBox/>
+  )
+}
 
-export default HomePage;
+export default HomePage
