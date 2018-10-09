@@ -1,7 +1,7 @@
 pipeline {
   agent {
     node {
-      label 'Install'
+      label 'default-nodejs'
     }
 
   }
