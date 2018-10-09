@@ -3,11 +3,11 @@ export const inputCard = (card) => {
     const firestore = getFirestore()
     firestore.set(`users/card`,{
       ...card,
-      cardname: 'chad',
-      cardnumber: '100',
-      cvc: '100',
-      expirymonth: '1',
-      expiryyear: '2019'
+      cardname: card.cardname,
+      cardnumber: card.cardnumber,
+      cvc: card.cvc,
+      expirymonth: card.expirymonth,
+      expiryyear: card.expiryyear
     }).then(() =>{
       dispatch({ type:'INPUT_CARD', card});
     }).catch((error) => {
