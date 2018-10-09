@@ -1,14 +1,12 @@
 pipeline {
   agent any
-  tools {
-    nodejs 'default-nodejs'
-  }
   stages {
     stage('Startup') {
       steps {
         script {
           sh 'npm install'
         }
+
       }
     }
     stage('Test') {
@@ -16,13 +14,18 @@ pipeline {
         script {
           sh 'npm run test:ci'
         }
+
       }
     }
   }
-
+  tools {
+    nodejs 'default-nodejs'
+  }
   post {
     always {
       junit 'junit.xml'
+
     }
+
   }
 }
