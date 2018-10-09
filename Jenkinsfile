@@ -3,18 +3,13 @@ pipeline {
   stages {
     stage('Startup') {
       steps {
-        script {
-          sh 'npm install'
-        }
-
+        sh 'npm install'
       }
     }
     stage('Test') {
       steps {
-        script {
-          sh 'npm run test:ci'
-        }
-
+        sh 'npm start test:ci'
+        junit 'junit.xml'
       }
     }
   }
