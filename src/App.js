@@ -7,8 +7,8 @@ import Signup from "./features/auth/register/RegisterForm";
 import Login from "./features/auth/login/LoginForm";
 import HomePage from "./features/home/HomePage";
 import UserProfile from "./features/user/UserProfile";
+import ProfileUpdate from "./features/user/EditInfoForm";
 import FilterUi from "./features/filter/Filter.ui";
-import SearchBox from "./features/search/SearchBox";
 import PaymentLayout from "./features/payment/PaymentLayout";
 
 class App extends Component {
@@ -30,6 +30,7 @@ class App extends Component {
                 <Route path="/signup" component={Signup} />
                 <Route path="/login" component={Login} />
                 <Route path="/profile" component={UserProfile} />
+                <Route path="/profileEdit" component={ProfileUpdate} />
                 <Route path="/searchResult" component={FilterUi} />
                 <Route path="/payment" component={PaymentLayout} />
               </Switch>

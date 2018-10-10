@@ -1,14 +1,7 @@
-import React, { Component } from "react";
-import FormControl from "@material-ui/core/FormControl";
-import Input from "@material-ui/core/Input";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-
-
+import React from "react";
 import { Field , reduxForm} from 'redux-form';
 import { connect } from 'react-redux';
 import { registerUser } from '../authActions';
-import TextInput from '../../../app/common/form/TextInput';
 import { combineValidators, isRequired } from 'revalidate'
 
 //Material UI components
@@ -16,7 +9,6 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
-import FileInput from '../../../app/common/form/FileInput'
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
@@ -186,15 +178,7 @@ const RegisterForm = ({classes, handleSubmit, registerUser, error, invalid, subm
                         label="Email"
                         component={renderTextField}
                       />
-                      <Field
-                        name="phoneNumber"
-                        label="Phone Number"
-                        component={renderTextField}
-                      />
-                      <Field
-                        name="photoFile"
-                        component={FileInput}
-                      />
+
                     </Grid>
                   </Grid>
                 </Paper>
