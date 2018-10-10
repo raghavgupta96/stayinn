@@ -54,7 +54,6 @@ Product Owner: Vivian
     > config
       > Firebase.js
     > layout
-      > App.jsx
     > reducers
     > store
       > ConfigureStore.js
@@ -68,6 +67,8 @@ Product Owner: Vivian
       > searchResult
       > searchResultList
     > modals
-    > navbar
+    > nav
+      > navbar
     > payment
+    > search
     > user
