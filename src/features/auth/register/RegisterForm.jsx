@@ -1,14 +1,7 @@
-import React, { Component } from "react";
-import FormControl from "@material-ui/core/FormControl";
-import Input from "@material-ui/core/Input";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-
-
+import React from "react";
 import { Field , reduxForm} from 'redux-form';
 import { connect } from 'react-redux';
 import { registerUser } from '../authActions';
-import TextInput from '../../../app/common/form/TextInput';
 import { combineValidators, isRequired } from 'revalidate'
 
 //Material UI components
@@ -29,66 +22,6 @@ const validate = combineValidators({
   password: isRequired('password')
 })
 
-// The form is created with material UI
-// Probably need to incorporate Redux into it
-
-// class RegisterForm extends Component {
-//   state = {
-//     email: "",
-//     password: ""
-//   };
-
-//   emailChangeHandler(event) {
-//     this.setState({ email: event.target.value });
-
-//   }
-
-//   passwordChangeHandler(event) {
-//     this.setState({ password: event.target.value });
-//   }
-
-//   submitHandler(event) {
-//     console.log(this.state.email)
-//   }
-
-//   render(props) {
-//     return (
-      // <Grid container>
-      //   <Grid item sm>
-      //     <form onSubmit={() => this.submitHandler()}>
-      //       <div style={{ width: "100%" }}>
-      //         <FormControl>
-      //           <Paper>
-      //             <Typography>Username</Typography>
-
-      //             <Input
-      //               startAdornment={
-      //                 <InputAdornment position="start">
-      //                   <AccountCircle />
-      //                 </InputAdornment>
-      //               }
-      //             />
-      //           </Paper>
-
-      //           <Paper>
-      //             <Typography>Password</Typography>
-      //             <Input/>
-      //           </Paper>
-                
-      //           <Paper>
-      //             <Typography>Confirm Password</Typography>
-      //             <Input/>
-      //           </Paper>
-
-      //           <Button type="submit" color="default">Submit</Button>
-      //         </FormControl>
-      //       </div>
-      //     </form>
-      //   </Grid>
-      // </Grid>
-//     );
-//   }
-// }
 /* Styling */
 const styles = theme => ({
   root: {
@@ -185,11 +118,7 @@ const RegisterForm = ({classes, handleSubmit, registerUser, error, invalid, subm
                         label="Email"
                         component={renderTextField}
                       />
-                      <Field
-                        name="phoneNumber"
-                        label="Phone Number"
-                        component={renderTextField}
-                      />
+
                     </Grid>
                   </Grid>
                 </Paper>
@@ -211,43 +140,3 @@ export default withStyles(styles)(
     )
   )
 );
-
-/**
- * <Field
-            name="displayName"
-            type="text"
-            component={TextInput}
-            placeholder="Name"
-          />
-          <Field
-            name="email"
-            type="text"
-            component={TextInput}
-            placeholder="Email"
-          />
-          <Field
-            name="password"
-            type="password"
-            component={TextInput}
-            placeholder="Password"
-          />
-          <Field
-            name="address"
-            type="text"
-            component={PlaceInput}
-            placeholder="Address"
-          />
-          <Field
-            name="photoUrl"
-            type="text"
-            component={TextInput}
-            placeholder="Photo URL"
-          />
-          <Field
-            name="phoneNumber"
-            type="text"
-            component={TextInput}
-            placeholder="Phone Number"
-          />
-          <input disabled={invalid || submitting} type="submit"></input>
- */

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { login } from '../authActions';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
