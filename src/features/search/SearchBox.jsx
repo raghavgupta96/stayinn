@@ -76,7 +76,7 @@ class SearchBox extends Component {
     this.state = {
       checkinDate: null,
       checkoutDate: null,
-      roomnumber: "",
+      roomnumber: 1,
       hotels: [
         {
           name: "Hilton",
@@ -114,21 +114,21 @@ class SearchBox extends Component {
     };
   }
 
-  _handleCheckinDate = e => {
+  _handleCheckinDate = (e) => {
     this.setState({
       checkinDate: e.target.value
     });
     console.log(this.state.checkinDate);
   };
 
-  _handleCheckoutDate = e => {
+  _handleCheckoutDate = (e) => {
     this.setState({
       checkoutDate: e.target.value
     });
     console.log(this.state.checkoutDate);
   };
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
