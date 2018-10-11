@@ -11,7 +11,7 @@ import FormControl from "@material-ui/core/FormControl";
 import SearchResult from "./SearchResult";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import './rando.css'
+import "./rando.css";
 
 const styles = theme => ({
   root: {
@@ -115,21 +115,21 @@ class SearchBox extends Component {
     };
   }
 
-  _handleCheckinDate = (e) => {
+  _handleCheckinDate = e => {
     this.setState({
       checkinDate: e.target.value
     });
     console.log(this.state.checkinDate);
   };
 
-  _handleCheckoutDate = (e) => {
+  _handleCheckoutDate = e => {
     this.setState({
       checkoutDate: e.target.value
     });
     console.log(this.state.checkoutDate);
   };
 
-  handleChange = (event) => {
+  handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
@@ -244,7 +244,6 @@ class SearchBox extends Component {
         <Grid item xs={1} md={1} lg={1} />
         <SearchResult hotels={this.state.hotels} />
       </Grid>
-      
     );
   }
 }
