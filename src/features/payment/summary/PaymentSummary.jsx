@@ -1,6 +1,5 @@
-import React from 'react';
-
-import './PaymentSummary.css'
+import React from "react";
+import "./PaymentSummary.css";
 
 const paymentSummary = props => {
   const {
@@ -63,7 +62,7 @@ const paymentSummary = props => {
         <h2>USD {total}</h2>
       </div>
     </div>
-  )
+  );
 };
 
 export default paymentSummary;
