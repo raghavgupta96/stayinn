@@ -8,8 +8,7 @@ const SearchResult = ({hotels}) => {
             <div>Hotel name: {hotel.name}</div>
             <div>Hotel name: {hotel.hID}</div>
             <div>Hotel room max capacity: {hotel.room_cap}</div>
-            <div>________________</div>
-            
+            <div>________________</div>            
         </div>
     )
   })

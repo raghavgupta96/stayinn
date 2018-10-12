@@ -26,7 +26,11 @@ class NavBar extends Component {
     const authenticated = auth.isLoaded && !auth.isEmpty && auth.emailVerified;
     //console.log(auth);
     //console.log(authenticated);
-    return (
+    
+    // Check if auth is loaded before displaying navbar
+    // should solve the issue where there is flash of "login"
+    // even though a user logs in
+    return auth.isLoaded && (
       <AppBar position="static">
         <Toolbar>
           <Typography variant="headline" color="inherit" style={{ flex: 1 }}>

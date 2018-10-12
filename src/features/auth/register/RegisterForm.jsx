@@ -1,5 +1,9 @@
 import React from "react";
+<<<<<<< HEAD
 import { Field , reduxForm} from 'redux-form';
+=======
+import { Field, reduxForm } from 'redux-form';
+>>>>>>> cbc72cbb378fcd7d1fcbb1a678f69a58550717c7
 import { connect } from 'react-redux';
 import { registerUser } from '../authActions';
 import { combineValidators, isRequired } from 'revalidate'
@@ -42,49 +46,51 @@ const styles = theme => ({
 const renderTextField = ({
   input, label, meta: { touched, error }, ...custom
 }) => (
-  <TextField
-   
-   label={label}
-   floatingLabelText={label}
-   errorText={touched && error}
-   {...input}
-   {...custom}
-   margin="normal"
-   fullWidth
-   />
-)
+    <TextField
+
+      label={label}
+      floatingLabelText={label}
+      errorText={touched && error}
+      {...input}
+      {...custom}
+      margin="normal"
+      fullWidth
+    />
+  )
 const renderPasswordField = ({
   input, label, meta: { touched, error }, ...custom
-})=> (
-  <TextField 
-   
-   style={{paddingBottom: 10}}
-   type="password"
-   label={label}
-   hintText={label}
-   floatingLabelText={label}
-   errorText={touched && error}
-   {...input}
-   {...custom}
-   margin="normal"
-   fullWidth/>
-)
+}) => (
+    <TextField
+
+      style={{ paddingBottom: 10 }}
+      type="password"
+      label={label}
+      hintText={label}
+      floatingLabelText={label}
+      errorText={touched && error}
+      {...input}
+      {...custom}
+      margin="normal"
+      fullWidth
+    />
+  )
 const renderButton = ({
   ...custom
 }) => (
-  <Button 
-  variant="contained" 
-  justify="right" 
-  color="primary" 
-  type="submit"
-  {...custom}
-  />
-)
+    <Button
+      variant="contained"
+      justify="right"
+      color="primary"
+      type="submit"
+      {...custom}
+    />
+  )
 
-const RegisterForm = ({classes, handleSubmit, registerUser, error, invalid, submitting}) => {
+const RegisterForm = ({ classes, handleSubmit, registerUser, error, invalid, submitting }) => {
   return (
     <div>
       <form size="large" onSubmit={handleSubmit(registerUser)}>
+<<<<<<< HEAD
           <div>
             <Grid container className={classes.root} justify="center" spacing={16}>
               <Grid item xs={2}></Grid>
@@ -120,14 +126,45 @@ const RegisterForm = ({classes, handleSubmit, registerUser, error, invalid, subm
                       />
 
                     </Grid>
+=======
+        <div>
+          <Grid container className={classes.root} justify="center" spacing={16}>
+            <Grid item xs={2}></Grid>
+            <Grid item xs={6}></Grid>
+            <Paper className={classes.paper}>
+              <Typography variant="display1" >Register</Typography>
+              <Grid container className={classes.root} spacing={8}>
+                <Grid item xs={12}>
+                  <Field
+                    name="email"
+                    label="Email"
+                    component={renderTextField}
+                  />
+                  <Field
+                    name="password"
+                    label="Password"
+                    component={renderPasswordField}
+                  />
+                  <Field
+                    name="re-enter password"
+                    label="Re-enter Password"
+                    component={renderPasswordField}
+                  />
+                  <Grid container justify="center">
+                    <Button component={renderButton}>
+                      Submit
+                      </Button>
+>>>>>>> cbc72cbb378fcd7d1fcbb1a678f69a58550717c7
                   </Grid>
-                </Paper>
+                </Grid>
               </Grid>
-              <Grid item xs={2}></Grid>
-          </div>
-          
-          {error && <label>{error}</label>}           
-          
+            </Paper>
+          </Grid>
+          <Grid item xs={2}></Grid>
+        </div>
+
+        {error && <label>{error}</label>}
+
       </form>
     </div>
   );
@@ -135,7 +172,7 @@ const RegisterForm = ({classes, handleSubmit, registerUser, error, invalid, subm
 
 export default withStyles(styles)(
   connect(null, actions)(
-    reduxForm({form: 'registerForm',validate})(
+    reduxForm({ form: 'registerForm', validate })(
       RegisterForm
     )
   )
