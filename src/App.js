@@ -10,6 +10,7 @@ import UserProfile from "./features/user/UserProfile";
 import ProfileUpdate from "./features/user/EditInfoForm";
 import FilterUi from "./features/filter/Filter.ui";
 import PaymentLayout from "./features/payment/PaymentLayout";
+import HotelDetail from "./features/hotel/HotelDetail";
 
 class App extends Component {
   render() {
@@ -33,6 +34,7 @@ class App extends Component {
                 <Route path="/profileEdit" component={ProfileUpdate} />
                 <Route path="/searchResult" component={FilterUi} />
                 <Route path="/payment" component={PaymentLayout} />
+                <Route path="/hotelDetail" component={HotelDetail} />
               </Switch>
             </div>
           )}

@@ -18,17 +18,9 @@ export const login = creds => {
             console.log("You're in!");
           } else {
             console.log("Email not verified homie!");
+            firebase.logout();
           }
         });
-      // const user = firebase.auth().currentUser;
-      // const verified = user.emailVerified;
-      // firebase.auth().signInWithEmailAndPassword(creds.email, creds.password);
-      //   console.log(user);
-      //   if (verified) {
-      //     console.log("You're in!");
-      //   } else {
-      //     console.log("Email not verified homie!");
-      //   }
     } catch (error) {
       console.log(error);
       throw new SubmissionError({
@@ -57,7 +49,8 @@ export const registerUser = user => async (
       .auth()
       .createUserWithEmailAndPassword(user.email, user.password);
     console.log(createdUser);
-    // update the auth profile
+
+    // Send email verification to user email provided
     await createdUser
       .sendEmailVerification()
       .then(function() {
@@ -66,13 +59,9 @@ export const registerUser = user => async (
       .catch(function(error) {
         // An error happened.
       });
-    await createdUser.updateProfile({
-      displayName: user.displayName
-    });
 
     // create a new profile in firestore
     let newUser = {
-      displayName: user.displayName,
       createdAt: firestore.FieldValue.serverTimestamp(),
       email: user.email
     };
@@ -98,6 +87,9 @@ export const updateUser = user => async (
   try {
     const currentUser = firebase.auth().currentUser;
 
+    // Check if user updates the name
+    // if it does, update the info stored both in authentication
+    // and firestore
     if (user.displayName) {
       await currentUser.updateProfile({
         displayName: user.displayName
@@ -112,11 +104,14 @@ export const updateUser = user => async (
         .then(function() {
           window.location.href = "/profile";
         })
-          .catch(function(error) {
-            console.log(error);
-          });
+        .catch(function(error) {
+          console.log(error);
+        });
     }
 
+    // Check if user updates the phone number
+    // if it does, update the info stored both in authentication
+    // and firestore
     if (user.phoneNumber) {
       firebase
         .firestore()
@@ -126,23 +121,28 @@ export const updateUser = user => async (
           phoneNumber: user.phoneNumber
         })
         .then(function() {
-        window.location.href = "/profile";
-      })
+          window.location.href = "/profile";
+        })
         .catch(function(error) {
           console.log(error);
         });
     }
 
+    // Check if user updates the profile image
+    // if it does, update the info stored both in authentication
+    // and firestore
     if (user.photoFile) {
+      // file uploaded from user will be named
+      // after its userId
       var storageRef = firebase
         .storage()
         .ref()
         .child(currentUser.uid);
       await storageRef.put(user.photoFile[0]).then(function(snapshot) {
         console.log("Uploaded a blob or file!");
-        
       });
 
+      // upload the local profile picture to firebase storage
       var uploadTask = storageRef.put(user.photoFile[0]);
 
       // Register three observers:
@@ -169,7 +169,7 @@ export const updateUser = user => async (
           }
         },
         function(error) {
-          console.log("Your upload is not successful.")
+          console.log("Your upload is not successful.");
         },
         function() {
           // Handle successful uploads on complete
@@ -189,20 +189,17 @@ export const updateUser = user => async (
               .then(function() {
                 window.location.href = "/profile";
               })
-                .catch(function(error) {
-                  console.log(error);
-                });
+              .catch(function(error) {
+                console.log(error);
+              });
           });
         }
       );
-      // window.location.href = "/profile";
     }
-
   } catch (error) {
     console.log(error);
     throw new SubmissionError({
       _error: error.message
     });
   }
-  // window.location.href = "/profile";
 };

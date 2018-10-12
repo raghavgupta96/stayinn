@@ -115,6 +115,9 @@ class SearchBox extends Component {
     //do functional here
     console.log("Checkin Date" + this.state.checkinDate);
     console.log("Checkout Date" + this.state.checkoutDate);
+
+    // go to search result page
+    window.location.href = "/searchResult";
   };
 
   render() {
