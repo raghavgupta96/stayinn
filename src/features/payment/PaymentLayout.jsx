@@ -1,41 +1,60 @@
 import React, { Component } from 'react';
-
 import { withRouter } from 'react-router-dom';
-
+import { withStyles } from '@material-ui/core/styles';
 import PaymentSummary from './summary/PaymentSummary';
 import PaymentForm from './form/PaymentForm';
 
-import './PaymentLayout.css';
+// Styles
+//
+const styles = {
+  paymentLayout: {
+    display: 'flex',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    padding: '8px',
+    margin: '8px'
+  }
+};
 
+// PaymentLayout Component
+//
 class PaymentLayout extends Component {
   state = {
+    // Traveler Info
+    //
     traveler: {
-      firstname: "",
-      lastname: "",
+      firstName: "",
+      lastName: "",
       email: "",
-      phonenumber: "",
-      specialrequest: ""
+      phoneNumber: "",
+      specialRequest: ""
     },
+    // Card Info
+    //
     card: {
       // address: "", // Does stripe need this?
-      cardname: "",
-      cardnumber: "",
+      cardName: "",
+      cardNumber: "",
       cvc: "",
-      expirymonth: "",
-      expiryyear: "",
+      expiryMonth: "",
+      expiryYear: "",
     },
+    // Transaction Info
+    //
     transaction: {
       hotelId: "",
       userId: "",
       total: 0
     },
-    // defaults
+    // Default Trip
+    // If no props are passed, this object is used
+    //
     defaulttrip: { 
-      hotelname: "hotelname",
+      hotelName: "hotelname",
       location: "location",
-      startdate: new Date(),
-      enddate: new Date(),
-      roomtype: "roomtype",
+      startDate: new Date(),
+      endDate: new Date(),
+      roomType: "roomtype",
       rate: 100.00,
       nights: 4,
       rooms: 1,
@@ -46,26 +65,31 @@ class PaymentLayout extends Component {
     }
   };
 
+  // handlers
+  // Pass these down to children so they can modify this component's state
+  //
   handlers = {
     setTraveler: traveler => this.setState({ traveler }),
     setCard: card => this.setState({ card }),
     checkout: (card) => window.alert(card.cardnumber), // For Chad :)
     cancel: () => this.props.history.goBack()
-    
   }
 
   render() {
-    // PaymentSummary
+    // PaymentSummary props
+    // 
     const trip = this.props.trip
       ? this.props.trip
       : this.state.defaulttrip;
 
     // PaymentForm props
+    //
     const {
       traveler,
       card
     } = this.state;
     // PaymentForm handlers
+    //
     const {
       setTraveler,
       setCard,
@@ -80,7 +104,7 @@ class PaymentLayout extends Component {
     };
 
     return (
-      <div className="PaymentLayout">
+      <div className={this.props.classes.paymentLayout}>
         <PaymentSummary
           trip={trip}
         />
@@ -94,4 +118,4 @@ class PaymentLayout extends Component {
   }
 }
 
-export default withRouter(PaymentLayout);
+export default withStyles(styles)(withRouter(PaymentLayout));
