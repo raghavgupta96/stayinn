@@ -11,7 +11,6 @@ import FormControl from "@material-ui/core/FormControl";
 import SearchResult from "./SearchResult";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import "./rando.css";
 
 const styles = theme => ({
   root: {
@@ -227,13 +226,6 @@ class SearchBox extends Component {
                   variant="contained"
                   onClick={this.submit}
                   className={classes.searchButton}
-                >
-                  <SearchIcon />
-                </Button>
-                <Button
-                  variant="contained"
-                  onClick={this.submit}
-                  className="modulatedSearchButtonCSS"
                 >
                   <SearchIcon />
                 </Button>
