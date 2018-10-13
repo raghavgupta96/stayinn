@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-
 import { withRouter } from 'react-router-dom';
-
 import PaymentSummary from './summary/PaymentSummary';
 import PaymentForm from './form/PaymentForm';
-
+import { connect } from 'react-redux'
 import './PaymentLayout.css';
+import {inputCard} from './PaymentBackend'
 
 class PaymentLayout extends Component {
   state = {
@@ -17,7 +16,6 @@ class PaymentLayout extends Component {
       specialrequest: ""
     },
     card: {
-      // address: "", // Does stripe need this?
       cardname: "",
       cardnumber: "",
       cvc: "",
@@ -46,10 +44,14 @@ class PaymentLayout extends Component {
     }
   };
 
+
   handlers = {
     setTraveler: traveler => this.setState({ traveler }),
     setCard: card => this.setState({ card }),
-    checkout: (card) => window.alert(card.cardnumber), // For Chad :)
+    checkout: (card) =>{
+      this.props.inputCard(card)
+
+    }, // For Chad
     cancel: () => this.props.history.goBack()
     
   }
@@ -93,5 +95,9 @@ class PaymentLayout extends Component {
     )
   }
 }
+// const mapStateToProps = (state) => {return {cardstate: state.card.cardstate}}
+const mapDispatchToProps = (dispatch) => {return{inputCard: (card) => dispatch(inputCard(card))}
+}
 
-export default withRouter(PaymentLayout);
+// Richard: change mapStateToProps to make the code work temporarily
+export default connect(null, mapDispatchToProps)(withRouter(PaymentLayout))

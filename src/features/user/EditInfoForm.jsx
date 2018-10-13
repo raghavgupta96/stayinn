@@ -3,11 +3,8 @@ import { Field , reduxForm} from 'redux-form';
 import { connect } from 'react-redux';
 
 //Material UI components
-<<<<<<< HEAD
-=======
 import { isLoaded } from 'react-redux-firebase'
 import CircularProgress from '@material-ui/core/CircularProgress';
->>>>>>> cbc72cbb378fcd7d1fcbb1a678f69a58550717c7
 import withStyles from '@material-ui/core/styles/withStyles'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper';
@@ -22,8 +19,6 @@ const actions = {
   updateUser
 }
 
-<<<<<<< HEAD
-=======
 const mapState = state => ({
   auth: state.firebase.auth,
   profile: state.firebase.profile,
@@ -38,7 +33,6 @@ function CircularIndeterminate() {
   );
 }
 
->>>>>>> cbc72cbb378fcd7d1fcbb1a678f69a58550717c7
 
 const styles = theme => ({
   root: {
@@ -52,14 +46,10 @@ const styles = theme => ({
   },
   input: {
     paddingRight: 20,
-<<<<<<< HEAD
-  }
-=======
   },
   progress: {
     margin: theme.spacing.unit * 2,
   },
->>>>>>> cbc72cbb378fcd7d1fcbb1a678f69a58550717c7
 })
 
 //rendering the UI components
@@ -90,60 +80,6 @@ const renderTextField = ({
     />
   )
 
-<<<<<<< HEAD
-const EditInfoForm = ({classes, handleSubmit, updateUser, error, invalid, submitting}) => {
-    return (
-      <div>
-      <form size="large" onSubmit={handleSubmit(updateUser)}>
-            <div>
-              <Grid container className={classes.root} justify="center" spacing={16}>
-                <Grid item xs={2}></Grid>
-                <Grid item xs={6}></Grid>
-                  <Paper className={classes.paper}>
-                  <Typography variant="display1" >Update Information</Typography>
-                    <Grid container className={classes.root} spacing={8}>
-                      <Grid item xs={6}>
-                        <Field
-                          name="displayName"
-                          label="Name"
-                          component={renderTextField}
-                        />
-                        <Button component={renderButton}>
-                          Update 
-                        </Button>
-                        <Button component={renderButton}>
-                          Cancel 
-                        </Button>  
-                      </Grid>
-                      <Grid item xs={6}>
-                        {/* <Field
-                          name="email"
-                          label="Email"
-                          component={renderTextField}
-                        /> */}
-                        <Field
-                          name="phoneNumber"
-                          label="Phone Number"
-                          component={renderTextField}
-                        />
-                        <Field
-                          name="photoFile"
-                          component={FileInput}
-                        />
-                      </Grid>
-                    </Grid>
-                  </Paper>
-                </Grid>
-                <Grid item xs={2}></Grid>
-            </div>            
-        </form>
-      </div>
-    );
-  };
-  
-  export default withStyles(styles)(
-    connect(null, actions)(
-=======
 const EditInfoForm = ({classes, handleSubmit, updateUser, error, invalid, submitting, auth}) => {
     
   // redner after auth is loaded 
@@ -220,14 +156,10 @@ const EditInfoForm = ({classes, handleSubmit, updateUser, error, invalid, submit
   
   export default withStyles(styles)(
     connect(mapState, actions)(
->>>>>>> cbc72cbb378fcd7d1fcbb1a678f69a58550717c7
       reduxForm({form: 'editInfoForm'})(
         EditInfoForm
       )
     )
   );
-<<<<<<< HEAD
-=======
   
->>>>>>> cbc72cbb378fcd7d1fcbb1a678f69a58550717c7
   

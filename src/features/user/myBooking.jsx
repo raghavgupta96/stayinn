@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withFirestore } from "react-redux-firebase";
+import Button from "@material-ui/core/Button";
 
 const actions = {};
 
@@ -8,6 +9,16 @@ const mapState = state => ({
   auth: state.firebase.auth,
   profile: state.firebase.profile
 });
+
+const renderButton = ({ ...custom }) => (
+  <Button
+    variant="contained"
+    justify="right"
+    color="primary"
+    type="submit"
+    {...custom}
+  />
+);
 
 class myBooking extends Component {
   constructor(props) {
@@ -59,7 +70,7 @@ class myBooking extends Component {
     // make a list that contains all reservations user made
     const resList =
       this.state.reservations &&
-      this.state.reservations.map(res => {
+      this.state.reservations.map((res, index) => {
         return (
           <div key={res.reservationId}>
             <h3>HID: {res.HID}</h3>
@@ -67,6 +78,12 @@ class myBooking extends Component {
             <h3>Check-in Date: {res.checkinDate}</h3>
             <h3>Check-out Date: {res.checkoutDate}</h3>
             <h3>Total Price: ${res.totalPrice}</h3>
+            <Button component={renderButton}>Edit</Button>
+            <Button
+              component={renderButton}
+            >
+              Cancel
+            </Button>
             <hr />
           </div>
         );

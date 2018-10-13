@@ -1,36 +1,15 @@
 import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
-<<<<<<< HEAD
-import { withFirestore, isLoaded, isEmpty } from 'react-redux-firebase'
-import { withStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
-=======
 import { withFirestore, isLoaded } from "react-redux-firebase";
+import { withRouter } from "react-router";
 import { withStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import MyBooking from './myBooking'
->>>>>>> cbc72cbb378fcd7d1fcbb1a678f69a58550717c7
+import MyBooking from "./myBooking";
 const actions = {};
 
 const mapState = state => ({
   auth: state.firebase.auth,
-<<<<<<< HEAD
-  profile: state.firebase.profile,
-});
-
-
-const styles = theme => ({
-  progress: {
-    margin: theme.spacing.unit * 2,
-  },
-});
-
-function CircularIndeterminate() {
-  return (
-    <div>
-      <CircularProgress/>    
-=======
   profile: state.firebase.profile
 });
 
@@ -44,109 +23,27 @@ function CircularIndeterminate() {
   return (
     <div>
       <CircularProgress />
->>>>>>> cbc72cbb378fcd7d1fcbb1a678f69a58550717c7
     </div>
   );
 }
 
-<<<<<<< HEAD
-
-var showPhone = null;
-
-
-class UserProfile extends Component {
-
-
-  async componentDidMount() {
-    try
-    {
-      const { auth } = this.props;
-      const {firestore, firebase} = this.props;
-
-      var currentUser;
-      firebase
-      .auth()
-      .onAuthStateChanged(function(user){
-
-        
-          currentUser = user;
-          var userId = currentUser.uid;
-   
-          var docRef = firebase.firestore().collection("users").doc(userId);
-      
-          docRef.get().then(function(doc) {
-              if (doc.exists) {
-                  console.log("Document data:", doc.data().phoneNumber);
-                  auth.phoneNumber = doc.data().phoneNumber;
-              } else {
-                  // doc.data() will be undefined in this case
-                  console.log("No such document!");
-              }
-          }).catch(function(error) {
-              console.log("Error getting document:", error);
-          });
-      });
-
-
-    }
-    catch (error) {
-      console.log(error);
-    }
-    
-  }
-
-  render() {
-    const { auth } = this.props;
-    
-    if(isLoaded(auth) || !isEmpty(auth))
-    {
-      if(!auth.isEmpty)
-      {
-        return (
-          <div>
-            <h1>User Profile</h1>
-            <img width="200" height="200" src={auth.photoURL} alt="" />
-            <h2>Name: {auth.displayName}</h2>
-            <h2>Email: {auth.email}</h2>
-            <h2>Phone Number: {auth.phoneNumber} </h2>
-            <Button href="/profileEdit">Update Profile</Button>
-          </div>
-        );
-      }
-      else
-      {
-        return (window.location.replace("/login"))
-      }
-    }
-
-    else
-    {
-      return (
-        <CircularIndeterminate></CircularIndeterminate>
-      )
-    }
-
-  }
-}
-
-export default withStyles(styles)(withFirestore(connect(
-  mapState,
-  actions
-)(UserProfile)));
-=======
 var showPhone = null;
 
 class UserProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: 1
+      data: 1,
+      id: this.props.match.params
     };
   }
 
   // getPhone = () => {
   async componentDidMount() {
     const { firebase } = this.props;
+
+    console.log(this.props);
+
     const obj = this;
     var currentUser;
 
@@ -158,6 +55,10 @@ class UserProfile extends Component {
       }
       currentUser = user;
       var userId = currentUser.uid;
+
+      obj.setState({
+        id: userId
+      });
 
       var docRef = firebase
         .firestore()
@@ -226,14 +127,17 @@ class UserProfile extends Component {
     //   </div>
     // );
 
-    // REal code
     const { auth } = this.props;
-    console.log("Render Phone Number:" + showPhone);
-
+    // console.log("Render Phone Number:" + showPhone);
+    console.log(this.props.match.params.id);
     // only show when auth is loaded
     if (isLoaded(auth)) {
       // when user does not log in
       if (!auth.isEmpty) {
+        if(auth.uid !== this.props.match.params.id)
+        {
+          return window.location.replace("/");
+        }
         return (
           <div>
             <h1>User Profile</h1>
@@ -252,7 +156,7 @@ class UserProfile extends Component {
             <h2>Email: {auth.email}</h2>
             <h2>Phone Number: {showPhone} </h2>
             <Button href="/profileEdit">Update Profile</Button>
-            <MyBooking/>
+            <MyBooking />
           </div>
         );
       } else {
@@ -268,10 +172,11 @@ class UserProfile extends Component {
 
 export default withStyles(styles)(
   withFirestore(
-    connect(
-      mapState,
-      actions
-    )(UserProfile)
+    withRouter(
+      connect(
+        mapState,
+        actions
+      )(UserProfile)
+    )
   )
 );
->>>>>>> cbc72cbb378fcd7d1fcbb1a678f69a58550717c7

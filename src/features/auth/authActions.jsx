@@ -21,18 +21,6 @@ export const login = creds => {
             firebase.logout();
           }
         });
-<<<<<<< HEAD
-      // const user = firebase.auth().currentUser;
-      // const verified = user.emailVerified;
-      // firebase.auth().signInWithEmailAndPassword(creds.email, creds.password);
-      //   console.log(user);
-      //   if (verified) {
-      //     console.log("You're in!");
-      //   } else {
-      //     console.log("Email not verified homie!");
-      //   }
-=======
->>>>>>> cbc72cbb378fcd7d1fcbb1a678f69a58550717c7
     } catch (error) {
       console.log(error);
       throw new SubmissionError({
@@ -61,12 +49,8 @@ export const registerUser = user => async (
       .auth()
       .createUserWithEmailAndPassword(user.email, user.password);
     console.log(createdUser);
-<<<<<<< HEAD
-    // update the auth profile
-=======
 
     // Send email verification to user email provided
->>>>>>> cbc72cbb378fcd7d1fcbb1a678f69a58550717c7
     await createdUser
       .sendEmailVerification()
       .then(function() {
@@ -75,19 +59,9 @@ export const registerUser = user => async (
       .catch(function(error) {
         // An error happened.
       });
-<<<<<<< HEAD
-    await createdUser.updateProfile({
-      displayName: user.displayName
-    });
 
     // create a new profile in firestore
     let newUser = {
-      displayName: user.displayName,
-=======
-
-    // create a new profile in firestore
-    let newUser = {
->>>>>>> cbc72cbb378fcd7d1fcbb1a678f69a58550717c7
       createdAt: firestore.FieldValue.serverTimestamp(),
       email: user.email
     };
@@ -109,16 +83,13 @@ export const updateUser = user => async (
   { getFirebase, getFirestore }
 ) => {
   const firebase = getFirebase();
-  const firestore = getFirestore();
+  // const firestore = getFirestore();
   try {
     const currentUser = firebase.auth().currentUser;
 
-<<<<<<< HEAD
-=======
     // Check if user updates the name
     // if it does, update the info stored both in authentication
     // and firestore
->>>>>>> cbc72cbb378fcd7d1fcbb1a678f69a58550717c7
     if (user.displayName) {
       await currentUser.updateProfile({
         displayName: user.displayName
@@ -133,13 +104,6 @@ export const updateUser = user => async (
         .then(function() {
           window.location.href = "/profile";
         })
-<<<<<<< HEAD
-          .catch(function(error) {
-            console.log(error);
-          });
-    }
-
-=======
         .catch(function(error) {
           console.log(error);
         });
@@ -148,7 +112,6 @@ export const updateUser = user => async (
     // Check if user updates the phone number
     // if it does, update the info stored both in authentication
     // and firestore
->>>>>>> cbc72cbb378fcd7d1fcbb1a678f69a58550717c7
     if (user.phoneNumber) {
       firebase
         .firestore()
@@ -158,43 +121,28 @@ export const updateUser = user => async (
           phoneNumber: user.phoneNumber
         })
         .then(function() {
-<<<<<<< HEAD
-        window.location.href = "/profile";
-      })
-=======
           window.location.href = "/profile";
         })
->>>>>>> cbc72cbb378fcd7d1fcbb1a678f69a58550717c7
         .catch(function(error) {
           console.log(error);
         });
     }
 
-<<<<<<< HEAD
-    if (user.photoFile) {
-=======
     // Check if user updates the profile image
     // if it does, update the info stored both in authentication
     // and firestore
     if (user.photoFile) {
       // file uploaded from user will be named
       // after its userId
->>>>>>> cbc72cbb378fcd7d1fcbb1a678f69a58550717c7
       var storageRef = firebase
         .storage()
         .ref()
         .child(currentUser.uid);
       await storageRef.put(user.photoFile[0]).then(function(snapshot) {
         console.log("Uploaded a blob or file!");
-<<<<<<< HEAD
-        
-      });
-
-=======
       });
 
       // upload the local profile picture to firebase storage
->>>>>>> cbc72cbb378fcd7d1fcbb1a678f69a58550717c7
       var uploadTask = storageRef.put(user.photoFile[0]);
 
       // Register three observers:
@@ -221,11 +169,7 @@ export const updateUser = user => async (
           }
         },
         function(error) {
-<<<<<<< HEAD
-          console.log("Your upload is not successful.")
-=======
           console.log("Your upload is not successful.");
->>>>>>> cbc72cbb378fcd7d1fcbb1a678f69a58550717c7
         },
         function() {
           // Handle successful uploads on complete
@@ -245,17 +189,6 @@ export const updateUser = user => async (
               .then(function() {
                 window.location.href = "/profile";
               })
-<<<<<<< HEAD
-                .catch(function(error) {
-                  console.log(error);
-                });
-          });
-        }
-      );
-      // window.location.href = "/profile";
-    }
-
-=======
               .catch(function(error) {
                 console.log(error);
               });
@@ -263,15 +196,10 @@ export const updateUser = user => async (
         }
       );
     }
->>>>>>> cbc72cbb378fcd7d1fcbb1a678f69a58550717c7
   } catch (error) {
     console.log(error);
     throw new SubmissionError({
       _error: error.message
     });
   }
-<<<<<<< HEAD
-  // window.location.href = "/profile";
-=======
->>>>>>> cbc72cbb378fcd7d1fcbb1a678f69a58550717c7
 };

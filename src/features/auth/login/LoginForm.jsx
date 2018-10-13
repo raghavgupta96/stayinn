@@ -17,6 +17,17 @@ const actions = {
   login
 }
 
+const validate = values => {
+  const errors = {}
+  const requiredFields = ['email', 'password' ]
+  requiredFields.forEach(field => {
+    if (!values[ field ]) {
+      errors[ field ] = 'Required'
+    }
+  })
+  return errors
+}
+
 /* Styling */
 const styles = theme => ({
   root: {
@@ -72,6 +83,6 @@ const LoginForm = ({classes, login, handleSubmit, error}) => {
 
 export default withStyles(styles)(
   connect(null, actions)(
-    reduxForm({form: 'loginForm'})(LoginForm)
+    reduxForm({form: 'loginForm', validate})(LoginForm)
   )
 );

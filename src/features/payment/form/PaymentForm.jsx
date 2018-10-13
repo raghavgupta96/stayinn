@@ -2,15 +2,21 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import DropDownMenu from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import './PaymentForm.css';
 //import Stripe from 'stripe';
-import connect from 'react-redux';
-import firestoreConnect from 'react-redux-firebase';
-//<script src="https://js.stripe.com/v3/"></script>
-
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import {inputCard} from '../PaymentBackend'
+import {connect} from 'react-redux'
+import PaymentLayout from '../PaymentLayout';
 const expiryYearSelectStart = 2018;
 const expiryYearSelectEnd = 2030;
+
+
 
 const paymentForm = props => {
   const {
@@ -19,42 +25,19 @@ const paymentForm = props => {
     handlers
   } = props
 
-  // Select Months
-  const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
-  ];
-  const selectMonths = months.map((month, i) => (
-    <MenuItem
-      value={month}
-      key={month}
-    >{month}</MenuItem> 
-  ));
+  
 
   // Select Years
   const selectYears= [ ]
   for (let i = expiryYearSelectStart; i <= expiryYearSelectEnd; i++) {
     selectYears.push(
-      <MenuItem
-        value={i}
-        key={i}
-      >{i}
+      <MenuItem value={i} key={i}>
+      {i}
       </MenuItem>
     )
   }
- 
+    return (
 
-  return (
     <div className="PaymentForm">
       <form>
         <section className="TravelerInformation">
@@ -90,6 +73,11 @@ const paymentForm = props => {
             onChange={event => handlers.setTraveler({ ...traveler, specialrequest: event.target.value })}
           />
         </section>
+        {/*</form>*/}
+
+        {/*possible multiple forms on this page*/}
+
+        {/*<form>*/}
         <section className="PaymentInformation">
           <h1>Payment Information</h1>
           <TextField
@@ -110,16 +98,25 @@ const paymentForm = props => {
             value={card.cvc}
             onChange={event => handlers.setCard({ ...card, cvc: event.target.value })}
           />
-          <Select>
-            value={card.expirymonth}
-            onChange={event => handlers.setCard({ ...card, expiryMonth: event.target.value })}
-          >
-            {selectMonths}
+          <Select onChange={event => 
+              handlers.setCard({ ...card, expirymonth: event.target.value })} 
+              value={card.expirymonth}
+              >
+            <MenuItem value={1}>Jan</MenuItem>
+            <MenuItem value={2}>Feb</MenuItem>
+            <MenuItem value={3}>Mar</MenuItem>
+            <MenuItem value={4}>Apr</MenuItem>
+            <MenuItem value={5}>May</MenuItem>
+            <MenuItem value={6}>Jun</MenuItem>
+            <MenuItem value={7}>Jul</MenuItem>
+            <MenuItem value={8}>Aug</MenuItem>
+            <MenuItem value={9}>Sep</MenuItem>
+            <MenuItem value={10}>Oct</MenuItem>
+            <MenuItem value={11}>Nov</MenuItem>
+            <MenuItem value={12}>Dec</MenuItem>
           </Select>
-          <Select>
-            value={card.expiryYear}
-            onChange={event => handlers.setCard({ ...card, expiryMonth: event.target.value })}
-          >
+          <Select onChange={event => handlers.setCard({ ...card, expiryyear: event.target.value })} 
+            value={card.expiryyear}>  
             {selectYears}
           </Select>   
 
@@ -131,6 +128,7 @@ const paymentForm = props => {
 
       </form>
     </div>
-  )
-};
-export default paymentForm;//connect(firestoreConnect([{collection: 'users.card'}]))
+  )}
+
+  
+export default (paymentForm);
