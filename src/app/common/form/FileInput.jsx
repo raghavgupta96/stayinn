@@ -18,7 +18,11 @@ class FileInput extends Component {
         onChange={event => {
           this.displayPicture(event);
         }}/>
+<<<<<<< HEAD
         {this.state.pictureUrl && <img src={this.state.pictureUrl} width="200" height="200" alt=""/>}
+=======
+        <img src={this.state.pictureUrl} alt=""/>
+>>>>>>> 0285a46e86185c49686832cbd36e24e2fd230f74
     </div>
     )
   }

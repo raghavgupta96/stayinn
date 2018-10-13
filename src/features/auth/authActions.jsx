@@ -49,6 +49,7 @@ export const registerUser = user => async (
       .auth()
       .createUserWithEmailAndPassword(user.email, user.password);
     console.log(createdUser);
+<<<<<<< HEAD
 
     // Send email verification to user email provided
     await createdUser
@@ -68,6 +69,72 @@ export const registerUser = user => async (
 
     await firestore.set(`users/${createdUser.uid}`, { ...newUser });
     window.location.href = "/";
+=======
+    // update the auth profile
+    await createdUser.sendEmailVerification().then(function() {
+      // Email sent.
+    }).catch(function(error) {
+      // An error happened.
+    });
+    await createdUser.updateProfile({
+        displayName: user.displayName,
+        phoneNumber: user.phoneNumber,
+    })
+
+    var storageRef = firebase.storage().ref().child(createdUser.uid);
+    // await storageRef.put(user.photoFile[0]).then(function(snapshot) {
+    //   console.log('Uploaded a blob or file!');
+    // });
+
+    var uploadTask = storageRef.put(user.photoFile[0]);
+
+    // Register three observers:
+    // 1. 'state_changed' observer, called any time the state changes
+    // 2. Error observer, called on failure
+    // 3. Completion observer, called on successful completion
+    uploadTask.on('state_changed', function(snapshot){
+      // Observe state change events such as progress, pause, and resume
+      // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+      var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log('Upload is ' + progress + '% done');
+      switch (snapshot.state) 
+      {
+        case firebase.storage.TaskState.PAUSED: // or 'paused'
+          console.log('Upload is paused');
+          break;
+        case firebase.storage.TaskState.RUNNING: // or 'running'
+          console.log('Upload is running');
+          break;
+        default:
+          console.log('continue....')
+      }
+    }, function(error) {
+      // Handle unsuccessful uploads
+    }, function() {
+      // Handle successful uploads on complete
+      // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+      uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+        console.log('File available at', downloadURL);
+        createdUser.updateProfile({
+          photoURL: downloadURL
+      })
+      });
+    });
+
+
+    // create a new profile in firestore
+    let newUser = {
+        displayName: user.displayName,
+        createdAt: firestore.FieldValue.serverTimestamp(),
+        //address: user.address,
+        phoneNumber: user.phoneNumber,
+    };
+
+
+    
+    await firestore.set(`users/${createdUser.uid}`, {...newUser});
+    // window.location.href = "/";
+>>>>>>> 0285a46e86185c49686832cbd36e24e2fd230f74
     firebase.logout();
   } catch (error) {
     console.log(error);
