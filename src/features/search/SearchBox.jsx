@@ -2,15 +2,15 @@ import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 import Autocomplete from "react-google-autocomplete";
 import Paper from "@material-ui/core/Paper";
-import { withStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import SearchResult from "./SearchResult";
+import { withStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 
 const styles = theme => ({
   root: {
@@ -18,29 +18,23 @@ const styles = theme => ({
   },
   mainpaper: {
     width: "100%",
-    padding: "15px",
-    paddingTop: "10px",
-    marginTop: "100px"
+    marginTop: "100px",
+    marginBottom: "20px"
   },
-  box: {
-    paddingRight: "20px"
+  googleSearchContainer: {
+    paddingLeft: "15px",
+    paddingRight: "15px"
   },
-  formControl: {
+  droppedDownNumber: {
     minWidth: "50px",
-    paddingTop: "8px",
-    paddingLeft: "5px",
-    marginBottom: "5px"
+    marginTop: "15px"
   },
-  container: {
+  dateContainer: {
     display: "flex",
     flexWrap: "wrap",
-    margin: "10px",
-    marginTop: "0px"
-  },
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: 200
+    marginLeft: "15px",
+    marginRight: "15px",
+    marginBottom: "15px"
   },
   googleSearch: {
     width: "100%",
@@ -50,17 +44,29 @@ const styles = theme => ({
     border: "none",
     borderBottomStyle: "solid",
     borderBottomWidth: "1px",
-    outline: "0"
+    outline: "0",
+    marginBottom: "15px"
   },
-  button: {
+  searchButton: {
     backgroundColor: "#409BE6",
     height: "47px",
-    color: "#ffffff"
+    color: "#ffffff",
+    marginLeft: "15px",
+    marginRight: "15px",
+    width: "100%",
+    marginBottom: "15px",
+    minWidth: "30px"
+  },
+  searchButtonWrapper: {
+    flexWrap: "wrap",
+    display: "flex"
   },
   typography: {
     fontFamily: "Times",
     fontSize: "20px",
-    paddingTop: "10px"
+    paddingTop: "17px",
+    paddingRight: "5px",
+    paddingLeft: "15px"
   }
 });
 
@@ -70,11 +76,11 @@ class SearchBox extends Component {
     this.state = {
       checkinDate: null,
       checkoutDate: null,
-      roomnumber: "",
+      roomnumber: 1,
       hotels: [
         {
           name: "Hilton",
-          hID: "sdfsdfsdasdfasfewdsvae",
+          hID: "1sdfsdfsdasdfasfewdsvae",
           room_cap: 4,
           photoUrl:
             "https://shinola.imgix.net/media/wysiwyg/landingpages/shinola-hotel/hotel-render-desktop-retina.jpg?ixlib=php-1.1.0&w=2560",
@@ -82,11 +88,27 @@ class SearchBox extends Component {
         },
         {
           name: "Hilton, San Jose",
-          hID: "XCxddsdasdfasfewdsvae",
+          hID: "2XCxddsdasdfasfewdsvae",
           room_cap: 2,
           photoUrl:
             "https://shinola.imgix.net/media/wysiwyg/landingpages/shinola-hotel/hotel-render-desktop-retina.jpg?ixlib=php-1.1.0&w=2560",
           key: 2
+        },
+        {
+          name: "Hotel 8, San Jose",
+          hID: "3XCxddsdasdfasfewdsvae",
+          room_cap: 1,
+          photoUrl:
+            "https://shinola.imgix.net/media/wysiwyg/landingpages/shinola-hotel/hotel-render-desktop-retina.jpg?ixlib=php-1.1.0&w=2560",
+          key: 3
+        },
+        {
+          name: "Mobil 6",
+          hID: "4XCxddsdasdfasfewdsvae",
+          room_cap: 3,
+          photoUrl:
+            "https://shinola.imgix.net/media/wysiwyg/landingpages/shinola-hotel/hotel-render-desktop-retina.jpg?ixlib=php-1.1.0&w=2560",
+          key: 4
         }
       ]
     };
@@ -120,23 +142,23 @@ class SearchBox extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <div>
-        <Grid container className={classes.root} spacing={16} xs={12}>
-          <Grid item xs={1} />
-          <Grid item xs={10}>
-            <Paper className={classes.mainpaper}>
+      <Grid container className={classes.root} spacing={16} xs={12}>
+        <Grid item xs={1} md={1} lg={1} />
+        <Grid item xs={10} md={10} lg={10}>
+          <Paper className={classes.mainpaper}>
+            <Grid container>
               <Grid container>
-                <Grid container>
-                  <Grid item>
-                    <Typography
-                      gutterBottom
-                      variant="title"
-                      className={classes.typography}
-                    >
-                      Room Size:
-                    </Typography>
-                  </Grid>
-                  <FormControl className={classes.formControl}>
+                <Grid item>
+                  <Typography
+                    gutterBottom
+                    variant="title"
+                    className={classes.typography}
+                  >
+                    Room Size:
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <FormControl className={classes.droppedDownNumber}>
                     <Select
                       value={this.state.roomnumber}
                       onChange={this.handleChange}
@@ -144,7 +166,7 @@ class SearchBox extends Component {
                       name="roomnumber"
                       className={classes.selectEmpty}
                     >
-                      <MenuItem value="">1</MenuItem>
+                      <MenuItem value="">#</MenuItem>
                       <MenuItem value={1}>1</MenuItem>
                       <MenuItem value={2}>2</MenuItem>
                       <MenuItem value={3}>3</MenuItem>
@@ -152,70 +174,68 @@ class SearchBox extends Component {
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid
-                  item
-                  xs={7}
-                  className={classes.box}
-                  style={{
-                    paddingRight: "20px"
-                  }}
-                >
-                  <Autocomplete
-                    className={classes.googleSearch}
-                    onPlaceSelected={place => {
-                      // console.log(place);
-                      this.setState({ place });
-                      //testing
-                      console.log(this.state.place.name);
-                    }}
-                    types={["(regions)"]}
-                    componentRestrictions={{ country: "us" }}
-                  />
-                </Grid>
-                <Grid item xs={2}>
-                  <form className={classes.container} noValidate>
-                    <TextField
-                      id="date"
-                      label="Checkin Date"
-                      type="date"
-                      value={this.state.checkinDate}
-                      InputLabelProps={{
-                        shrink: true
-                      }}
-                      onChange={this._handleCheckinDate}
-                    />
-                  </form>
-                </Grid>
-                <Grid item xs={2}>
-                  <form className={classes.container} noValidate>
-                    <TextField
-                      id="date"
-                      label="Checkout Date"
-                      type="date"
-                      value={this.state.checkoutDate}
-                      InputLabelProps={{
-                        shrink: true
-                      }}
-                      onChange={this._handleCheckoutDate}
-                    />
-                  </form>
-                </Grid>
-                <Grid item xs={1}>
-                  <Button
-                    className={classes.button}
-                    variant="contained"
-                    onClick={this.submit}
-                  >
-                    <SearchIcon />
-                  </Button>
-                </Grid>
               </Grid>
-            </Paper>
-          </Grid>
-          <Grid item xs={1} />
-          <SearchResult hotels={this.state.hotels} />
+              <Grid
+                item
+                xs={12}
+                md={7}
+                className={classes.googleSearchContainer}
+              >
+                <Autocomplete
+                  className={classes.googleSearch}
+                  onPlaceSelected={place => {
+                    // console.log(place);
+                    this.setState({ place });
+                    //testing
+                    console.log(this.state.place.name);
+                  }}
+                  types={["(regions)"]}
+                  componentRestrictions={{ country: "us" }}
+                />
+              </Grid>
+              <Grid item xs={6} md={2}>
+                <form className={classes.dateContainer} noValidate>
+                  <TextField
+                    id="date"
+                    label="Checkin Date"
+                    type="date"
+                    value={this.state.checkinDate}
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                    onChange={this._handleCheckinDate}
+                  />
+                </form>
+              </Grid>
+              <Grid item xs={6} md={2}>
+                <form className={classes.dateContainer} noValidate>
+                  <TextField
+                    id="date"
+                    label="Checkout Date"
+                    type="date"
+                    value={this.state.checkoutDate}
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                    onChange={this._handleCheckoutDate}
+                  />
+                </form>
+              </Grid>
+              <Grid item xs={12} md={1} className={classes.searchButtonWrapper}>
+                <Button
+                  variant="contained"
+                  onClick={this.submit}
+                  className={classes.searchButton}
+                >
+                  <SearchIcon />
+                </Button>
+              </Grid>
+            </Grid>
+          </Paper>
         </Grid>
-      </div>
+        <Grid item xs={1} md={1} lg={1} />
+        <SearchResult hotels={this.state.hotels} />
+      </Grid>
     );
   }
 }

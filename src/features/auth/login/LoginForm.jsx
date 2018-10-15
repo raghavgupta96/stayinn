@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { login } from '../authActions';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
@@ -15,6 +15,17 @@ import Button from '@material-ui/core/Button';
 
 const actions = {
   login
+}
+
+const validate = values => {
+  const errors = {}
+  const requiredFields = ['email', 'password' ]
+  requiredFields.forEach(field => {
+    if (!values[ field ]) {
+      errors[ field ] = 'Required'
+    }
+  })
+  return errors
 }
 
 /* Styling */
@@ -72,6 +83,6 @@ const LoginForm = ({classes, login, handleSubmit, error}) => {
 
 export default withStyles(styles)(
   connect(null, actions)(
-    reduxForm({form: 'loginForm'})(LoginForm)
+    reduxForm({form: 'loginForm', validate})(LoginForm)
   )
 );
