@@ -71,7 +71,7 @@ class PaymentLayout extends Component {
   handlers = {
     setTraveler: traveler => this.setState({ traveler }),
     setCard: card => this.setState({ card }),
-    checkout: (card) => window.alert(card.cardnumber), // For Chad :)
+    checkout: (card) => window.alert(JSON.stringify(card)), // For Chad :)
     cancel: () => this.props.history.goBack()
   }
 

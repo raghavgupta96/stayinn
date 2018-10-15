@@ -8,6 +8,7 @@ const styles = theme => ({
   paymentSummary: {
     display: 'flex',
     flexFlow: 'column nowrap',
+    minWidth: '560px',
     margin: '16px',
     boxShadow: '0 2px 10px -3px black',
     '& h2': {
