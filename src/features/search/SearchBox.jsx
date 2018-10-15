@@ -179,6 +179,7 @@ class SearchBox extends Component {
                 item
                 xs={12}
                 md={7}
+                lg={9}
                 className={classes.googleSearchContainer}
               >
                 <Autocomplete
@@ -193,7 +194,7 @@ class SearchBox extends Component {
                   componentRestrictions={{ country: "us" }}
                 />
               </Grid>
-              <Grid item xs={6} md={2}>
+              <Grid item xs={6} md={2} lg={1}>
                 <form className={classes.dateContainer} noValidate>
                   <TextField
                     id="date"
@@ -207,7 +208,7 @@ class SearchBox extends Component {
                   />
                 </form>
               </Grid>
-              <Grid item xs={6} md={2}>
+              <Grid item xs={6} md={2} lg={1}>
                 <form className={classes.dateContainer} noValidate>
                   <TextField
                     id="date"
@@ -221,7 +222,7 @@ class SearchBox extends Component {
                   />
                 </form>
               </Grid>
-              <Grid item xs={12} md={1} className={classes.searchButtonWrapper}>
+              <Grid item xs={12} md={1} lg={1} className={classes.searchButtonWrapper}>
                 <Button
                   variant="contained"
                   onClick={this.submit}
