@@ -8,7 +8,6 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
-import FileInput from '../../../app/common/form/FileInput'
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
@@ -110,7 +109,6 @@ const RegisterForm = ({ classes, handleSubmit, registerUser, error, invalid, sub
   return (
     <div>
       <form size="large" onSubmit={handleSubmit(registerUser)}>
-<<<<<<< HEAD
         <div>
           <Grid container className={classes.root} justify="center" spacing={16}>
             <Grid item xs={2}></Grid>
@@ -141,51 +139,6 @@ const RegisterForm = ({ classes, handleSubmit, registerUser, error, invalid, sub
                     <div>
                       {error && <Typography color='error'>{error}</Typography>}
                     </div>
-=======
-          <div>
-            <Grid container className={classes.root} justify="center" spacing={16}>
-              <Grid item xs={2}></Grid>
-              <Grid item xs={6}></Grid>
-                <Paper className={classes.paper}>
-                <Typography variant="display1" >Register</Typography>
-                  <Grid container className={classes.root} spacing={8}>
-                    <Grid item xs={6}>
-                      <Field
-                        name="displayName"
-                        label="Name"
-                        component={renderTextField}
-                      />
-                      <Field 
-                          name="password"
-                          label="Password"
-                          component={renderPasswordField}
-                      />
-                      <Field 
-                          name="re-enter password"
-                          label="Re-enter Password"
-                          component={renderPasswordField}
-                      />
-                      <Button component={renderButton}>
-                        Submit 
-                      </Button> 
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Field
-                        name="email"
-                        label="Email"
-                        component={renderTextField}
-                      />
-                      <Field
-                        name="phoneNumber"
-                        label="Phone Number"
-                        component={renderTextField}
-                      />
-                      <Field
-                        name="photoFile"
-                        component={FileInput}
-                      />
-                    </Grid>
->>>>>>> 0285a46e86185c49686832cbd36e24e2fd230f74
                   </Grid>
                 </Grid>
               {/* </Grid> */}

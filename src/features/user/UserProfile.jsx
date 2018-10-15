@@ -27,19 +27,7 @@ function CircularIndeterminate() {
   );
 }
 
-<<<<<<< HEAD
 var showPhone = null;
-=======
-function showImage(pic)
-{
-  console.log(pic);
-}
-
-const mapState = (state) => ({
-    auth: state.firebase.auth,
-    profile: state.firebase.profile
-})
->>>>>>> 0285a46e86185c49686832cbd36e24e2fd230f74
 
 class UserProfile extends Component {
   constructor(props) {
@@ -140,7 +128,6 @@ class UserProfile extends Component {
     // );
 
     const { auth } = this.props;
-<<<<<<< HEAD
     // console.log("Render Phone Number:" + showPhone);
     console.log(this.props.match.params.id);
     // only show when auth is loaded
@@ -182,22 +169,6 @@ class UserProfile extends Component {
     }
   }
 }
-=======
-    return (
-    <div>
-      <h1>User Profile</h1>
-      {/* <h2>Name: {window.name}</h2>
-      <h2>Email: {window.email}</h2>
-      <h2>photoURL: {window.photoURL}</h2> */}
-      <img width="200" height= "200" src={auth.photoURL} alt=""/>
-      <h2>Name: {auth.displayName}</h2>
-      <h2>Email: {auth.email}</h2>
-
-    </div>
-  );
-};
-};
->>>>>>> 0285a46e86185c49686832cbd36e24e2fd230f74
 
 export default withStyles(styles)(
   withFirestore(
