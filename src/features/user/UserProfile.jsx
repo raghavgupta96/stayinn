@@ -3,6 +3,9 @@ import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 import { withFirestore, isLoaded } from "react-redux-firebase";
 import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import MyBooking from './myBooking'
 const actions = {};
@@ -13,8 +16,24 @@ const mapState = state => ({
 });
 
 const styles = theme => ({
+  //added styles for root and paper
+  root: {
+    flexGrow: 1,
+    margin: '12px'
+  },
+  paper: {
+    paddingTop: 30,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
   progress: {
     margin: theme.spacing.unit * 2
+  },
+  title: {
+    fontSize: '36px'
+  },
+  headerInfo: {
+    fontSize: '18px'
   }
 });
 
@@ -119,7 +138,7 @@ class UserProfile extends Component {
     // );
 
     // REal code
-    const { auth } = this.props;
+    const { auth, classes } = this.props;
     console.log("Render Phone Number:" + showPhone);
 
     // only show when auth is loaded
@@ -128,23 +147,33 @@ class UserProfile extends Component {
       if (!auth.isEmpty) {
         return (
           <div>
-            <h1>User Profile</h1>
-            {auth.photoURL && (
-              <img width="200" height="200" src={auth.photoURL} alt="" />
-            )}
-            {!auth.photoURL && (
-              <img
-                width="200"
-                height="200"
-                src="https://www.skylom.com/assets/frontend/images/google_profile.png"
-                alt=""
-              />
-            )}
-            <h2>Name: {auth.displayName}</h2>
-            <h2>Email: {auth.email}</h2>
-            <h2>Phone Number: {showPhone} </h2>
-            <Button href="/profileEdit">Update Profile</Button>
-            <MyBooking/>
+            <Grid container className={classes.root} justify="center" spacing={16}>
+              <Grid item xs={4}>
+                <Paper className={classes.paper}>
+                  
+                  {auth.photoURL && (
+                    <img width="200" height="200" src={auth.photoURL} alt="" />
+                  )}
+                  {!auth.photoURL && (
+                    <img
+                      width="200"
+                      height="200"
+                      src="https://www.skylom.com/assets/frontend/images/google_profile.png"
+                      alt=""
+                    />
+                  )}
+                  <Typography className={classes.title}>{auth.displayName}</Typography>
+                  <Typography className={classes.headerInfo}>Email: {auth.email}</Typography>
+                  <Typography className={classes.headerInfo}>Phone: {showPhone}</Typography>
+                  <Button href="/profileEdit">Update Profile</Button>
+                </Paper>
+              </Grid>
+              <Grid item xs={8}>
+                <Paper>
+                  <MyBooking/>
+                </Paper>
+              </Grid>
+            </Grid>
           </div>
         );
       } else {
