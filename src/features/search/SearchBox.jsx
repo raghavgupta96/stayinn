@@ -142,7 +142,7 @@ class SearchBox extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <Grid container className={classes.root} spacing={16} xs={12}>
+      <Grid container className={classes.root} xs={12} md={12} lg={12}>
         <Grid item xs={1} md={1} lg={1} />
         <Grid item xs={10} md={10} lg={10}>
           <Paper className={classes.mainpaper}>
@@ -222,7 +222,13 @@ class SearchBox extends Component {
                   />
                 </form>
               </Grid>
-              <Grid item xs={12} md={1} lg={1} className={classes.searchButtonWrapper}>
+              <Grid
+                item
+                xs={12}
+                md={1}
+                lg={1}
+                className={classes.searchButtonWrapper}
+              >
                 <Button
                   variant="contained"
                   onClick={this.submit}
@@ -235,7 +241,15 @@ class SearchBox extends Component {
           </Paper>
         </Grid>
         <Grid item xs={1} md={1} lg={1} />
-        <SearchResult hotels={this.state.hotels} />
+        <Grid container className={classes.root} xs={12} md={12} lg={12}>
+          <Grid item xs={1} md={1} lg={1}>
+            filter box
+          </Grid>
+          <Grid item xs={10} md={10} lg={10}>
+            <SearchResult hotels={this.state.hotels} />
+          </Grid>
+          <Grid item xs={1} md={1} lg={1} />
+        </Grid>
       </Grid>
     );
   }
