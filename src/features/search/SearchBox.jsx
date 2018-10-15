@@ -11,6 +11,7 @@ import FormControl from "@material-ui/core/FormControl";
 import SearchResult from "./SearchResult";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import firebase from '../../app/config/firebase';
 
 const styles = theme => ({
   root: {
@@ -77,6 +78,7 @@ class SearchBox extends Component {
       checkinDate: null,
       checkoutDate: null,
       roomnumber: 1,
+      // hotels: []
       hotels: [
         {
           name: "Hilton",
@@ -114,6 +116,42 @@ class SearchBox extends Component {
     };
   }
 
+    //mount all the hotels info into the hotel list into state
+    componentDidMount() {
+      const db = firebase.firestore();
+
+      //uery the hotel data from firestore
+      db.collection("testingHotels").get().then(collection => {
+        const hotels= [];
+        console.log("hotels -----" + hotels);
+
+        //map all the needed hotel information to the state
+        collection.forEach(doc => {
+            // doc.data() is never undefined for query doc snapshots
+            //-----testing-----
+            console.log(doc.id, " => ", doc.data());
+
+            // console.log("name: " + doc.data().name );
+            // console.log("hID: " + doc.id);
+            // console.log("room_cap: " + doc.data().maxBeds );
+            // console.log("photoUrl: " + doc.data().photoURL );
+            // console.log("photoUrl: " + doc.data().type);
+
+
+            hotels.push({
+              name: doc.data().name,
+              hID: doc.id,
+              room_cap: doc.data().maxBeds,
+              photoUrl: doc.data().photoURL,
+              type: doc.data().type
+            });
+            console.log("hotels -----" + hotels);
+        });
+        this.setState({ hotels });
+    });
+  
+    }
+
   _handleCheckinDate = e => {
     this.setState({
       checkinDate: e.target.value
@@ -137,6 +175,7 @@ class SearchBox extends Component {
     //do functional here
     console.log("Checkin Date" + this.state.checkinDate);
     console.log("Checkout Date" + this.state.checkoutDate);
+    console.log(" Hotels in state: " + this.state.hotels);
   };
 
   render() {
