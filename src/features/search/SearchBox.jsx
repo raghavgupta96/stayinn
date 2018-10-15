@@ -79,39 +79,7 @@ class SearchBox extends Component {
       checkoutDate: null,
       roomnumber: 1,
       // hotels: []
-      hotels: [
-        {
-          name: "Hilton",
-          hID: "1sdfsdfsdasdfasfewdsvae",
-          room_cap: 4,
-          photoUrl: "https://internationalfacade.com/files/face/upload/660.jpg",
-          key: 1
-        },
-        {
-          name: "Hilton, San Jose",
-          hID: "2XCxddsdasdfasfewdsvae",
-          room_cap: 2,
-          photoUrl:
-            "http://38i35a46ycxf3y5m9z12h84l-wpengine.netdna-ssl.com/wp-content/uploads/2016/01/BLRREHI.jpg",
-          key: 2
-        },
-        {
-          name: "Hotel 8, San Jose",
-          hID: "3XCxddsdasdfasfewdsvae",
-          room_cap: 1,
-          photoUrl:
-            "https://shinola.imgix.net/media/wysiwyg/landingpages/shinola-hotel/hotel-render-desktop-retina.jpg?ixlib=php-1.1.0&w=2560",
-          key: 3
-        },
-        {
-          name: "Motel 6",
-          hID: "4XCxddsdasdfasfewdsvae",
-          room_cap: 3,
-          photoUrl:
-            "https://www.nreionline.com/sites/nreionline.com/files/styles/article_featured_standard/public/motel-6.jpg?itok=HlpdJnL8",
-          key: 4
-        }
-      ]
+      hotels: []
     };
   }
 
@@ -147,7 +115,7 @@ class SearchBox extends Component {
             console.log("hotels -----" + hotels);
         });
         this.setState({ hotels });
-    });
+      });
   
     }
 
