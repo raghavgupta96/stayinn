@@ -1,15 +1,16 @@
 import React, { Component } from "react";
-import { Container } from "semantic-ui-react";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import theme from "./theme";
-import NavBar from "./features/nav/NavBar/NavBar";
+import NavBar from "./features/nav/navbar/NavBar";
 import { Route, Switch } from "react-router-dom";
 import Signup from "./features/auth/register/RegisterForm";
 import Login from "./features/auth/login/LoginForm";
 import HomePage from "./features/home/HomePage";
-import UserDashboard from "./features/user/UserDashboard";
+import UserProfile from "./features/user/UserProfile";
+import ProfileUpdate from "./features/user/EditInfoForm";
 import FilterUi from "./features/filter/Filter.ui";
-import SearchBox from "./features/search/SearchBox";
+import PaymentLayout from "./features/payment/PaymentLayout";
+import HotelDetail from "./features/hotel/HotelDetail";
 
 class App extends Component {
   render() {
@@ -29,9 +30,11 @@ class App extends Component {
                 {/* No circumstances where two routes are supposed to load at the samet time */}
                 <Route path="/signup" component={Signup} />
                 <Route path="/login" component={Login} />
-                <Route path="/userDashboard" component={UserDashboard} />
+                <Route path="/profile" component={UserProfile} />
+                <Route path="/profileEdit" component={ProfileUpdate} />
                 <Route path="/searchResult" component={FilterUi} />
-                <Route path="/Home" component={SearchBox} />
+                <Route path="/payment" component={PaymentLayout} />
+                <Route path="/hotelDetail" component={HotelDetail} />
               </Switch>
             </div>
           )}

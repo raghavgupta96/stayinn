@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { login } from '../authActions';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
@@ -33,7 +33,7 @@ const styles = theme => ({
 })
 
 
-const LoginForm = ({classes, login, handleSubmit}) => {
+const LoginForm = ({classes, login, handleSubmit, error}) => {
 
   return (
     <div>
@@ -48,14 +48,17 @@ const LoginForm = ({classes, login, handleSubmit}) => {
                   name="email"
                   component={renderTextField}
                   label="Email"
-                />
+              />
               <Field 
                   name="password"
                   component={renderPasswordField}
-                />
+              />
               <Button component={SubmitButton}>
                 Login 
               </Button>
+              <div>
+                {error && <label>{error}</label>}
+              </div>
             </Paper>
           </Grid>
           <Grid item xs={4}></Grid>

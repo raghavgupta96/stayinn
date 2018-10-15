@@ -1,41 +1,41 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
 
 const styles = theme => ({
   container: {
-    display: 'flex',
-    flexWrap: 'wrap',
+    display: "flex",
+    flexWrap: "wrap"
   },
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    width: 200,
-  },
+    width: 200
+  }
 });
 
-function DateAndTimePickers(props) {
-  const { classes } = props;
+function DatePickers(props) {
+  const { classes, label } = props;
 
   return (
     <form className={classes.container} noValidate>
       <TextField
-        id="datetime-local"
-        label="Next appointment"
-        type="datetime-local"
-        defaultValue="2017-05-24T10:30"
+        id="date"
+        label={label}
+        type="date"
+        defaultValue=""
         className={classes.textField}
         InputLabelProps={{
-          shrink: true,
+          shrink: true
         }}
       />
     </form>
   );
 }
 
-DateAndTimePickers.propTypes = {
-  classes: PropTypes.object.isRequired,
+DatePickers.propTypes = {
+  classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(DateAndTimePickers);
+export default withStyles(styles)(DatePickers);
