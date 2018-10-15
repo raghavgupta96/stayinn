@@ -77,13 +77,15 @@ class SearchBox extends Component {
     this.state = {
       checkinDate: null,
       checkoutDate: null,
-      roomnumber: 1,
+      roomSize: 1,
+      searchKey: "",
+      place: null,
       // hotels: []
       hotels: []
     };
   }
 
-    //mount all the hotels info into the hotel list into state
+    //initially mount all the hotels info into the hotel list into state
     componentDidMount() {
       const db = firebase.firestore();
 
@@ -103,7 +105,6 @@ class SearchBox extends Component {
             // console.log("room_cap: " + doc.data().maxBeds );
             // console.log("photoUrl: " + doc.data().photoURL );
             // console.log("photoUrl: " + doc.data().type);
-
 
             hotels.push({
               name: doc.data().name,
@@ -143,6 +144,58 @@ class SearchBox extends Component {
     console.log("Checkin Date" + this.state.checkinDate);
     console.log("Checkout Date" + this.state.checkoutDate);
     console.log(" Hotels in state: " + this.state.hotels);
+
+    //---------------------Searching-----------------------------
+    // filtering the hotel with "CityName_RoomCap"
+    const db = firebase.firestore();
+    //uery the hotel data from firestore
+    if(this.state.place === null){
+      const searchKey = this.state.roomSize;
+      console.log("searchKey ------->" + searchKey)
+      const upperBoundOfSearchKey = 4;
+      db.collection("testingHotels").where("maxBeds", ">=", searchKey).where("maxBeds", "<=", upperBoundOfSearchKey).get().then(collection => {
+        const hotels= [];
+        //map all the needed hotel information to the state
+        collection.forEach(doc => {
+            // doc.data() is never undefined for query doc snapshots
+            //-----testing-----
+            console.log(doc.id, " => ", doc.data());
+  
+            hotels.push({
+              name: doc.data().name,
+              hID: doc.id,
+              room_cap: doc.data().maxBeds,
+              photoUrl: doc.data().photoURL,
+              type: doc.data().type
+            });
+        });
+        this.setState({ hotels });
+      });
+    } else {
+      const searchKey = this.state.place.name + "_" + this.state.roomSize;
+      const upperBoundOfSearchKey = this.state.place.name + "_" + "4";
+      console.log("searchKey ------->" + searchKey)
+      db.collection("testingHotels").where("searchKey", ">=", searchKey).where("searchKey", "<=", upperBoundOfSearchKey).get().then(collection => {
+        const hotels= [];
+        console.log("hotels ----->" + hotels);
+        //map all the needed hotel information to the state
+        collection.forEach(doc => {
+            // doc.data() is never undefined for query doc snapshots
+            //-----testing-----
+            console.log(doc.id, " => ", doc.data());
+  
+            hotels.push({
+              name: doc.data().name,
+              hID: doc.id,
+              room_cap: doc.data().maxBeds,
+              photoUrl: doc.data().photoURL,
+              type: doc.data().type
+            });
+        });
+        this.setState({ hotels });
+      });
+    }
+
   };
 
   render() {
@@ -166,10 +219,10 @@ class SearchBox extends Component {
                 <Grid item>
                   <FormControl className={classes.droppedDownNumber}>
                     <Select
-                      value={this.state.roomnumber}
+                      value={this.state.roomSize}
                       onChange={this.handleChange}
                       displayEmpty
-                      name="roomnumber"
+                      name="roomSize"
                       className={classes.selectEmpty}
                     >
                       <MenuItem value="">#</MenuItem>
@@ -190,9 +243,9 @@ class SearchBox extends Component {
               >
                 <Autocomplete
                   className={classes.googleSearch}
-                  onPlaceSelected={place => {
+                  onPlaceSelected={ place => {
                     // console.log(place);
-                    this.setState({ place });
+                    this.setState({ place : place });
                     //testing
                     console.log(this.state.place.name);
                   }}
