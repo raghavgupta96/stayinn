@@ -56,7 +56,7 @@ const SearchResult = ({ hotels, classes }) => {
                   </Link>
                 </Grid>
                 <Grid xs={2} md={2} lg={2} direction="row">
-                  <Link to={"/hotel/" + hotel.hID}>
+                  <Link to={"/payment" + hotel.hID}>
                     <Typography
                       gutterBottom
                       variant="title"

@@ -80,6 +80,7 @@ class SearchBox extends Component {
       roomSize: 1,
       searchKey: "",
       place: null,
+      NumOfRooms: 1,
       // hotels: []
       hotels: []
     };
@@ -99,19 +100,20 @@ class SearchBox extends Component {
             // doc.data() is never undefined for query doc snapshots
             //-----testing-----
             console.log(doc.id, " => ", doc.data());
-
-            // console.log("name: " + doc.data().name );
-            // console.log("hID: " + doc.id);
-            // console.log("room_cap: " + doc.data().maxBeds );
-            // console.log("photoUrl: " + doc.data().photoURL );
-            // console.log("photoUrl: " + doc.data().type);
-
+            // push individual hotel to a object
             hotels.push({
               name: doc.data().name,
               hID: doc.id,
               room_cap: doc.data().maxBeds,
               photoUrl: doc.data().photoURL,
-              type: doc.data().type
+              type: doc.data().type,
+              street: doc.data().street,
+              city: doc.data().city,
+              state: doc.data().state,
+              price: doc.data().room1,
+              bar: doc.data().bar,
+              gym: doc.data().gym,
+              swimmingPool: doc.data().swimmingPool
             });
             console.log("hotels -----" + hotels);
         });
@@ -144,11 +146,14 @@ class SearchBox extends Component {
     console.log("Checkin Date" + this.state.checkinDate);
     console.log("Checkout Date" + this.state.checkoutDate);
     console.log(" Hotels in state: " + this.state.hotels);
+    console.log("this.state.NumOfRooms: "+ this.state.NumOfRooms);
 
     //---------------------Searching-----------------------------
     // filtering the hotel with "CityName_RoomCap"
     const db = firebase.firestore();
-    //uery the hotel data from firestore
+    //query the hotel data from firestore
+    //if user did not enter the city. There is only room size.
+    //(default room size is one)---------------------------------
     if(this.state.place === null){
       const searchKey = this.state.roomSize;
       console.log("searchKey ------->" + searchKey)
@@ -166,11 +171,19 @@ class SearchBox extends Component {
               hID: doc.id,
               room_cap: doc.data().maxBeds,
               photoUrl: doc.data().photoURL,
-              type: doc.data().type
+              type: doc.data().type,
+              street: doc.data().street,
+              city: doc.data().city,
+              state: doc.data().state,
+              price: doc.data().room1,
+              bar: doc.data().bar,
+              gym: doc.data().gym,
+              swimmingPool: doc.data().swimmingPool
             });
         });
         this.setState({ hotels });
       });
+    // if user enter the city and room size------------------------
     } else {
       const searchKey = this.state.place.name + "_" + this.state.roomSize;
       const upperBoundOfSearchKey = this.state.place.name + "_" + "4";
@@ -180,22 +193,27 @@ class SearchBox extends Component {
         console.log("hotels ----->" + hotels);
         //map all the needed hotel information to the state
         collection.forEach(doc => {
-            // doc.data() is never undefined for query doc snapshots
             //-----testing-----
-            console.log(doc.id, " => ", doc.data());
+            // console.log(doc.id, " => ", doc.data());
   
             hotels.push({
               name: doc.data().name,
               hID: doc.id,
               room_cap: doc.data().maxBeds,
               photoUrl: doc.data().photoURL,
-              type: doc.data().type
+              type: doc.data().type,
+              street: doc.data().street,
+              city: doc.data().city,
+              state: doc.data().state,
+              price: doc.data().room1,
+              bar: doc.data().bar,
+              gym: doc.data().gym,
+              swimmingPool: doc.data().swimmingPool
             });
         });
         this.setState({ hotels });
       });
     }
-
   };
 
   render() {
@@ -233,6 +251,33 @@ class SearchBox extends Component {
                     </Select>
                   </FormControl>
                 </Grid>
+                <Grid item>
+                  <Typography
+                    gutterBottom
+                    variant="title"
+                    className={classes.typography}
+                  >
+                    Number of Rooms:
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <FormControl className={classes.droppedDownNumber}>
+                    <Select
+                      value={this.state.NumOfRooms}
+                      onChange={this.handleChange}
+                      displayEmpty
+                      name="NumOfRooms"
+                      className={classes.selectEmpty}
+                    >
+                      <MenuItem value="">#</MenuItem>
+                      <MenuItem value={1}>1</MenuItem>
+                      <MenuItem value={2}>2</MenuItem>
+                      <MenuItem value={3}>3</MenuItem>
+                      <MenuItem value={4}>4</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                
               </Grid>
               <Grid
                 item
