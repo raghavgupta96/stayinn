@@ -37,13 +37,13 @@ const styles = theme => ({
     minWidth: "30px"
   },
   photo: {
-    width: "100%",
+    width: "100%"
   },
   photoContainer: {
     marginTop: "5px"
   },
   hotelInfo: {
-    marginLeft: "10px",
+    marginLeft: "10px"
   }
 });
 
@@ -60,14 +60,7 @@ const SearchResult = ({ hotels, classes }) => {
               <Grid container key={hotel.id}>
                 <Grid container xs={7} md={7} lg={7}>
                   <Grid item xs>
-                    <Grid
-                      xs={12}
-                      md={12}
-                      lg={12}
-                      style={{
-                        flexDirection: "column"
-                      }}
-                    >
+                    <Grid xs={12} md={12} lg={12}>
                       <Typography
                         gutterBottom
                         variant="title"
@@ -85,11 +78,11 @@ const SearchResult = ({ hotels, classes }) => {
                         </Typography>
                       </Link>
                     </Grid>
-                    <Grid xs={12} className={classes.hotelInfo}>
+                    <Grid item xs={12} md={12} lg={12} className={classes.hotelInfo}>
                       Hotel Information Booking Information etc.
                     </Grid>
                   </Grid>
-                  <Grid item xs={12} container direction="column">
+                  <Grid item xs={12} md={12} lg={12} container direction="column">
                     <Grid item xs />
                     <Grid item>
                       <Button
@@ -107,7 +100,7 @@ const SearchResult = ({ hotels, classes }) => {
                         More Details
                       </Button>
                     </Grid>
-                </Grid>
+                  </Grid>
                 </Grid>
                 <Grid xs={5} md={5} lg={5} className={classes.photoContainer}>
                   <img
