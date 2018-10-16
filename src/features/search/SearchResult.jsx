@@ -86,7 +86,7 @@ const SearchResult = ({ hotels, classes }) => {
                       </Link>
                     </Grid>
                     <Grid xs={2} md={2} lg={2} className={classes.hotelInfo}>
-                      Hotel Information Booking Information etc
+                      Hotel Information Booking Information etc.
                     </Grid>
                   </Grid>
                 </Grid>
