@@ -7,7 +7,7 @@ const renderLoginButton = ({
     <Button 
     variant="contained" 
     justify="right" 
-    color="primary" 
+    color="primary"
     type="submit"
     {...custom}
     />
