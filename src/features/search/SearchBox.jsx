@@ -11,7 +11,8 @@ import FormControl from "@material-ui/core/FormControl";
 import SearchResult from "./SearchResult";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import firebase from '../../app/config/firebase';
+import firebase from "../../app/config/firebase";
+import FilterBox from "./filterBox";
 
 const styles = theme => ({
   root: {
@@ -80,45 +81,47 @@ class SearchBox extends Component {
       roomSize: 1,
       searchKey: "",
       place: null,
+      NumOfRooms: 1,
       // hotels: []
       hotels: []
     };
   }
 
-    //initially mount all the hotels info into the hotel list into state
-    componentDidMount() {
-      const db = firebase.firestore();
+  //initially mount all the hotels info into the hotel list into state
+  componentDidMount() {
+    const db = firebase.firestore();
 
-      //uery the hotel data from firestore
-      db.collection("testingHotels").get().then(collection => {
-        const hotels= [];
+    //uery the hotel data from firestore
+    db.collection("testingHotels")
+      .get()
+      .then(collection => {
+        const hotels = [];
         console.log("hotels -----" + hotels);
 
         //map all the needed hotel information to the state
         collection.forEach(doc => {
-            // doc.data() is never undefined for query doc snapshots
-            //-----testing-----
-            console.log(doc.id, " => ", doc.data());
+          // doc.data() is never undefined for query doc snapshots
+          //-----testing-----
+          console.log(doc.id, " => ", doc.data());
 
-            // console.log("name: " + doc.data().name );
-            // console.log("hID: " + doc.id);
-            // console.log("room_cap: " + doc.data().maxBeds );
-            // console.log("photoUrl: " + doc.data().photoURL );
-            // console.log("photoUrl: " + doc.data().type);
+          // console.log("name: " + doc.data().name );
+          // console.log("hID: " + doc.id);
+          // console.log("room_cap: " + doc.data().maxBeds );
+          // console.log("photoUrl: " + doc.data().photoURL );
+          // console.log("photoUrl: " + doc.data().type);
 
-            hotels.push({
-              name: doc.data().name,
-              hID: doc.id,
-              room_cap: doc.data().maxBeds,
-              photoUrl: doc.data().photoURL,
-              type: doc.data().type
-            });
-            console.log("hotels -----" + hotels);
+          hotels.push({
+            name: doc.data().name,
+            hID: doc.id,
+            room_cap: doc.data().maxBeds,
+            photoUrl: doc.data().photoURL,
+            type: doc.data().type
+          });
+          console.log("hotels -----" + hotels);
         });
         this.setState({ hotels });
       });
-  
-    }
+  }
 
   _handleCheckinDate = e => {
     this.setState({
@@ -149,18 +152,22 @@ class SearchBox extends Component {
     // filtering the hotel with "CityName_RoomCap"
     const db = firebase.firestore();
     //uery the hotel data from firestore
-    if(this.state.place === null){
+    if (this.state.place === null) {
       const searchKey = this.state.roomSize;
-      console.log("searchKey ------->" + searchKey)
+      console.log("searchKey ------->" + searchKey);
       const upperBoundOfSearchKey = 4;
-      db.collection("testingHotels").where("maxBeds", ">=", searchKey).where("maxBeds", "<=", upperBoundOfSearchKey).get().then(collection => {
-        const hotels= [];
-        //map all the needed hotel information to the state
-        collection.forEach(doc => {
+      db.collection("testingHotels")
+        .where("maxBeds", ">=", searchKey)
+        .where("maxBeds", "<=", upperBoundOfSearchKey)
+        .get()
+        .then(collection => {
+          const hotels = [];
+          //map all the needed hotel information to the state
+          collection.forEach(doc => {
             // doc.data() is never undefined for query doc snapshots
             //-----testing-----
             console.log(doc.id, " => ", doc.data());
-  
+
             hotels.push({
               name: doc.data().name,
               hID: doc.id,
@@ -168,22 +175,26 @@ class SearchBox extends Component {
               photoUrl: doc.data().photoURL,
               type: doc.data().type
             });
+          });
+          this.setState({ hotels });
         });
-        this.setState({ hotels });
-      });
     } else {
       const searchKey = this.state.place.name + "_" + this.state.roomSize;
       const upperBoundOfSearchKey = this.state.place.name + "_" + "4";
-      console.log("searchKey ------->" + searchKey)
-      db.collection("testingHotels").where("searchKey", ">=", searchKey).where("searchKey", "<=", upperBoundOfSearchKey).get().then(collection => {
-        const hotels= [];
-        console.log("hotels ----->" + hotels);
-        //map all the needed hotel information to the state
-        collection.forEach(doc => {
+      console.log("searchKey ------->" + searchKey);
+      db.collection("testingHotels")
+        .where("searchKey", ">=", searchKey)
+        .where("searchKey", "<=", upperBoundOfSearchKey)
+        .get()
+        .then(collection => {
+          const hotels = [];
+          console.log("hotels ----->" + hotels);
+          //map all the needed hotel information to the state
+          collection.forEach(doc => {
             // doc.data() is never undefined for query doc snapshots
             //-----testing-----
             console.log(doc.id, " => ", doc.data());
-  
+
             hotels.push({
               name: doc.data().name,
               hID: doc.id,
@@ -191,11 +202,10 @@ class SearchBox extends Component {
               photoUrl: doc.data().photoURL,
               type: doc.data().type
             });
+          });
+          this.setState({ hotels });
         });
-        this.setState({ hotels });
-      });
     }
-
   };
 
   render() {
@@ -233,6 +243,32 @@ class SearchBox extends Component {
                     </Select>
                   </FormControl>
                 </Grid>
+                <Grid item>
+                  <Typography
+                    gutterBottom
+                    variant="title"
+                    className={classes.typography}
+                  >
+                    Number of Rooms:
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <FormControl className={classes.droppedDownNumber}>
+                    <Select
+                      value={this.state.NumOfRooms}
+                      onChange={this.handleChange}
+                      displayEmpty
+                      name="NumOfRooms"
+                      className={classes.selectEmpty}
+                    >
+                      <MenuItem value="">#</MenuItem>
+                      <MenuItem value={1}>1</MenuItem>
+                      <MenuItem value={2}>2</MenuItem>
+                      <MenuItem value={3}>3</MenuItem>
+                      <MenuItem value={4}>4</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
               </Grid>
               <Grid
                 item
@@ -243,9 +279,9 @@ class SearchBox extends Component {
               >
                 <Autocomplete
                   className={classes.googleSearch}
-                  onPlaceSelected={ place => {
+                  onPlaceSelected={place => {
                     // console.log(place);
-                    this.setState({ place : place });
+                    this.setState({ place: place });
                     //testing
                     console.log(this.state.place.name);
                   }}
@@ -302,7 +338,7 @@ class SearchBox extends Component {
         <Grid item xs={1} md={1} lg={1} />
         <Grid container className={classes.root} xs={12} md={12} lg={12}>
           <Grid item xs={2} md={2} lg={2}>
-            filter box
+            <FilterBox />
           </Grid>
           <Grid item xs={10} md={10} lg={10}>
             <SearchResult hotels={this.state.hotels} />
