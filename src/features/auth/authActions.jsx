@@ -203,5 +203,3 @@ export const updateUser = user => async (
     });
   }
 };
-
-};
