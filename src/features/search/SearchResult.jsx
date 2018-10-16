@@ -12,7 +12,6 @@ const styles = theme => ({
   },
   mainpaper: {
     width: "100%",
-    padding: "15px",
     marginBottom: "10px"
   },
   hotelTitle: {
@@ -20,8 +19,7 @@ const styles = theme => ({
     fontSize: "30px",
     marginLeft: "10px",
     textDecoration: "none",
-    display: "inline",
-    marginBottom: "150px"
+    display: "inline"
   },
   subTypography: {
     fontFamily: "Times",
@@ -35,8 +33,17 @@ const styles = theme => ({
     marginLeft: "15px",
     marginRight: "15px",
     width: "150px",
-    marginBottom: "15px",
+    marginBottom: "5px",
     minWidth: "30px"
+  },
+  photo: {
+    width: "100%",
+  },
+  photoContainer: {
+    marginTop: "5px"
+  },
+  hotelInfo: {
+    marginLeft: "10px",
   }
 });
 
@@ -78,39 +85,33 @@ const SearchResult = ({ hotels, classes }) => {
                         </Typography>
                       </Link>
                     </Grid>
-                    <Grid xs={12} md={12} lg={12} />
-                    <Grid xs={2} md={2} lg={2}>
-                      Hotel Information Booking Information etc. etc.
-                    </Grid>
-                    <Grid item xs />
-                    <Grid item style={{
-                      position: "absolute",
-                      bottom: "0"
-                    }}>
-                      <Button
-                        variant="contained"
-                        onClick={this.submit}
-                        className={classes.searchButton}
-                      >
-                        Book
-                      </Button>
-                      <Button
-                        variant="contained"
-                        onClick={this.submit}
-                        className={classes.searchButton}
-                      >
-                        More Details
-                      </Button>
+                    <Grid xs={2} md={2} lg={2} className={classes.hotelInfo}>
+                      Hotel Information Booking Information etc
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid xs={5} md={5} lg={5}>
+                <Grid xs={5} md={5} lg={5} className={classes.photoContainer}>
                   <img
                     src={hotel.photoUrl}
-                    alt="hotel phote"
-                    height="300px"
-                    width="100%"
+                    className={classes.photo}
+                    alt="hotel pic"
                   />
+                </Grid>
+                <Grid xs={12} md={12} lg={12} direction="row">
+                  <Button
+                    variant="contained"
+                    onClick={this.submit}
+                    className={classes.searchButton}
+                  >
+                    Book
+                  </Button>
+                  <Button
+                    variant="contained"
+                    onClick={this.submit}
+                    className={classes.searchButton}
+                  >
+                    More Details
+                  </Button>
                 </Grid>
               </Grid>
             </Paper>
