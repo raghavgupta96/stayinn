@@ -4,24 +4,39 @@ import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
   root: {
     flexGrow: 1
   },
   mainpaper: {
-    width: "100%"
+    width: "100%",
+    padding: "15px",
+    marginBottom: "10px"
   },
-  typography: {
+  hotelTitle: {
     fontFamily: "Times",
-    fontSize: "50px",
+    fontSize: "30px",
     marginLeft: "10px",
-    textDecoration: "none"
+    textDecoration: "none",
+    display: "inline",
+    marginBottom: "150px"
   },
   subTypography: {
     fontFamily: "Times",
     fontSize: "25px",
     marginLeft: "10px"
+  },
+  searchButton: {
+    backgroundColor: "#409BE6",
+    height: "47px",
+    color: "#ffffff",
+    marginLeft: "15px",
+    marginRight: "15px",
+    width: "150px",
+    marginBottom: "15px",
+    minWidth: "30px"
   }
 });
 
@@ -36,46 +51,66 @@ const SearchResult = ({ hotels, classes }) => {
           <Grid item xs={11} md={11} lg={11}>
             <Paper className={classes.mainpaper}>
               <Grid container key={hotel.id}>
-                <Grid xs={12} md={12} lg={12}>
+                <Grid xs={7} md={7} lg={7}>
+                  <Grid item xs container direction="column">
+                    <Grid
+                      xs={12}
+                      md={12}
+                      lg={12}
+                      style={{
+                        flexDirection: "column"
+                      }}
+                    >
+                      <Typography
+                        gutterBottom
+                        variant="title"
+                        className={classes.hotelTitle}
+                      >
+                        Reservations @
+                      </Typography>
+                      <Link to={"/hotel/" + hotel.hID}>
+                        <Typography
+                          gutterBottom
+                          variant="title"
+                          className={classes.hotelTitle}
+                        >
+                          {hotel.name}
+                        </Typography>
+                      </Link>
+                    </Grid>
+                    <Grid xs={12} md={12} lg={12} />
+                    <Grid xs={2} md={2} lg={2}>
+                      Hotel Information Booking Information etc. etc.
+                    </Grid>
+                    <Grid item xs />
+                    <Grid item style={{
+                      position: "absolute",
+                      bottom: "0"
+                    }}>
+                      <Button
+                        variant="contained"
+                        onClick={this.submit}
+                        className={classes.searchButton}
+                      >
+                        Book
+                      </Button>
+                      <Button
+                        variant="contained"
+                        onClick={this.submit}
+                        className={classes.searchButton}
+                      >
+                        More Details
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid xs={5} md={5} lg={5}>
                   <img
                     src={hotel.photoUrl}
                     alt="hotel phote"
-                    height="400px"
+                    height="300px"
                     width="100%"
                   />
-                </Grid>
-                <Grid xs={12} md={12} lg={12}>
-                  <Link to={"/hotel/" + hotel.hID}>
-                    <Typography
-                      gutterBottom
-                      variant="title"
-                      className={classes.typography}
-                    >
-                      {hotel.name}
-                    </Typography>
-                  </Link>
-                </Grid>
-                <Grid xs={2} md={2} lg={2} direction="row">
-                  <Link to={"/hotel/" + hotel.hID}>
-                    <Typography
-                      gutterBottom
-                      variant="title"
-                      className={classes.subTypography}
-                    >
-                      Book Now!
-                    </Typography>
-                  </Link>
-                </Grid>
-                <Grid xs={2} md={2} lg={2} direction="row">
-                  <Link to={"/hotel/" + hotel.hID}>
-                    <Typography
-                      gutterBottom
-                      variant="title"
-                      className={classes.subTypography}
-                    >
-                      More Details
-                    </Typography>
-                  </Link>
                 </Grid>
               </Grid>
             </Paper>
