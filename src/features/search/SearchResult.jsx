@@ -58,8 +58,8 @@ const SearchResult = ({ hotels, classes }) => {
           <Grid item xs={11} md={11} lg={11}>
             <Paper className={classes.mainpaper}>
               <Grid container key={hotel.id}>
-                <Grid xs={7} md={7} lg={7}>
-                  <Grid item xs container direction="column">
+                <Grid container xs={7} md={7} lg={7}>
+                  <Grid item xs>
                     <Grid
                       xs={12}
                       md={12}
@@ -85,10 +85,29 @@ const SearchResult = ({ hotels, classes }) => {
                         </Typography>
                       </Link>
                     </Grid>
-                    <Grid xs={2} md={2} lg={2} className={classes.hotelInfo}>
+                    <Grid xs={12} className={classes.hotelInfo}>
                       Hotel Information Booking Information etc.
                     </Grid>
                   </Grid>
+                  <Grid item xs={12} container direction="column">
+                    <Grid item xs />
+                    <Grid item>
+                      <Button
+                        variant="contained"
+                        onClick={this.submit}
+                        className={classes.searchButton}
+                      >
+                        Book
+                      </Button>
+                      <Button
+                        variant="contained"
+                        onClick={this.submit}
+                        className={classes.searchButton}
+                      >
+                        More Details
+                      </Button>
+                    </Grid>
+                </Grid>
                 </Grid>
                 <Grid xs={5} md={5} lg={5} className={classes.photoContainer}>
                   <img
@@ -96,22 +115,6 @@ const SearchResult = ({ hotels, classes }) => {
                     className={classes.photo}
                     alt="hotel pic"
                   />
-                </Grid>
-                <Grid xs={12} md={12} lg={12} direction="row">
-                  <Button
-                    variant="contained"
-                    onClick={this.submit}
-                    className={classes.searchButton}
-                  >
-                    Book
-                  </Button>
-                  <Button
-                    variant="contained"
-                    onClick={this.submit}
-                    className={classes.searchButton}
-                  >
-                    More Details
-                  </Button>
                 </Grid>
               </Grid>
             </Paper>
