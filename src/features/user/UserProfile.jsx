@@ -136,6 +136,7 @@ class UserProfile extends Component {
   // }
 
   render() {
+    const { classes } = this.props;
     // Testing
     // console.log(this.state.data);
     // return (

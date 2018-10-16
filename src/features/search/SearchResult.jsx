@@ -1,35 +1,149 @@
 import React from "react";
-import { Link }from 'react-router-dom';
+import Grid from "@material-ui/core/Grid";
+import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import { Link } from "react-router-dom";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 
-const SearchResult = ({ hotels }) => {
+const styles = theme => ({
+  root: {
+    flexGrow: 1
+  },
+  mainpaper: {
+    width: "100%",
+    marginBottom: "10px"
+  },
+  hotelTitle: {
+    fontFamily: "Times",
+    fontSize: "30px",
+    marginLeft: "10px",
+    textDecoration: "none",
+    display: "inline"
+  },
+  subTypography: {
+    fontFamily: "Times",
+    fontSize: "25px",
+    marginLeft: "10px"
+  },
+  searchButton: {
+    backgroundColor: "#409BE6",
+    height: "47px",
+    color: "#ffffff",
+    marginLeft: "15px",
+    marginRight: "15px",
+    width: "150px",
+    marginBottom: "5px",
+    minWidth: "30px"
+  },
+  photo: {
+    width: "100%"
+  },
+  photoContainer: {
+    marginTop: "5px"
+  },
+  hotelInfo: {
+    marginLeft: "10px"
+  }
+});
+
+const SearchResult = ({ hotels, classes }) => {
   //check if the search result is empty
   const hotelList = hotels.length ? (
     hotels.map(hotel => {
       //filter goes here
       return hotel.room_cap >= 2 ? (
         // this is for for an individual hotel card below
-          <div key={hotel.id}>
-              <img src={hotel.photoUrl} alt="hotel phote" height="50" width="80"/>
-              <Link to={'/hotel/' + hotel.hID}>
-                <div>Hotel name: {hotel.name}</div>
-              </Link>
-              <div>Hotel ID: {hotel.hID}</div>
-              <div>Hotel room max capacity: {hotel.room_cap}</div>
-              <div>________________</div>
-              
-          </div>
-      ) : null;
-    })
+        <Grid container className={classes.root} xs={12} md={12} lg={12}>
+          <Grid item xs={11} md={11} lg={11}>
+            <Paper className={classes.mainpaper}>
+              <Grid container key={hotel.id}>
+                <Grid container xs={7} md={7} lg={7}>
+                  <Grid item xs>
+                    <Grid xs={12} md={12} lg={12}>
+                      <Typography
+                        gutterBottom
+                        variant="title"
+                        className={classes.hotelTitle}
+                      >
+                        Reservations @
+                      </Typography>
+                      <Link to={"/hotel/" + hotel.hID}>
+                        <Typography
+                          gutterBottom
+                          variant="title"
+                          className={classes.hotelTitle}
+                        >
+                          {hotel.name}
+                        </Typography>
+                      </Link>
+                    </Grid>
+                    <Grid
+                      item
+                      xs={12}
+                      md={12}
+                      lg={12}
+                      className={classes.hotelInfo}
+                    >
+                      Hotel Information Booking Information etc.
+                    </Grid>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    md={12}
+                    lg={12}
+                    container
+                    direction="column"
+                  >
+                    <Grid item xs />
+                    <Grid item>
+                      <Button
+                        variant="contained"
+                        onClick={this.submit}
+                        className={classes.searchButton}
+                      >
+                        Book
+                      </Button>
+                      <Button
+                        variant="contained"
+                        onClick={this.submit}
+                        className={classes.searchButton}
+                      >
+                        More Details
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid xs={5} md={5} lg={5} className={classes.photoContainer}>
+                  <img
+                    src={hotel.photoUrl}
+                    className={classes.photo}
+                    alt="hotel pic"
+                  />
+                </Grid>
+              </Grid>
+            </Paper>
+          </Grid>
+          <Grid item xs={1} md={1} lg={1} />
+        </Grid>
+      ) : // <div key={hotel.id}>
+      //     <img src={hotel.photoUrl} alt="hotel phote" height="50" width="80"/>
+      //     <Link to={'/hotel/' + hotel.hID}>
+      //       <div>Hotel name: {hotel.name}</div>
+      //     </Link>
+      //     <div>Hotel ID: {hotel.hID}</div>
+      //     <div>Hotel room max capacity: {hotel.room_cap}</div>
+      //     <div>________________</div>
 
+      // </div>
+      null;
+    })
   ) : (
     <p> There is no hotel match your searching.</p>
-  )
-  
-  return (
-    <div>
-      {hotelList}
-    </div>
-  )
-}
+  );
 
-export default SearchResult;
+  return <div>{hotelList}</div>;
+};
+
+export default withStyles(styles)(SearchResult);
