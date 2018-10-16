@@ -83,7 +83,7 @@ export const updateUser = user => async (
   { getFirebase, getFirestore }
 ) => {
   const firebase = getFirebase();
-  const firestore = getFirestore();
+  // const firestore = getFirestore();
   try {
     const currentUser = firebase.auth().currentUser;
 
@@ -204,4 +204,4 @@ export const updateUser = user => async (
   }
 };
 
-
+};

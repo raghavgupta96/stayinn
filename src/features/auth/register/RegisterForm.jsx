@@ -2,7 +2,6 @@ import React from "react";
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { registerUser } from '../authActions';
-import { combineValidators, isRequired } from 'revalidate'
 
 //Material UI components
 import withStyles from '@material-ui/core/styles/withStyles'
@@ -16,11 +15,21 @@ const actions = {
   registerUser
 }
 
-const validate = combineValidators({
-  displayName: isRequired('display'),
-  email: isRequired('email'),
-  password: isRequired('password')
-})
+const validate = values => {
+  const errors = {}
+  const requiredFields = ['email', 'password', 'reEnterPassword']
+  requiredFields.forEach(field => {
+    if (!values[ field ]) {
+      errors[ field ] = 'Required'
+    }
+    if(values.password !== values.reEnterPassword)
+    {
+      errors.reEnterPassword = 'Password not matches'
+    }
+  })
+  return errors
+}
+
 
 /* Styling */
 const styles = theme => ({
@@ -38,26 +47,35 @@ const styles = theme => ({
   }
 })
 
-//rendering the UI components
+// rendering the UI components
 const renderTextField = ({
   input, label, meta: { touched, error }, ...custom
 }) => (
+  <div>
     <TextField
-
-      label={label}
-      floatingLabelText={label}
-      errorText={touched && error}
-      {...input}
-      {...custom}
-      margin="normal"
-      fullWidth
+    style={{height: 50 }}
+    fullWidth
+    label={label}
+    floatingLabelText={label}
+    errorText={touched && error}
+    {...input}
+    {...custom}
+    margin="normal"
     />
-  )
+
+   <Typography color='error'>{touched && error}</Typography>
+
+  </div>
+
+
+)
+
+
 const renderPasswordField = ({
   input, label, meta: { touched, error }, ...custom
 }) => (
+  <div>
     <TextField
-
       style={{ paddingBottom: 10 }}
       type="password"
       label={label}
@@ -69,7 +87,12 @@ const renderPasswordField = ({
       margin="normal"
       fullWidth
     />
+    <Typography color='error'>{touched && error}</Typography>
+  </div>
+    
   )
+
+
 const renderButton = ({
   ...custom
 }) => (
@@ -93,11 +116,11 @@ const RegisterForm = ({ classes, handleSubmit, registerUser, error, invalid, sub
             <Paper className={classes.paper}>
               <Typography variant="display1" >Register</Typography>
               <Grid container className={classes.root} spacing={8}>
-                <Grid item xs={12}>
+                {/* <Grid item xs={12}> */}
                   <Field
                     name="email"
-                    label="Email"
                     component={renderTextField}
+                    label="Email"
                   />
                   <Field
                     name="password"
@@ -105,23 +128,24 @@ const RegisterForm = ({ classes, handleSubmit, registerUser, error, invalid, sub
                     component={renderPasswordField}
                   />
                   <Field
-                    name="re-enter password"
+                    name="reEnterPassword"
                     label="Re-enter Password"
                     component={renderPasswordField}
                   />
                   <Grid container justify="center">
-                    <Button component={renderButton}>
+                    <Button disabled={invalid || submitting} component={renderButton}>
                       Submit
-                      </Button>
+                    </Button>
+                    <div>
+                      {error && <Typography color='error'>{error}</Typography>}
+                    </div>
                   </Grid>
                 </Grid>
-              </Grid>
+              {/* </Grid> */}
             </Paper>
           </Grid>
           <Grid item xs={2}></Grid>
         </div>
-
-        {error && <label>{error}</label>}
 
       </form>
     </div>

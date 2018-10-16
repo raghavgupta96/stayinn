@@ -19,6 +19,7 @@ class FileInput extends Component {
           this.displayPicture(event);
         }}/>
         {this.state.pictureUrl && <img src={this.state.pictureUrl} width="200" height="200" alt=""/>}
+        <img src={this.state.pictureUrl} alt=""/>
     </div>
     )
   }

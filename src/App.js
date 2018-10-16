@@ -11,6 +11,7 @@ import ProfileUpdate from "./features/user/EditInfoForm";
 import FilterUi from "./features/filter/Filter.ui";
 import PaymentLayout from "./features/payment/PaymentLayout";
 import HotelDetail from "./features/hotel/HotelDetail";
+import Hotel from "./features/hotel/Hotel";
 
 class App extends Component {
   render() {
@@ -30,11 +31,14 @@ class App extends Component {
                 {/* No circumstances where two routes are supposed to load at the samet time */}
                 <Route path="/signup" component={Signup} />
                 <Route path="/login" component={Login} />
-                <Route path="/profile" component={UserProfile} />
+                {/* <Route path="/profile" component={UserProfile} /> */}
+                <Route path={"/profile/:id"} component={UserProfile} />
                 <Route path="/profileEdit" component={ProfileUpdate} />
                 <Route path="/searchResult" component={FilterUi} />
                 <Route path="/payment" component={PaymentLayout} />
                 <Route path="/hotelDetail" component={HotelDetail} />
+                {/* an individual hotel page  */}
+                <Route path="/hotel/:hotel_id" component={Hotel} />
               </Switch>
             </div>
           )}

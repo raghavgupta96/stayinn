@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 import { withFirestore, isLoaded } from "react-redux-firebase";
+import { withRouter } from "react-router";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import MyBooking from './myBooking'
+import MyBooking from "./myBooking";
 const actions = {};
 
 const mapState = state => ({
@@ -51,13 +52,17 @@ class UserProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: 1
+      data: 1,
+      id: this.props.match.params
     };
   }
 
   // getPhone = () => {
   async componentDidMount() {
     const { firebase } = this.props;
+
+    console.log(this.props);
+
     const obj = this;
     var currentUser;
 
@@ -69,6 +74,10 @@ class UserProfile extends Component {
       }
       currentUser = user;
       var userId = currentUser.uid;
+
+      obj.setState({
+        id: userId
+      });
 
       var docRef = firebase
         .firestore()
@@ -137,14 +146,18 @@ class UserProfile extends Component {
     //   </div>
     // );
 
-    // REal code
-    const { auth, classes } = this.props;
-    console.log("Render Phone Number:" + showPhone);
 
+    const { auth } = this.props;
+    // console.log("Render Phone Number:" + showPhone);
+    console.log(this.props.match.params.id);
     // only show when auth is loaded
     if (isLoaded(auth)) {
       // when user does not log in
       if (!auth.isEmpty) {
+        if(auth.uid !== this.props.match.params.id)
+        {
+          return window.location.replace("/");
+        }
         return (
           <div>
             <Grid container className={classes.root} justify="center" spacing={16}>
@@ -189,9 +202,11 @@ class UserProfile extends Component {
 
 export default withStyles(styles)(
   withFirestore(
-    connect(
-      mapState,
-      actions
-    )(UserProfile)
+    withRouter(
+      connect(
+        mapState,
+        actions
+      )(UserProfile)
+    )
   )
 );
