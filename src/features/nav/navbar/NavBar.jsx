@@ -21,7 +21,7 @@ class NavBar extends Component {
   };
   render() {
     // auth contains all user information (Ex: email, user, displayName, etc.)
-    const { auth } = this.props;
+  const { auth } = this.props;
     const authenticated = auth.isLoaded && !auth.isEmpty && auth.emailVerified;
     //console.log(auth);
     //console.log(authenticated);

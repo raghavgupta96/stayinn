@@ -13,6 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { updateUser } from "../auth/authActions";
+import MyBooking from "./myBooking";
 
 const actions = {
   updateUser
@@ -32,20 +33,24 @@ function CircularIndeterminate() {
 }
 
 const styles = theme => ({
+  //added styles for root and paper
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+    margin: "12px"
   },
   paper: {
     paddingTop: 30,
     paddingLeft: 20,
-    paddingRight: 20,
-    paddingBottom: 20
-  },
-  input: {
     paddingRight: 20
   },
   progress: {
     margin: theme.spacing.unit * 2
+  },
+  title: {
+    fontSize: "36px"
+  },
+  headerInfo: {
+    fontSize: "18px"
   }
 });
 
@@ -140,33 +145,59 @@ const EditInfoForm = ({
         // </div>
         <div>
           <form size="large" onSubmit={handleSubmit(updateUser)}>
-            <div>
-              <div>
-                {/* The way to make an image to upload button */}
-                {/* without upload button, Field cannot access data, always show undefined */}
-                <Field
-                  id="photoFile"
-                  type="text"
-                  name="photoFile"
-                  component={FileInput}
-                />
-                {/* <Field name="photoFile" component="input" type="file" /> */}
-              </div>
-              <div>
-                <Field
-                  name="displayName"
-                  label="Name"
-                  component={renderTextField}
-                />
-              </div>
-              <Field
-                name="phoneNumber"
-                label="Phone Number"
-                component={renderTextField}
-              />
-              <h2>Email: {auth.email}</h2>
-              <Button component={renderButton}>Update</Button>
-            </div>
+            <Grid
+              container
+              className={classes.root}
+              justify="center"
+              spacing={16}
+            >
+              <Grid item xs={4}>
+                <Paper className={classes.paper}>
+                  {/* {auth.photoURL && (
+                    <img width="200" height="200" src={auth.photoURL} alt="" />
+                  )}
+                  {!auth.photoURL && (
+                    <img
+                      width="200"
+                      height="200"
+                      src="https://www.skylom.com/assets/frontend/images/google_profile.png"
+                      alt=""
+                    />
+                  )} */}
+                  {/* The way to make an image to upload button */}
+                  {/* without upload button, Field cannot access data, always show undefined */}
+                  <Field
+                    id="photoFile"
+                    type="text"
+                    name="photoFile"
+                    component={FileInput}
+                  />
+                  {/* <Field name="photoFile" component="input" type="file" /> */}
+                  <Field
+                    name="displayName"
+                    label="Name"
+                    component={renderTextField}
+                  />
+                  <Field
+                    name="phoneNumber"
+                    label="Phone Number"
+                    component={renderTextField}
+                  />
+                  <Typography className={classes.headerInfo}>
+                    Email: {auth.email}
+                  </Typography>
+                  <Typography className={classes.headerInfo}>
+                    Password: ********
+                  </Typography>
+                </Paper>
+              </Grid>
+              <Grid item xs={8}>
+                <Paper>
+                  <MyBooking />
+                </Paper>
+              </Grid>
+            </Grid>
+            <Button component={renderButton}>Update</Button>
           </form>
         </div>
       );
