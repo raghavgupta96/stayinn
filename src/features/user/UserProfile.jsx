@@ -6,6 +6,7 @@ import { withRouter } from "react-router";
 import { withStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import MyBooking from "./myBooking";
+import EditInfoForm from "./EditInfoForm";
 const actions = {};
 
 const mapState = state => ({
@@ -27,14 +28,16 @@ function CircularIndeterminate() {
   );
 }
 
-var showPhone = null;
+var phoneNum = null;
 
 class UserProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: 1,
-      id: this.props.match.params
+      showPhone: null,
+      showReward: 100,
+      id: this.props.match.params,
+      updating: false
     };
   }
 
@@ -66,10 +69,11 @@ class UserProfile extends Component {
         .doc(userId);
       docRef.get().then(doc => {
         if (doc.exists) {
-          console.log("Phone Number:", doc.data().phoneNumber);
-          showPhone = doc.data().phoneNumber;
+          console.log("user data", doc.data());
+
           obj.setState({
-            data: showPhone
+            showPhone: doc.data().phoneNumber,
+            showReward: doc.data().reward,
           });
         } else {
           // doc.data() will be undefined in this case
@@ -117,7 +121,6 @@ class UserProfile extends Component {
   // }
 
   render() {
-    const { classes } = this.props;
     // Testing
     // console.log(this.state.data);
     // return (
@@ -132,31 +135,63 @@ class UserProfile extends Component {
     // console.log("Render Phone Number:" + showPhone);
     console.log(this.props.match.params.id);
     // only show when auth is loaded
-    if (isLoaded(auth)) {
+    if (isLoaded(auth) && this.state.showPhone) {
       // when user does not log in
       if (!auth.isEmpty) {
-        if(auth.uid !== this.props.match.params.id)
-        {
+        if (auth.uid !== this.props.match.params.id) {
           return window.location.replace("/");
         }
         return (
           <div>
             <h1>User Profile</h1>
-            {auth.photoURL && (
-              <img width="200" height="200" src={auth.photoURL} alt="" />
+
+            {!this.state.updating && (
+              <div>
+                {auth.photoURL && (
+                  <img width="200" height="200" src={auth.photoURL} alt="" />
+                )}
+                {!auth.photoURL && (
+                  <img
+                    width="200"
+                    height="200"
+                    src="https://www.skylom.com/assets/frontend/images/google_profile.png"
+                    alt=""
+                  />
+                )}
+                <h2>Name: {auth.displayName}</h2>
+                <h2>Phone Number: {this.state.showPhone} </h2>
+                <h2>Email: {auth.email}</h2>
+                <h2>Password: ********</h2>
+                <h2>Reward: {this.state.showReward} points</h2>
+                <Button
+                  onClick={() =>
+                    this.setState({
+                      updating: true
+                    })
+                  }
+                >
+                  Update Profile
+                </Button>
+              </div>
             )}
-            {!auth.photoURL && (
-              <img
-                width="200"
-                height="200"
-                src="https://www.skylom.com/assets/frontend/images/google_profile.png"
-                alt=""
-              />
+
+            {this.state.updating && (
+              <div>
+                <EditInfoForm />{" "}
+                <Button
+                  onClick={() =>
+                    this.setState({
+                      updating: false
+                    })
+                  }
+                >
+                  Cancel
+                </Button>
+              </div>
             )}
-            <h2>Name: {auth.displayName}</h2>
-            <h2>Email: {auth.email}</h2>
-            <h2>Phone Number: {showPhone} </h2>
-            <Button href="/profileEdit">Update Profile</Button>
+
+            {/* <Button href="/profileEdit">Update Profile</Button> */}
+
             <MyBooking />
           </div>
         );

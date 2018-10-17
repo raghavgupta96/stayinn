@@ -63,7 +63,9 @@ export const registerUser = user => async (
     // create a new profile in firestore
     let newUser = {
       createdAt: firestore.FieldValue.serverTimestamp(),
-      email: user.email
+      email: user.email,
+      reservations:[],
+      reward: 0,
     };
 
     await firestore.set(`users/${createdUser.uid}`, { ...newUser });
@@ -102,7 +104,7 @@ export const updateUser = user => async (
           displayName: user.displayName
         })
         .then(function() {
-          window.location.href = "/profile";
+          window.location.href = `/profile/${currentUser.uid}`;
         })
         .catch(function(error) {
           console.log(error);
@@ -121,7 +123,7 @@ export const updateUser = user => async (
           phoneNumber: user.phoneNumber
         })
         .then(function() {
-          window.location.href = "/profile";
+          window.location.href = `/profile/${currentUser.uid}`;
         })
         .catch(function(error) {
           console.log(error);
@@ -131,6 +133,7 @@ export const updateUser = user => async (
     // Check if user updates the profile image
     // if it does, update the info stored both in authentication
     // and firestore
+    console.log("Upload: " + user.photoFile);
     if (user.photoFile) {
       // file uploaded from user will be named
       // after its userId
@@ -187,7 +190,7 @@ export const updateUser = user => async (
                 photoURL: downloadURL
               })
               .then(function() {
-                window.location.href = "/profile";
+                window.location.href = `/profile/${currentUser.uid}`;
               })
               .catch(function(error) {
                 console.log(error);

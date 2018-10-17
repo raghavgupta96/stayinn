@@ -53,7 +53,6 @@ class myBooking extends Component {
       userRef.get().then(doc => {
         if (doc.exists) {
           console.log("Reservation Array: " + doc.data().reservations);
-
           // got the reservation data from firestore
           obj.setState({
             reservations: doc.data().reservations
