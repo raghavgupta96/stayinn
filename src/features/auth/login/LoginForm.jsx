@@ -32,27 +32,28 @@ const validate = values => {
 const styles = theme => ({
   root: {
     flexGrow: 1,
+    
   },
   paper: {
     paddingTop: 30,
     paddingLeft: 20,
     paddingRight: 20,
-    height: 300,
-    width: 400,
+    paddingBottom: 30,
+    margin: 30
   },
   
 })
 
 
-const LoginForm = ({classes, login, handleSubmit, error}) => {
+const LoginForm = ({classes, login, handleSubmit, error, invalid, submitting}) => {
 
   return (
     <div>
       <form size="large" onSubmit={handleSubmit(login)}>
       <div>
         <Grid container className={classes.root} justify="center" spacing={16}>
-          <Grid item xs={4}></Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}></Grid>
+          <Grid item xs={6}>
             <Paper className={classes.paper}>
               <Typography variant="display1" >Login</Typography>
               <Field 
@@ -62,17 +63,20 @@ const LoginForm = ({classes, login, handleSubmit, error}) => {
               />
               <Field 
                   name="password"
+                  label="Password"
                   component={renderPasswordField}
               />
-              <Button component={SubmitButton}>
-                Login 
-              </Button>
-              <div>
-                {error && <label>{error}</label>}
-              </div>
+              <Grid container justify="center">
+                      <Button disabled={invalid || submitting} component={SubmitButton}>
+                        LOGIN
+                      </Button>
+                      <div>
+                        {error && <Typography color='error'>{error}</Typography>}
+                      </div>
+                    </Grid>
             </Paper>
           </Grid>
-          <Grid item xs={4}></Grid>
+          <Grid item xs={3}></Grid>
         </Grid>
       </div>
       </form>
