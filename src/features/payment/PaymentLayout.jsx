@@ -3,6 +3,8 @@ import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import PaymentSummary from './summary/PaymentSummary';
 import PaymentForm from './form/PaymentForm';
+import { connect } from 'react-redux'
+import {inputCard} from './PaymentBackend'
 
 // Styles
 //
@@ -65,31 +67,26 @@ class PaymentLayout extends Component {
     }
   };
 
-  // handlers
-  // Pass these down to children so they can modify this component's state
-  //
+
   handlers = {
     setTraveler: traveler => this.setState({ traveler }),
     setCard: card => this.setState({ card }),
-    checkout: (card) => window.alert(JSON.stringify(card)), // For Chad :)
+    checkout: card => this.props.inputCard(card),
     cancel: () => this.props.history.goBack()
   }
 
   render() {
-    // PaymentSummary props
-    // 
+    // PaymentSummary
     const trip = this.props.trip
       ? this.props.trip
       : this.state.defaulttrip;
 
     // PaymentForm props
-    //
     const {
       traveler,
       card
     } = this.state;
     // PaymentForm handlers
-    //
     const {
       setTraveler,
       setCard,
@@ -118,4 +115,7 @@ class PaymentLayout extends Component {
   }
 }
 
-export default withStyles(styles)(withRouter(PaymentLayout));
+const mapStateToProps = (state) => {return {cardstate: state.card.cardstate}}
+const mapDispatchToProps = (dispatch) => {return{inputCard: (card) => dispatch(inputCard(card))}
+}
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(PaymentLayout)));

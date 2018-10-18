@@ -7,13 +7,6 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 
-// Back-end imports
-//
-// import Stripe from 'stripe';
-// import connect from 'react-redux';
-// import firestoreConnect from 'react-redux-firebase';
-// <script src="https://js.stripe.com/v3/"></script>
-
 // Styles
 //
 const styles = theme => ({
@@ -134,8 +127,6 @@ for (let i = expiryYearSelectStart; i <= expiryYearSelectEnd; i++) {
 //
 // End init MenuItems
 
-// paymentForm Component
-//
 const paymentForm = props => {
   const {
     traveler,
@@ -247,4 +238,4 @@ const paymentForm = props => {
   )
 };
 
-export default withStyles(styles)(paymentForm);//connect(firestoreConnect([{collection: 'users.card'}]))
+export default withStyles(styles)(paymentForm);
