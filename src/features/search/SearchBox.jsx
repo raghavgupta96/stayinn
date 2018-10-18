@@ -13,6 +13,8 @@ import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import firebase from "../../app/config/firebase";
 import FilterBox from "./filterBox";
+import { connect } from 'react-redux';
+
 
 const styles = theme => ({
   root: {
@@ -76,19 +78,18 @@ class SearchBox extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      checkinDate: null,
-      checkoutDate: null,
       roomSize: 1,
       searchKey: "",
       place: null,
       NumOfRooms: 1,
-      // hotels: []
       hotels: []
     };
   }
 
   //initially mount all the hotels info into the hotel list into state
   componentDidMount() {
+    console.log("This props reservation start date: -----------> "+ this.props.reservation.startdate)
+    // console.log("This state NumOfRoom: -----------> "+ this.state.NumOfRooms);
     const db = firebase.firestore();
 
     //uery the hotel data from firestore
@@ -104,12 +105,6 @@ class SearchBox extends Component {
           //-----testing-----
           console.log(doc.id, " => ", doc.data());
 
-          // console.log("name: " + doc.data().name );
-          // console.log("hID: " + doc.id);
-          // console.log("room_cap: " + doc.data().maxBeds );
-          // console.log("photoUrl: " + doc.data().photoURL );
-          // console.log("photoUrl: " + doc.data().type);
-
           hotels.push({
             name: doc.data().name,
             hID: doc.id,
@@ -123,26 +118,48 @@ class SearchBox extends Component {
       });
   }
 
+  //convert the ISO format data "2018-10-15" string to data object
+  stringToDate = (date) => {
+    var year  = date.substring(0,4);
+    var month = date.substring(5,7);
+    var day   = date.substring(8,10);
+    var date  = new Date(year, month-1, day);
+    return date;
+  };
+
   _handleCheckinDate = e => {
-    this.setState({
-      checkinDate: e.target.value
-    });
-    console.log(this.state.checkinDate);
+    //convert the iso data "2018-05-15" string to data object
+    const date = this.stringToDate(e.target.value);
+    //set the store state
+    this.props.setStartDate(date);
   };
 
   _handleCheckoutDate = e => {
-    this.setState({
-      checkoutDate: e.target.value
-    });
-    console.log(this.state.checkoutDate);
+    // convert the checkout date string to date object
+    const date = this.stringToDate(e.target.value);
+    // console.log(this.state.checkoutDate);
+    //set the store state
+    this.props.setEndDate(date);
   };
 
-  handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
+  _handleRoomSizeChange = e => {
+    this.props.setRoomType(e.target.value);
+    this.setState({ roomSize: e.target.value });
+  }
+
+  _handleNumOfRoomsChange = e => {
+    this.props.setRooms(e.target.value);
+    this.setState({ NumOfRooms: e.target.value });
+  }
 
   submit = () => {
-    console.log("submitted");
+    console.log("----- Test the Store values-------------")
+    console.log("this.props.reservation.startdate ++++++++++++>" + this.props.reservation.startdate);
+    console.log("this.props.reservation.enddate -------------->" + this.props.reservation.enddate);
+    console.log("this.props.reservation.roomtype -------------->" + this.props.reservation.roomtype);
+    console.log("this.props.reservation.rooms -------------->" + this.props.reservation.rooms);
+
+    console.log("__________submitted_____________");
     //do functional here
     console.log("Checkin Date" + this.state.checkinDate);
     console.log("Checkout Date" + this.state.checkoutDate);
@@ -152,6 +169,7 @@ class SearchBox extends Component {
     // filtering the hotel with "CityName_RoomCap"
     const db = firebase.firestore();
     //uery the hotel data from firestore
+    //if user does not enter city
     if (this.state.place === null) {
       const searchKey = this.state.roomSize;
       console.log("searchKey ------->" + searchKey);
@@ -164,7 +182,6 @@ class SearchBox extends Component {
           const hotels = [];
           //map all the needed hotel information to the state
           collection.forEach(doc => {
-            // doc.data() is never undefined for query doc snapshots
             //-----testing-----
             console.log(doc.id, " => ", doc.data());
 
@@ -230,7 +247,7 @@ class SearchBox extends Component {
                   <FormControl className={classes.droppedDownNumber}>
                     <Select
                       value={this.state.roomSize}
-                      onChange={this.handleChange}
+                      onChange={this._handleRoomSizeChange}
                       displayEmpty
                       name="roomSize"
                       className={classes.selectEmpty}
@@ -256,7 +273,7 @@ class SearchBox extends Component {
                   <FormControl className={classes.droppedDownNumber}>
                     <Select
                       value={this.state.NumOfRooms}
-                      onChange={this.handleChange}
+                      onChange={this._handleNumOfRoomsChange}
                       displayEmpty
                       name="NumOfRooms"
                       className={classes.selectEmpty}
@@ -349,4 +366,40 @@ class SearchBox extends Component {
   }
 }
 
-export default withStyles(styles)(SearchBox);
+const mapStateToProps = (state) => {
+  return{
+    reservation: state.reservation
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return{
+    setStartDate: (date) =>{
+      dispatch ({
+        type: "SET_STARTDATE",
+        payload: date
+      });
+    },
+    setEndDate: (date) =>{
+      dispatch ({
+        type: "SET_ENDDATE",
+        payload: date
+      });
+    },    
+    setRooms: (num) =>{
+      dispatch ({
+        type: "SET_ROOMS",
+        payload: num
+      });
+    },
+    setRoomType: (date) =>{
+      dispatch ({
+        type: "SET_ROOMTYPE",
+        payload: date
+      });
+    }
+
+  }
+}
+
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(SearchBox));
