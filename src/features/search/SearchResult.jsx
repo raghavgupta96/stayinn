@@ -89,6 +89,7 @@ const SearchResult = ({ hotels, classes }) => {
                         variant="contained"
                         onClick={this.submit}
                         className={classes.searchButton}
+                        href="/payment"
                       >
                         Book
                       </Button>
