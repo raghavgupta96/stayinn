@@ -14,7 +14,7 @@ firebase.initializeApp(firebaseConfig);
 
 // To make the firestore show the time stamp correctly
 const firestore = firebase.firestore();
-const settings = {/* your settings... */ timestampsInSnapshots: true};
+const settings =({timestampsInSnapshots: true})
 firestore.settings(settings);
 
 export default firebase;

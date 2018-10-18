@@ -1,134 +1,241 @@
 import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import DropDownMenu from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
-import './PaymentForm.css';
-//import Stripe from 'stripe';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import {inputCard} from '../PaymentBackend'
-import {connect} from 'react-redux'
-import PaymentLayout from '../PaymentLayout';
+
+// Styles
+//
+const styles = theme => ({
+  paymentForm: {
+    display: 'flex',
+    flexFlow: 'column nowrap',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '16px',
+    boxShadow: '0 2px 10px -3px black'
+  },
+  traveler: {
+    width: '100%'
+  },
+  textField: {
+    width: '100%'
+  },
+  payment: {
+    width: '100%'
+  },
+  name: {
+    display: 'flex',
+    flexFlow: 'row nowrap',
+    justifyContent: 'space-between',
+    width: '100%'
+  },
+  firstName: {
+    flex: 'auto',
+    marginRight: '8px'
+  },
+  lastName: {
+    flex: 'auto',
+    marginLeft: '8px'
+  },
+  cardDetails: {
+    display: 'flex',
+    flexFlow: 'column nowrap',
+  },
+  cardName: {
+    flex: 'auto',
+  },
+  cardNumber: {
+    flex: 'auto',
+  },
+  cardSecurity: {
+    display: 'flex',
+    flexFlow: 'row',
+    alignItems: 'baseline',
+    width: '100%'
+  },
+  cvc: {
+    flex: 'auto'
+  },
+  expiryLabel: {
+    margin: '0 8px'
+  },
+  month: {
+    margin: '0 8px',
+    minWidth: '80px'
+  },
+  year: {
+    margin: '0 8px 0 0',
+    minWidth: '80px'
+  },
+  controls: {
+    display: 'flex',
+    flexFlow: 'row nowrap',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    width: '100%',
+    '& Button': {
+      color: 'white',
+      width: '30%'
+    }
+  }
+});
+//
+// end styles
+
+// Init Select MenuItems
+//
+// Months MenuItems
+//
+const months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec"
+];
+const selectMonths = months.map((month, i) => (
+  <MenuItem
+    value={month}
+    key={month}
+  >{month}</MenuItem> 
+));
+//
+// Years MenuItems
+//
 const expiryYearSelectStart = 2018;
 const expiryYearSelectEnd = 2030;
-
-
+const selectYears= []
+for (let i = expiryYearSelectStart; i <= expiryYearSelectEnd; i++) {
+  selectYears.push(
+    <MenuItem
+      value={i}
+      key={i}
+    >{i}</MenuItem>
+  )
+}
+//
+// End init MenuItems
 
 const paymentForm = props => {
   const {
     traveler,
     card,
-    handlers
+    handlers,
+    classes
   } = props
 
-  
-
-  // Select Years
-  const selectYears= [ ]
-  for (let i = expiryYearSelectStart; i <= expiryYearSelectEnd; i++) {
-    selectYears.push(
-      <MenuItem value={i} key={i}>
-      {i}
-      </MenuItem>
-    )
-  }
-    return (
-
-    <div className="PaymentForm">
-      <form>
-        <section className="TravelerInformation">
-          <h1>Traveler Information</h1>
+  return (
+    <form className={classes.paymentForm}>
+      <section className={classes.traveler}>
+        <h1>Traveler Information</h1>
+        <div className={classes.name}>
           <TextField
             id="firstname"
             label="First Name"
-            value={traveler.firstname}
-            onChange={event => handlers.setTraveler({ ...traveler, firstname: event.target.value })}
+            value={traveler.firstName}
+            onChange={event => handlers.setTraveler({ ...traveler, firstName: event.target.value })}
+            className={classes.firstName}
           />
           <TextField
             id="lastname"
             label="Last Name"
-            value={traveler.lastname}
-            onChange={event => handlers.setTraveler({ ...traveler, lastname: event.target.value })}
+            value={traveler.lastName}
+            onChange={event => handlers.setTraveler({ ...traveler, lastName: event.target.value })}
+            className={classes.lastName}
           />
-          <TextField
-            id="email"
-            label="Email"
-            value={traveler.email}
-            onChange={event => handlers.setTraveler({ ...traveler, email: event.target.value })}
-          />
-          <TextField
-            id="phonenumber"
-            label="Phone Number"
-            value={traveler.phonenumber}
-            onChange={event => handlers.setTraveler({ ...traveler, phonenumber: event.target.value })}
-          />
-          <TextField
-            id="specialrequest"
-            label="Special Request"
-            value={traveler.specialrequest}
-            onChange={event => handlers.setTraveler({ ...traveler, specialrequest: event.target.value })}
-          />
-        </section>
-        {/*</form>*/}
-
-        {/*possible multiple forms on this page*/}
-
-        {/*<form>*/}
-        <section className="PaymentInformation">
-          <h1>Payment Information</h1>
+        </div>
+        <TextField
+          id="email"
+          label="Email"
+          value={traveler.email}
+          onChange={event => handlers.setTraveler({ ...traveler, email: event.target.value })}
+          className={classes.textField}
+        />
+        <TextField
+          id="phonenumber"
+          label="Phone Number"
+          value={traveler.phoneNumber}
+          onChange={event => handlers.setTraveler({ ...traveler, phoneNumber: event.target.value })}
+          className={classes.textField}
+        />
+        <TextField
+          id="specialrequest"
+          label="Special Request"
+          value={traveler.specialRequest}
+          onChange={event => handlers.setTraveler({ ...traveler, specialRequest: event.target.value })}
+          className={classes.textField}
+        />
+      </section>
+      <section className={classes.payment}>
+        <h1>Payment Information</h1>
+        <div className={classes.cardDetails}>
           <TextField
             id="cardname"
             label="Cardholder's Name"
-            value={card.cardname}
-            onChange={event => handlers.setCard({ ...card, cardname: event.target.value })}
+            value={card.cardName}
+            onChange={event => handlers.setCard({ ...card, cardName: event.target.value })}
+            className={classes.cardName}
           />
           <TextField
             id="cardnumber"
             label="Card Number"
-            value={card.cardnumber}
-            onChange={event => handlers.setCard({ ...card, cardnumber: event.target.value })}
+            value={card.cardNumber}
+            onChange={event => handlers.setCard({ ...card, cardNumber: event.target.value })}
+            className={classes.cardNumber}
           />
+        </div>
+        <div className={classes.cardSecurity}>
           <TextField
             id="cvc"
             label="CVC Code"
             value={card.cvc}
             onChange={event => handlers.setCard({ ...card, cvc: event.target.value })}
+            className={classes.cvc}
           />
-          <Select onChange={event => 
-              handlers.setCard({ ...card, expirymonth: event.target.value })} 
-              value={card.expirymonth}
-              >
-            <MenuItem value={1}>Jan</MenuItem>
-            <MenuItem value={2}>Feb</MenuItem>
-            <MenuItem value={3}>Mar</MenuItem>
-            <MenuItem value={4}>Apr</MenuItem>
-            <MenuItem value={5}>May</MenuItem>
-            <MenuItem value={6}>Jun</MenuItem>
-            <MenuItem value={7}>Jul</MenuItem>
-            <MenuItem value={8}>Aug</MenuItem>
-            <MenuItem value={9}>Sep</MenuItem>
-            <MenuItem value={10}>Oct</MenuItem>
-            <MenuItem value={11}>Nov</MenuItem>
-            <MenuItem value={12}>Dec</MenuItem>
-          </Select>
-          <Select onChange={event => handlers.setCard({ ...card, expiryyear: event.target.value })} 
-            value={card.expiryyear}>  
-            {selectYears}
-          </Select>   
+          <span className={classes.expiryLabel}>Expiry Date: </span>
+          <FormControl
+            className={classes.month}
+          >
+            <InputLabel>Month</InputLabel>
+            <Select
+              value={card.expiryMonth}
+              onChange={event => handlers.setCard({ ...card, expiryMonth: event.target.value })}
+              inputProps={{ name: "expiryMonth" }}
+            >
+              {selectMonths}
+            </Select>
+          </FormControl>
+          <FormControl
+            className={classes.year}
+          >
+            <InputLabel>Year</InputLabel>
+            <Select
+              value={card.expiryYear}
+              onChange={event => handlers.setCard({ ...card, expiryYear: event.target.value })}
+              inputProps={{ name: "expiryYear" }}
+            >
+              {selectYears}
+            </Select>
+          </FormControl>
+         </div>
+      </section>
+      <section className={classes.controls}>
+        <Button variant="contained" color="primary" onClick={() => handlers.checkout(card)}>Submit</Button>
+        <Button variant="contained" onClick={handlers.cancel}>Cancel</Button>
+      </section>
+    </form>
+  )
+};
 
-        </section>
-        <section className="PaymentFormControls">
-          <Button onClick={() => handlers.checkout(card)}>Checkout</Button>
-          <Button onClick={handlers.cancel}>Cancel</Button>
-        </section>
-
-      </form>
-    </div>
-  )}
-
-  
-export default (paymentForm);
+export default withStyles(styles)(paymentForm);

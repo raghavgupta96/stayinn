@@ -1,3 +1,73 @@
+
+## Team for Development:
+
+React UI Devs:
+Gideon
+Lawrence
+Philip
+
+React Function Dev:
+Jun
+Philip
+Patrick
+
+Testers:
+Alan
+Patrick
+Jun
+
+Backend:
+Chad
+Gideon
+Alan
+
+Documenters:
+Chad
+Lawrence
+
+Technical Lead: Richard
+
+Product Owner: Vivian
+
+
+## Branch Format (Richard Please Update)
+Master -> Testing -> Development
+                  -> SubDev (Profile/User)        -> Personal branch 
+                  -> SubDev (Search/SearchResult) -> Personal branch
+                  -> SubDev (Payment/Checkout)    -> Personal branch
+
+## Proposed Structure (Hierarchy of Files):
+<pre>
+> src
+  > app
+    > common
+      > form
+      > util
+    > config
+      > Firebase.js
+    > layout
+    > reducers
+    > store
+      > ConfigureStore.js
+  > features
+    > auth
+      > login
+      > register
+    > home
+    > hotel 
+      > filterResult
+      > searchResult
+      > searchResultList
+    > modals
+    > nav
+      > navbar
+    > payment
+    > search
+    > user
+
+
+## Standard React Documentation:
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>

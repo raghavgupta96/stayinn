@@ -1,39 +1,62 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import { withStyles } from '@material-ui/core/styles';
 import PaymentSummary from './summary/PaymentSummary';
 import PaymentForm from './form/PaymentForm';
 import { connect } from 'react-redux'
-import './PaymentLayout.css';
 import {inputCard} from './PaymentBackend'
 
+// Styles
+//
+const styles = {
+  paymentLayout: {
+    display: 'flex',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    padding: '8px',
+    margin: '8px'
+  }
+};
+
+// PaymentLayout Component
+//
 class PaymentLayout extends Component {
   state = {
+    // Traveler Info
+    //
     traveler: {
-      firstname: "",
-      lastname: "",
+      firstName: "",
+      lastName: "",
       email: "",
-      phonenumber: "",
-      specialrequest: ""
+      phoneNumber: "",
+      specialRequest: ""
     },
+    // Card Info
+    //
     card: {
-      cardname: "",
-      cardnumber: "",
+      // address: "", // Does stripe need this?
+      cardName: "",
+      cardNumber: "",
       cvc: "",
-      expirymonth: "",
-      expiryyear: "",
+      expiryMonth: "",
+      expiryYear: "",
     },
+    // Transaction Info
+    //
     transaction: {
       hotelId: "",
       userId: "",
       total: 0
     },
-    // defaults
+    // Default Trip
+    // If no props are passed, this object is used
+    //
     defaulttrip: { 
-      hotelname: "hotelname",
+      hotelName: "hotelname",
       location: "location",
-      startdate: new Date(),
-      enddate: new Date(),
-      roomtype: "roomtype",
+      startDate: new Date(),
+      endDate: new Date(),
+      roomType: "roomtype",
       rate: 100.00,
       nights: 4,
       rooms: 1,
@@ -48,12 +71,8 @@ class PaymentLayout extends Component {
   handlers = {
     setTraveler: traveler => this.setState({ traveler }),
     setCard: card => this.setState({ card }),
-    checkout: (card) =>{
-      this.props.inputCard(card)
-
-    }, // For Chad
+    checkout: card => this.props.inputCard(card),
     cancel: () => this.props.history.goBack()
-    
   }
 
   render() {
@@ -82,7 +101,7 @@ class PaymentLayout extends Component {
     };
 
     return (
-      <div className="PaymentLayout">
+      <div className={this.props.classes.paymentLayout}>
         <PaymentSummary
           trip={trip}
         />
@@ -95,9 +114,8 @@ class PaymentLayout extends Component {
     )
   }
 }
-// const mapStateToProps = (state) => {return {cardstate: state.card.cardstate}}
+
+const mapStateToProps = (state) => {return {cardstate: state.card.cardstate}}
 const mapDispatchToProps = (dispatch) => {return{inputCard: (card) => dispatch(inputCard(card))}
 }
-
-// Richard: change mapStateToProps to make the code work temporarily
-export default connect(null, mapDispatchToProps)(withRouter(PaymentLayout))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(PaymentLayout)));
