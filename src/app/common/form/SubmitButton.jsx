@@ -1,14 +1,16 @@
-import React from "react";
-import Button from "@material-ui/core/Button";
+import React from 'react';
+import Button from '@material-ui/core/Button';
 
-const renderLoginButton = ({ ...custom }) => (
-  <Button
-    variant="contained"
-    justify="right"
+const renderLoginButton = ({
+    ...custom
+  }) => (
+    <Button 
+    variant="contained" 
+    justify="right" 
     color="primary"
     type="submit"
     {...custom}
-  />
-);
+    />
+  )
 
-export default renderLoginButton;
+export default renderLoginButton

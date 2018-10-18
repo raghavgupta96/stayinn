@@ -1,5 +1,6 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
 
 const renderTextField = ({
   input,
@@ -7,16 +8,19 @@ const renderTextField = ({
   meta: { touched, error },
   ...custom
 }) => (
-  <TextField
-    style={{ height: 50 }}
-    label={label}
-    floatingLabelText={label}
-    errorText={touched && error}
-    {...input}
-    {...custom}
-    margin="normal"
-    fullWidth
-  />
+  <div>
+    <TextField
+      style={{ height: 50 }}
+      label={label}
+      floatingLabelText={label}
+      errorText={touched && error}
+      {...input}
+      {...custom}
+      margin="normal"
+      fullWidth
+    />
+    <Typography color="error">{touched && error}</Typography>
+  </div>
 );
 
 export default renderTextField;
