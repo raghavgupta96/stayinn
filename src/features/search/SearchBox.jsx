@@ -12,11 +12,13 @@ import SearchResult from "./SearchResult";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import firebase from "../../app/config/firebase";
-import FilterBox from "./filterBox";
+import FilterBox from "./FilterBox";
+import Rewards from "./RewardsBox";
+import Info from "./Info";
 
 const styles = theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   mainpaper: {
     width: "100%",
@@ -69,6 +71,9 @@ const styles = theme => ({
     paddingTop: "17px",
     paddingRight: "5px",
     paddingLeft: "15px"
+  },
+  rewardsBox: {
+    marginTop: "15px"
   }
 });
 
@@ -223,7 +228,7 @@ class SearchBox extends Component {
                     variant="title"
                     className={classes.typography}
                   >
-                    Room Size:
+                    Room Capacity:
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -235,7 +240,6 @@ class SearchBox extends Component {
                       name="roomSize"
                       className={classes.selectEmpty}
                     >
-                      <MenuItem value="">#</MenuItem>
                       <MenuItem value={1}>1</MenuItem>
                       <MenuItem value={2}>2</MenuItem>
                       <MenuItem value={3}>3</MenuItem>
@@ -261,7 +265,6 @@ class SearchBox extends Component {
                       name="NumOfRooms"
                       className={classes.selectEmpty}
                     >
-                      <MenuItem value="">#</MenuItem>
                       <MenuItem value={1}>1</MenuItem>
                       <MenuItem value={2}>2</MenuItem>
                       <MenuItem value={3}>3</MenuItem>
@@ -337,12 +340,22 @@ class SearchBox extends Component {
         </Grid>
         <Grid item xs={1} md={1} lg={1} />
         <Grid container className={classes.root} xs={12} md={12} lg={12}>
+          <Grid item xs={1} md={1} lg={1} />
           <Grid item xs={2} md={2} lg={2}>
-            <FilterBox />
+            <Grid xs={12} md={12} lg={12}>
+              <FilterBox />
+            </Grid>
+            <Grid xs={12} md={12} lg={12} className={classes.rewardsBox}>
+              <Rewards />
+            </Grid>
+            <Grid xs={12} md={12} lg={12} className={classes.rewardsBox}>
+              <Info />
+            </Grid>
           </Grid>
-          <Grid item xs={10} md={10} lg={10}>
+          <Grid item xs={9} md={9} lg={9}>
             <SearchResult hotels={this.state.hotels} />
           </Grid>
+          <Grid item xs={1} md={1} lg={1} />
         </Grid>
       </Grid>
     );
