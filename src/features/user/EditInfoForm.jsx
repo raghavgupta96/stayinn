@@ -189,15 +189,16 @@ const EditInfoForm = ({
                   <Typography className={classes.headerInfo}>
                     Password: ********
                   </Typography>
+                  <Button type="submit">Update</Button>
+                  <Button component={renderButton}>Cancel</Button>
                 </Paper>
               </Grid>
               <Grid item xs={8}>
                 <Paper>
                   <MyBooking />
-                </Paper>
+                </Paper>              
               </Grid>
             </Grid>
-            <Button component={renderButton}>Update</Button>
           </form>
         </div>
       );

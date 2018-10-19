@@ -10,7 +10,6 @@ const renderLoginButton = ({
     color="primary"
     type="submit"
     {...custom}
-    margin="normal"
     />
   )
 

@@ -230,9 +230,7 @@ export const updateUser = user => async (
         .update({
           firstLogin: false
         }).then(function () {
-          if(!currentUser.photoURL) {
             window.location.href = `/profile/${currentUser.uid}`;
-          }
         });
       } 
     });
