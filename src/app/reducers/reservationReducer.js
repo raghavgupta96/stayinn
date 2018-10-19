@@ -1,26 +1,26 @@
 const reservationReducer = (state = {
-    startdate: new Date(),
-    enddate: new Date(),
+    startDate: new Date(),
+    endDate: new Date(),
     rooms: 1,
-    roomtype: 1
+    roomType: 1
 }, action) => {
     switch (action.type) {
         case "SET_STARTDATE":
             state = {
                 ...state,
-                startdate: action.payload
+                startDate: action.payload
             };
             break;
         case "SET_ENDDATE":
             state = {
                 ...state,
-                enddate: action.payload
+                endDate: action.payload
             };
             break;
         case "SET_ROOMTYPE":
             state = {
                 ...state,
-                roomtype: action.payload
+                roomType: action.payload
             };
             break;
         case "SET_ROOMS":
@@ -28,6 +28,8 @@ const reservationReducer = (state = {
                 ...state,
                 rooms: action.payload
             }
+            break;
+        default:
             break;
     }
     return state;
