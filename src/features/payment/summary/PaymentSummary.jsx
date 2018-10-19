@@ -1,5 +1,5 @@
-import React from 'react';
 
+import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 
 // Styles
@@ -151,7 +151,7 @@ const paymentSummary = props => {
         <h2>USD {total}</h2>
       </div>
     </div>
-  )
+  );
 };
 
 export default withStyles(styles, { withTheme: true })(paymentSummary);

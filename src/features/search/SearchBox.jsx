@@ -13,8 +13,9 @@ import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import firebase from "../../app/config/firebase";
 import FilterBox from "./filterBox";
-import { connect } from 'react-redux';
-
+import { connect } from "react-redux";
+import Rewards from "./RewardsBox";
+import Info from "./Info";
 
 const styles = theme => ({
   root: {
@@ -71,6 +72,9 @@ const styles = theme => ({
     paddingTop: "17px",
     paddingRight: "5px",
     paddingLeft: "15px"
+  },
+  rewardsBox: {
+    marginTop: "15px"
   }
 });
 
@@ -88,7 +92,10 @@ class SearchBox extends Component {
 
   //initially mount all the hotels info into the hotel list into state
   componentDidMount() {
-    console.log("This props reservation start date: -----------> "+ this.props.reservation.startdate)
+    console.log(
+      "This props reservation start date: -----------> " +
+        this.props.reservation.startdate
+    );
     // console.log("This state NumOfRoom: -----------> "+ this.state.NumOfRooms);
     const db = firebase.firestore();
 
@@ -119,11 +126,11 @@ class SearchBox extends Component {
   }
 
   //convert the ISO format data "2018-10-15" string to data object
-  stringToDate = (date) => {
-    var year  = date.substring(0,4);
-    var month = date.substring(5,7);
-    var day   = date.substring(8,10);
-    var date  = new Date(year, month-1, day);
+  stringToDate = date => {
+    var year = date.substring(0, 4);
+    var month = date.substring(5, 7);
+    var day = date.substring(8, 10);
+    var date = new Date(year, month - 1, day);
     return date;
   };
 
@@ -145,19 +152,31 @@ class SearchBox extends Component {
   _handleRoomSizeChange = e => {
     this.props.setRoomType(e.target.value);
     this.setState({ roomSize: e.target.value });
-  }
+  };
 
   _handleNumOfRoomsChange = e => {
     this.props.setRooms(e.target.value);
     this.setState({ NumOfRooms: e.target.value });
-  }
+  };
 
   submit = () => {
-    console.log("----- Test the Store values-------------")
-    console.log("this.props.reservation.startdate ++++++++++++>" + this.props.reservation.startdate);
-    console.log("this.props.reservation.enddate -------------->" + this.props.reservation.enddate);
-    console.log("this.props.reservation.roomtype -------------->" + this.props.reservation.roomtype);
-    console.log("this.props.reservation.rooms -------------->" + this.props.reservation.rooms);
+    console.log("----- Test the Store values-------------");
+    console.log(
+      "this.props.reservation.startdate ++++++++++++>" +
+        this.props.reservation.startdate
+    );
+    console.log(
+      "this.props.reservation.enddate -------------->" +
+        this.props.reservation.enddate
+    );
+    console.log(
+      "this.props.reservation.roomtype -------------->" +
+        this.props.reservation.roomtype
+    );
+    console.log(
+      "this.props.reservation.rooms -------------->" +
+        this.props.reservation.rooms
+    );
 
     console.log("__________submitted_____________");
     //do functional here
@@ -240,7 +259,7 @@ class SearchBox extends Component {
                     variant="title"
                     className={classes.typography}
                   >
-                    Room Size:
+                    Room Capacity:
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -252,7 +271,6 @@ class SearchBox extends Component {
                       name="roomSize"
                       className={classes.selectEmpty}
                     >
-                      <MenuItem value="">#</MenuItem>
                       <MenuItem value={1}>1</MenuItem>
                       <MenuItem value={2}>2</MenuItem>
                       <MenuItem value={3}>3</MenuItem>
@@ -278,7 +296,6 @@ class SearchBox extends Component {
                       name="NumOfRooms"
                       className={classes.selectEmpty}
                     >
-                      <MenuItem value="">#</MenuItem>
                       <MenuItem value={1}>1</MenuItem>
                       <MenuItem value={2}>2</MenuItem>
                       <MenuItem value={3}>3</MenuItem>
@@ -354,52 +371,66 @@ class SearchBox extends Component {
         </Grid>
         <Grid item xs={1} md={1} lg={1} />
         <Grid container className={classes.root} xs={12} md={12} lg={12}>
+          <Grid item xs={1} md={1} lg={1} />
           <Grid item xs={2} md={2} lg={2}>
-            <FilterBox />
+            <Grid xs={12} md={12} lg={12}>
+              <FilterBox />
+            </Grid>
+            <Grid xs={12} md={12} lg={12} className={classes.rewardsBox}>
+              <Rewards />
+            </Grid>
+            <Grid xs={12} md={12} lg={12} className={classes.rewardsBox}>
+              <Info />
+            </Grid>
           </Grid>
-          <Grid item xs={10} md={10} lg={10}>
+          <Grid item xs={9} md={9} lg={9}>
             <SearchResult hotels={this.state.hotels} />
           </Grid>
+          <Grid item xs={1} md={1} lg={1} />
         </Grid>
       </Grid>
     );
   }
 }
 
-const mapStateToProps = (state) => {
-  return{
+const mapStateToProps = state => {
+  return {
     reservation: state.reservation
-  }
-}
+  };
+};
 
-const mapDispatchToProps = (dispatch) => {
-  return{
-    setStartDate: (date) =>{
-      dispatch ({
+const mapDispatchToProps = dispatch => {
+  return {
+    setStartDate: date => {
+      dispatch({
         type: "SET_STARTDATE",
         payload: date
       });
     },
-    setEndDate: (date) =>{
-      dispatch ({
+    setEndDate: date => {
+      dispatch({
         type: "SET_ENDDATE",
         payload: date
       });
-    },    
-    setRooms: (num) =>{
-      dispatch ({
+    },
+    setRooms: num => {
+      dispatch({
         type: "SET_ROOMS",
         payload: num
       });
     },
-    setRoomType: (date) =>{
-      dispatch ({
+    setRoomType: date => {
+      dispatch({
         type: "SET_ROOMTYPE",
         payload: date
       });
     }
+  };
+};
 
-  }
-}
-
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(SearchBox));
+export default withStyles(styles)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(SearchBox)
+);

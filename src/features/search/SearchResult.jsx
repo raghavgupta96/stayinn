@@ -78,30 +78,18 @@ const SearchResult = ({ hotels, classes }) => {
                         </Typography>
                       </Link>
                     </Grid>
-                    <Grid
-                      item
-                      xs={12}
-                      md={12}
-                      lg={12}
-                      className={classes.hotelInfo}
-                    >
+                    <Grid item xs={12} md={12} lg={12} className={classes.hotelInfo}>
                       Hotel Information Booking Information etc.
                     </Grid>
                   </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    md={12}
-                    lg={12}
-                    container
-                    direction="column"
-                  >
+                  <Grid item xs={12} md={12} lg={12} container direction="column">
                     <Grid item xs />
                     <Grid item>
                       <Button
                         variant="contained"
                         onClick={this.submit}
                         className={classes.searchButton}
+                        href="/payment"
                       >
                         Book
                       </Button>

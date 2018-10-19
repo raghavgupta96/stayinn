@@ -18,8 +18,8 @@ const styles = theme => ({
   },
   mainpaper: {
     width: "100%",
-    marginLeft: "10px",
-    marginRight: "10px"
+    marginRight: "10px",
+    backgroundColor: "#E6F6FF"
   },
   budgetRange1: {
     width: "90%",
@@ -54,12 +54,18 @@ const styles = theme => ({
     marginTop: "15px",
     marginLeft: "15px"
   },
-  budgetContainer: {
-    marginLeft: "15px"
-  },
   typeTitle: {
     fontFamily: "Times",
-    fontSize: "20px"
+    fontSize: "20px",
+    marginTop :"10px",
+    marginLeft : "10px"
+  },
+  typeHeading: {
+    backgroundColor: "#409BE6",
+    color: "#ffffff",
+    fontFamily: "Times",
+    fontSize: "25px",
+    paddingLeft: "10px"
   }
 });
 
@@ -68,7 +74,8 @@ class filterBox extends Component {
     super(props);
     this.state = {
       checked: [0],
-      amount: null
+      amount: null,
+      roomSize: "Hotel"
     };
   }
   render() {
@@ -77,8 +84,18 @@ class filterBox extends Component {
       <Grid container className={classes.root} xs={12} md={12} lg={12}>
         <Paper className={classes.mainpaper}>
           <Grid container>
-            <Grid xs={12} md={12} lg={12} className={classes.typeContainer}>
-              <Typography className={classes.typeTitle}>Room Type</Typography>
+            <Grid xs={12} md={12} lg={12}>
+              {/* <Typography
+                className={classes.typeHeading}
+                xs={12}
+                md={12}
+                lg={12}
+              >
+                Filter
+              </Typography> */}
+              <Typography className={classes.typeTitle} xs={12} md={12} lg={12}>
+                Room Type
+              </Typography>
             </Grid>
             <Grid
               xs={12}
@@ -90,21 +107,18 @@ class filterBox extends Component {
                 <Select
                   value={this.state.roomSize}
                   displayEmpty
-                  name="roomSize"
+                  name="roomType"
                   className={classes.selectEmpty}
                 >
-                  <MenuItem value="">#</MenuItem>
-                  <MenuItem value={1}>1</MenuItem>
-                  <MenuItem value={2}>2</MenuItem>
-                  <MenuItem value={3}>3</MenuItem>
-                  <MenuItem value={4}>4</MenuItem>
+                  <MenuItem value={"Hotel"}>Hotel</MenuItem>
+                  <MenuItem value={"Motel"}>Motel</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
             <Grid xs={12} md={12} lg={12} className={classes.budgetContainer}>
               <Typography className={classes.typeTitle}>Budget</Typography>
             </Grid>
-            <Grid xs={4}>
+            <Grid xs={5}>
               <FormControl className={classes.budgetRange1}>
                 <Input
                   value={this.state.amount}
@@ -117,7 +131,7 @@ class filterBox extends Component {
             <Grid xs={1} className={classes.hyphen}>
               <Typography>-</Typography>
             </Grid>
-            <Grid xs={4}>
+            <Grid xs={5}>
               <FormControl className={classes.budgetRange2}>
                 <Input
                   value={this.state.amount}
@@ -128,20 +142,16 @@ class filterBox extends Component {
               </FormControl>
             </Grid>
             <Grid xs={12} md={12} lg={12}>
-              <Checkbox />
-              bar
-            </Grid>
-            <Grid xs={12} md={12} lg={12}>
-              <Checkbox />
-              gym
-            </Grid>
-            <Grid xs={12} md={12} lg={12}>
-              <Checkbox />
+              <Checkbox color="primary" />
               swimmingPool
             </Grid>
             <Grid xs={12} md={12} lg={12}>
-              <Checkbox />
-              Free twinkies
+              <Checkbox color="primary" />
+              gym
+            </Grid>
+            <Grid xs={12} md={12} lg={12}>
+              <Checkbox color="primary" />
+              bar
             </Grid>
           </Grid>
         </Paper>
