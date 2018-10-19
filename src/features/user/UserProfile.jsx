@@ -155,7 +155,8 @@ class UserProfile extends Component {
     // console.log("Render Phone Number:" + showPhone);
     console.log(this.props.match.params.id);
     // only show when auth is loaded
-    if (isLoaded(auth) && this.state.showPhone) {
+    console.log(this.state.showPhone);
+    if (isLoaded(auth)) {
       // when user does not log in
       if (!auth.isEmpty) {
         if (auth.uid !== this.props.match.params.id) {
