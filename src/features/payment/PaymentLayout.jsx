@@ -7,7 +7,6 @@ import { connect } from 'react-redux'
 import {inputCard} from './PaymentBackend'
 
 // Styles
-//
 const styles = {
   paymentLayout: {
     display: 'flex',
@@ -18,12 +17,30 @@ const styles = {
   }
 };
 
+// Some defaults for when data is not available
+const defaults = {
+  trip: { 
+    hotelName: "hotelName", // hotel
+    location: "location", // hotel
+    rate: 100.00, // hotel
+    nights: 4, // user picks
+    subtotal: 420, // calc
+    tax: 70.32, // calc
+    fees: 15.00, // constant?
+    total: 490.32 // calc
+  },
+  reservation: {
+    startDate: new Date(),
+    endDate: new Date(),
+    rooms: 1,
+    roomType: 1
+  }
+}
+
 // PaymentLayout Component
 //
 class PaymentLayout extends Component {
   state = {
-    // Traveler Info
-    //
     traveler: {
       firstName: "",
       lastName: "",
@@ -31,40 +48,18 @@ class PaymentLayout extends Component {
       phoneNumber: "",
       specialRequest: ""
     },
-    // Card Info
-    //
     card: {
-      // address: "", // Does stripe need this?
       cardName: "",
       cardNumber: "",
       cvc: "",
       expiryMonth: "",
       expiryYear: "",
     },
-    // Transaction Info
-    //
     transaction: {
       hotelId: "",
       userId: "",
       total: 0
     },
-    // Default Trip
-    // If no props are passed, this object is used
-    //
-    defaulttrip: { 
-      hotelName: "hotelname",
-      location: "location",
-      startDate: new Date(),
-      endDate: new Date(),
-      roomType: "roomtype",
-      rate: 100.00,
-      nights: 4,
-      rooms: 1,
-      subtotal: 420,
-      tax: 70.32,
-      fees: 15.00,
-      total: 490.32
-    }
   };
 
 
@@ -77,9 +72,15 @@ class PaymentLayout extends Component {
 
   render() {
     // PaymentSummary
-    const trip = this.props.trip
-      ? this.props.trip
-      : this.state.defaulttrip;
+    const { trip } = this.props.trip
+      ? this.props
+      : defaults;
+    const { reservation } = this.props.reservation
+      ? this.props
+      : defaults
+    const { hID } = this.props.hID
+      ? this.props
+      : "lELnUhZ2MHPUTYutXDoy" // Using a hardcoded id for testing
 
     // PaymentForm props
     const {
@@ -104,6 +105,8 @@ class PaymentLayout extends Component {
       <div className={this.props.classes.paymentLayout}>
         <PaymentSummary
           trip={trip}
+          reservation={reservation}
+          hID={hID}
         />
         <PaymentForm
           traveler={traveler}
@@ -115,7 +118,12 @@ class PaymentLayout extends Component {
   }
 }
 
-const mapStateToProps = (state) => {return {cardstate: state.card.cardstate}}
-const mapDispatchToProps = (dispatch) => {return{inputCard: (card) => dispatch(inputCard(card))}
-}
+const mapStateToProps = state => ({
+  cardstate: state.card.cardstate,
+  reservation: state.reservation
+});
+const mapDispatchToProps = dispatch => ({
+  inputCard: (card) => dispatch(inputCard(card))
+});
+
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(PaymentLayout)));
