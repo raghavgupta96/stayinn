@@ -53,17 +53,20 @@ const paymentSummary = props => {
   const {
     hotelName,
     location,
-    startDate,
-    endDate,
-    roomType,
     rate,
     nights, // Not a prop
-    rooms,
     subtotal, // Not a prop
     tax, // Not a prop
     fees, // Not a prop
     total // Not a prop
   } = props.trip;
+
+  const {
+    startDate,
+    endDate,
+    rooms,
+    roomType
+  } = props.reservation;
 
   const { classes } = props;
 
@@ -91,10 +94,9 @@ const paymentSummary = props => {
       6: 'Jul',
       7: 'Aug',
       8: 'Sep',
-      9: 'Nov',
-      10: 'Oct',
-      11: 'Nov',
-      12: 'Dec'
+      9: 'Oct',
+      10: 'Nov',
+      11: 'Dec'
     }
     const wd = date.getDay();
     const m = date.getMonth();
