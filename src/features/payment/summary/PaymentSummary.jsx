@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { withStyles } from '@material-ui/core/styles';
 
 // Styles
@@ -59,7 +58,7 @@ const paymentSummary = props => {
     tax, // Not a prop
     fees, // Not a prop
     total // Not a prop
-  } = props.trip;
+  } = props.hotel;
 
   const {
     startDate,
