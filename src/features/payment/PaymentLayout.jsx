@@ -6,6 +6,8 @@ import PaymentForm from './form/PaymentForm';
 import { connect } from 'react-redux'
 import {inputCard} from './PaymentBackend'
 
+import firebase from "../../app/config/firebase";
+
 // Styles
 const styles = {
   paymentLayout: {
@@ -19,10 +21,10 @@ const styles = {
 
 // Some defaults for when data is not available
 const defaults = {
-  trip: { 
-    hotelName: "hotelName", // hotel
-    location: "location", // hotel
-    rate: 100.00, // hotel
+  hotelSummary: { 
+    hotelName: "hotelName",
+    location: "location",
+    rate: 100.00,
     nights: 4, // user picks
     subtotal: 420, // calc
     tax: 70.32, // calc
@@ -34,13 +36,15 @@ const defaults = {
     endDate: new Date(),
     rooms: 1,
     roomType: 1
-  }
+  },
+  hID: "lELnUhZ2MHPUTYutXDoy" 
 }
 
 // PaymentLayout Component
 //
 class PaymentLayout extends Component {
   state = {
+    hotelSummary: undefined, // populated in componentDidMount,
     traveler: {
       firstName: "",
       lastName: "",
@@ -62,6 +66,23 @@ class PaymentLayout extends Component {
     },
   };
 
+  componentDidMount() {
+    // Populate hotel information
+    const db = firebase.firestore();
+    const hotelRef = db.collection("testingHotels").doc(defaults.hID);
+
+    hotelRef
+      .get()
+      .then((snapShot) => {
+        const h = snapShot.data();
+        const hotel = {
+          hotelName: h.name,
+          location: `${h.city}, ${h.state} ${h.zip}`,
+          rate: h.price
+        };
+        this.setState({ hotelSummary: hotel })
+      });
+  }
 
   handlers = {
     setTraveler: traveler => this.setState({ traveler }),
@@ -72,15 +93,12 @@ class PaymentLayout extends Component {
 
   render() {
     // PaymentSummary
-    const { trip } = this.props.trip
-      ? this.props
-      : defaults;
+    const { hotelSummary } = this.state.hotelSummary
+      ? this.state
+      : defaults
     const { reservation } = this.props.reservation
       ? this.props
       : defaults
-    const { hID } = this.props.hID
-      ? this.props
-      : "lELnUhZ2MHPUTYutXDoy" // Using a hardcoded id for testing
 
     // PaymentForm props
     const {
@@ -104,9 +122,8 @@ class PaymentLayout extends Component {
     return (
       <div className={this.props.classes.paymentLayout}>
         <PaymentSummary
-          trip={trip}
+          hotel={hotelSummary}
           reservation={reservation}
-          hID={hID}
         />
         <PaymentForm
           traveler={traveler}
