@@ -139,7 +139,9 @@ const paymentForm = props => {
     <form className={classes.paymentForm}>
       <section className={classes.traveler}>
         <h1>Traveler Information</h1>
+        <p>* = Required</p>
         <div className={classes.name}>
+          
           <TextField
             id="firstname"
             label="First Name"
@@ -230,6 +232,7 @@ const paymentForm = props => {
           </FormControl>
          </div>
       </section>
+      <p></p>
       <section className={classes.controls}>
         <Button variant="contained" color="primary" onClick={() => handlers.checkout(card)}>Submit</Button>
         <Button variant="contained" onClick={handlers.cancel}>Cancel</Button>
