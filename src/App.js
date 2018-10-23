@@ -37,7 +37,7 @@ class App extends Component {
                 <Route path="/profileEdit" component={ProfileUpdate} />
                 <Route path="/profileSetup" component={ProfileSetup}/>
                 <Route path="/searchResult" component={FilterUi} />
-                <Route path="/payment" component={PaymentLayout} />
+                <Route path="/payment/:hotel_id" component={PaymentLayout} />
                 <Route path="/hotelDetail" component={HotelDetail} />
                 {/* an individual hotel page  */}
                 <Route path="/hotel/:hotel_id" component={Hotel} />
