@@ -24,6 +24,17 @@ const mapState = state => ({
   profile: state.firebase.profile
 });
 
+const validate = values => {
+  const errors = {}
+  const requiredFields = ['photoFile', 'displayName', 'phoneNumber']
+  requiredFields.forEach(field => {
+    if (!values.photoFile && !values.displayName && !values.phoneNumber) {
+      errors[ field ] = 'Required'
+    }
+  })
+  return errors
+}
+
 function CircularIndeterminate() {
   return (
     <div>
@@ -190,12 +201,13 @@ const EditInfoForm = ({
                   <Typography className={classes.headerInfo}>
                     Password: ********
                   </Typography>
-                  <Button component={renderButton} type="submit">Update</Button>
+                  <Button disabled={invalid || submitting} component={renderButton} type="submit">Update</Button>
                   <Button style={{backgroundColor: "#e60000"}} onClick={() => {
                     userProfile.setState({
                       updating: false,
                     })
                   }}>Cancel</Button>
+                  {console.log(error)}
                 </Paper>
               </Grid>
               <Grid item xs={8}>
@@ -221,5 +233,5 @@ export default withStyles(styles)(
   connect(
     mapState,
     actions
-  )(reduxForm({ form: "editInfoForm" })(EditInfoForm))
+  )(reduxForm({ form: "editInfoForm", validate })(EditInfoForm))
 );

@@ -121,6 +121,7 @@ export const updateUser = user => async (
         .catch(function(error) {
           console.log(error);
         });
+        window.location.href = `/profile/${currentUser.uid}`;
     }
 
     // Check if user updates the phone number
@@ -141,6 +142,7 @@ export const updateUser = user => async (
         .catch(function(error) {
           console.log(error);
         });
+        window.location.href = `/profile/${currentUser.uid}`;
     }
 
     // Check if user updates the profile image
