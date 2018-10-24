@@ -73,13 +73,43 @@ class myBooking extends Component {
       editOpen: false,
       currRes: null,
       currHotel: null,
+      checkin: null,
+      checkout: null
     };
   }
+
+    // convertDate = date => {;
+    //   console.log(date);
+    //   // const month = date.getUTCMonth() + 1;
+    //   // const day = date.getUTCDate();
+    //   // const year = date.getUTCFullYear();
+    //   // const dateConversion = year + "-" + month + "-" + day;
+    //   // return dateConversion
+    // };
+  
+    _handleCheckinDate = e => {
+      console.log("CHECKIN MAH MAN")
+      //const date = this.convertDate(e.target.value);
+      const date = e.target.value;
+      console.log(date);
+      this.setState({
+        checkin: date
+      })
+    };
+  
+    _handleCheckoutDate = e => {
+      console.log("CHECKOUT MAH MAN")
+      //const date = this.convertDate(e.target.value);
+      const date = e.target.value;
+      console.log(date);
+      this.setState({
+        checkout: e.target.value
+      })
+    };
 
   async componentDidMount() {
     const { firebase } = this.props;
     const obj = this;
-    var currentUser;
 
     // Check if auth changes after initializes
     firebase.auth().onAuthStateChanged(function (user) {
@@ -145,6 +175,34 @@ class myBooking extends Component {
     });
   }
 
+  handleEditRes(reservationId) {
+    const { firebase } = this.props;
+    console.log("RESERVATION ID: " + reservationId);
+    console.log("CHECKIN: " + this.state.checkin);
+    console.log("CHECKOUT: " + this.state.checkout);
+    const checkin = this.state.checkin;
+    const checkout = this.state.checkout;
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (!user) {
+        return;
+      }
+      firebase
+      .firestore()
+      .collection("reservations")
+      .doc(reservationId)
+      .update({
+        checkinDate: checkin,
+        checkoutDate: checkout
+      })
+      .then(function () {
+        window.location.reload();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    })
+  }
+
   handleCancel(reservationId) {
     // console.log(index);
     // console.log("You click:" + this.state.reservations[index].reservationId);
@@ -177,7 +235,6 @@ class myBooking extends Component {
     // make a list that contains all reservations user made
     const { auth, firebase, classes } = this.props;
     console.log(this.props);
-    const obj = this;
     // var thisRes = null;
     const resList =
       this.state.reservations &&
@@ -300,8 +357,22 @@ class myBooking extends Component {
                         </form>
                       </Grid>
                       <Grid padding={20}>
-                        <Button component={renderButton}>Confirm</Button>
-                        <Button component={warningButton}>Cancel</Button>
+                        <Button
+                          component={renderButton}
+                          onClick={() => {
+                            this.state.currRes &&
+                              this.handleEditRes(this.state.currRes.reservationId);
+                          }}
+                        >
+                          Confirm
+                        </Button>
+                        <Button component={warningButton}
+                          onClick={() => {
+                            this.handleEditClose();
+                          }}
+                        >
+                          Cancel
+                        </Button>
                       </Grid>
                     </div>
                   </Modal>
@@ -375,6 +446,7 @@ class myBooking extends Component {
     );
   }
 }
+
 
 export default withStyles(styles)(withFirestore(
   connect(
