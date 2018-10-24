@@ -3,6 +3,11 @@ import { connect } from "react-redux";
 import { withFirestore } from "react-redux-firebase";
 import Button from "@material-ui/core/Button";
 
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import Modal from "@material-ui/core/Modal";
+
 const actions = {};
 
 const mapState = state => ({
@@ -20,12 +25,45 @@ const renderButton = ({ ...custom }) => (
   />
 );
 
+// warning (red) button that prevents users to click on it
+const warningButton = ({ ...custom }) => (
+  <Button
+    variant="contained"
+    justify="right"
+    type="submit"
+    style={{
+      backgroundColor: "#e60000"
+    }}
+    {...custom}
+  />
+);
+
+const modalStyle = {
+  backgroundColor: "white",
+  padding: 50,
+  textAlign: "center",
+  borderRadius: 10,
+  marginLeft: 450,
+  marginRight: 450
+};
+
+const regTextStyle = {
+  fontSize: 18
+};
+
+const highlightTextStyle = {
+  fontSize: 18,
+  color: "red"
+};
+
 class myBooking extends Component {
   constructor(props) {
     super(props);
     this.state = {
       reservations: null,
-      currRes: null
+      open: false,
+      currRes: null,
+      currHotel: null,
     };
   }
 
@@ -70,18 +108,31 @@ class myBooking extends Component {
     });
   }
 
+  rand() {
+    return Math.round(Math.random() * 20) - 10;
+  }
+
+  handleOpen = reservation => {
+    this.setState({
+      open: true,
+      currRes: reservation
+    });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
   handleCancel(reservationId) {
     // console.log(index);
     // console.log("You click:" + this.state.reservations[index].reservationId);
     const { firebase } = this.props;
-
     // Check if auth changes after initializes
     firebase.auth().onAuthStateChanged(function(user) {
       // if user does not log in
       if (!user) {
         return;
       }
-
       firebase
         .firestore()
         .collection("reservations")
@@ -100,11 +151,30 @@ class myBooking extends Component {
 
   render() {
     // make a list that contains all reservations user made
-    const { auth } = this.props;
+    const { auth, firebase } = this.props;
+    const obj = this;
     // var thisRes = null;
     const resList =
       this.state.reservations &&
-      this.state.reservations.map((res) => {
+      this.state.reservations.map(res => {
+
+        var docRef = firebase
+        .firestore()
+        .collection("users")
+        .doc(res.HID);
+      docRef.get().then(doc => {
+        if (doc.exists) {
+          console.log("hotel data", doc.data());
+          this.setState({
+            currHotel: doc.data(),
+          })
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+        }
+      });
+
+        
         return (
           <div key={res.reservationId}>
             {/* Only show reservation that the user has instead of all*/}
@@ -118,31 +188,81 @@ class myBooking extends Component {
                   <h3>Check-out Date: {res.checkoutDate}</h3>
                   <h3>Total Price: ${res.totalPrice}</h3>
                   <h3>isCanceled: {String(res.isCanceled)}</h3>
+                  <Modal
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    style={{ paddingTop: 50, zIndex: 1, overflow: "auto" }}
+                  >
+                    <div style={modalStyle}>
+                      <Typography style={regTextStyle}>
+                        Do you want to cancel this reservation? <br />
+                        Cancelling this reservation will be charged 10%
+                        cancellation fee: <br />
+                        <br />
+                        Reservation Price: $
+                        {this.state.currRes && this.state.currRes.totalPrice}
+                        <br />
+                      </Typography>
+                      <Typography style={highlightTextStyle}>
+                        Cancellation Fee: -$
+                        {this.state.currRes &&
+                          this.state.currRes.totalPrice * 0.1}
+                        <br />
+                      </Typography>
+                      <Typography style={regTextStyle}>
+                        Refund: $
+                        {this.state.currRes &&
+                          this.state.currRes.totalPrice * 0.9}
+                        <br />
+                      </Typography>
+                      <Button
+                        component={renderButton}
+                        onClick={() => {
+                          this.state.currRes &&
+                            this.handleCancel(this.state.currRes.reservationId);
+                        }}
+                      >
+                        Yes
+                      </Button>
+                      <Button
+                        component={warningButton}
+                        onClick={() => {
+                          this.handleClose();
+                        }}
+                      >
+                        No
+                      </Button>
+                    </div>
+                  </Modal>
                   <Button component={renderButton}>Edit</Button>
                   <Button
-                    component={renderButton}
+                    component={warningButton}
                     onClick={() => {
-                      this.handleCancel(res.reservationId);
+                      // this.handleCancel(res.reservationId);
+                      this.handleOpen(res);
                     }}
                   >
                     Cancel
                   </Button>
+
                   <hr />
                 </div>
               )}
-          
+
             {/* Show the reservation that has been cancelled */}
             {auth.uid === res.userId &&
               res.isCanceled && (
                 <div>
                   <h1>This Reservation has been Cancelled</h1>
                   <s>
-                  <h3>Reservation ID: {res.reservationId}</h3>
-                  <h3>Hotel ID: {res.HID}</h3>
-                  <h3>Check-in Date: {res.checkinDate}</h3>
-                  <h3>Check-out Date: {res.checkoutDate}</h3>
-                  <h3>Total Price: ${res.totalPrice}</h3>
-                  <h3>isCanceled: {String(res.isCanceled)}</h3>
+                    <h3>Reservation ID: {res.reservationId}</h3>
+                    <h3>Hotel ID: {res.HID}</h3>
+                    <h3>Check-in Date: {res.checkinDate}</h3>
+                    <h3>Check-out Date: {res.checkoutDate}</h3>
+                    <h3>Total Price: ${res.totalPrice}</h3>
+                    <h3>isCanceled: {String(res.isCanceled)}</h3>
                   </s>
                   <hr />
                 </div>
@@ -155,6 +275,26 @@ class myBooking extends Component {
       <div>
         <h1>MyBooking</h1>
         {resList}
+        {/* <Button
+          onClick={() => {
+            this.handleOpen();
+          }}
+        >
+          Show Modal
+        </Button>
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          open={this.state.open}
+          onClose={this.handleClose}
+          style={{paddingTop: 50, zIndex: 1, overflow: "auto", }}
+        >
+          <div style={modalStyle}>
+            {console.log(classes)}
+            <Typography style={textStyle}>Text in a modal</Typography>
+          </div>
+        </Modal>
+        <hr /> */}
       </div>
     );
   }
