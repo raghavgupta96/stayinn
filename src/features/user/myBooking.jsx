@@ -2,11 +2,21 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withFirestore } from "react-redux-firebase";
 import Button from "@material-ui/core/Button";
-
-import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Modal from "@material-ui/core/Modal";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
+
+const styles = () => ({
+  dateContainer: {
+    display: "flex",
+    flexWrap: "wrap",
+    marginLeft: "15px",
+    marginRight: "15px",
+    marginBottom: "15px"
+  }
+})
 
 const actions = {};
 
@@ -31,9 +41,7 @@ const warningButton = ({ ...custom }) => (
     variant="contained"
     justify="right"
     type="submit"
-    style={{
-      backgroundColor: "#e60000"
-    }}
+    color="tertiary_lightblue"
     {...custom}
   />
 );
@@ -62,6 +70,7 @@ class myBooking extends Component {
     this.state = {
       reservations: null,
       open: false,
+      editOpen: false,
       currRes: null,
       currHotel: null,
     };
@@ -73,7 +82,7 @@ class myBooking extends Component {
     var currentUser;
 
     // Check if auth changes after initializes
-    firebase.auth().onAuthStateChanged(function(user) {
+    firebase.auth().onAuthStateChanged(function (user) {
       // if user does not log in
       if (!user) {
         return;
@@ -123,12 +132,25 @@ class myBooking extends Component {
     this.setState({ open: false });
   };
 
+  handleEditOpen = reservation => {
+    this.setState({
+      editOpen: true,
+      currRes: reservation
+    });
+  }
+
+  handleEditClose = () => {
+    this.setState({
+      editOpen: false
+    });
+  }
+
   handleCancel(reservationId) {
     // console.log(index);
     // console.log("You click:" + this.state.reservations[index].reservationId);
     const { firebase } = this.props;
     // Check if auth changes after initializes
-    firebase.auth().onAuthStateChanged(function(user) {
+    firebase.auth().onAuthStateChanged(function (user) {
       // if user does not log in
       if (!user) {
         return;
@@ -140,18 +162,21 @@ class myBooking extends Component {
         .update({
           isCanceled: true
         })
-        .then(function() {
+        .then(function () {
           window.location.reload();
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     });
   }
 
+
+
   render() {
     // make a list that contains all reservations user made
-    const { auth, firebase } = this.props;
+    const { auth, firebase, classes } = this.props;
+    console.log(this.props);
     const obj = this;
     // var thisRes = null;
     const resList =
@@ -159,22 +184,22 @@ class myBooking extends Component {
       this.state.reservations.map(res => {
 
         var docRef = firebase
-        .firestore()
-        .collection("users")
-        .doc(res.HID);
-      docRef.get().then(doc => {
-        if (doc.exists) {
-          console.log("hotel data", doc.data());
-          this.setState({
-            currHotel: doc.data(),
-          })
-        } else {
-          // doc.data() will be undefined in this case
-          console.log("No such document!");
-        }
-      });
+          .firestore()
+          .collection("users")
+          .doc(res.HID);
+        docRef.get().then(doc => {
+          if (doc.exists) {
+            console.log("hotel data", doc.data());
+            this.setState({
+              currHotel: doc.data(),
+            })
+          } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+          }
+        });
 
-        
+
         return (
           <div key={res.reservationId}>
             {/* Only show reservation that the user has instead of all*/}
@@ -236,7 +261,59 @@ class myBooking extends Component {
                       </Button>
                     </div>
                   </Modal>
-                  <Button component={renderButton}>Edit</Button>
+
+                  <Modal
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                    open={this.state.editOpen}
+                    onClose={this.handleEditClose}
+                    style={{ paddingTop: 50, zIndex: 1, overflow: "auto" }}
+                  >
+                    <div style={modalStyle}>
+                      <Typography style={regTextStyle}>Select a new check-in and check-out date for your reservation</Typography>
+                      <Grid item xs={6} md={2} lg={1}>
+                        <form className={classes.container} noValidate>
+                          <TextField
+                            id="date"
+                            label="Checkin Date"
+                            type="date"
+                            value={this.state.checkinDate}
+                            InputLabelProps={{
+                              shrink: true
+                            }}
+                            onChange={this._handleCheckinDate}
+                          />
+                        </form>
+                      </Grid>
+                      <Grid item xs={6} md={2} lg={1}>
+                        <form className={classes.container} noValidate>
+                          <TextField
+                            id="date"
+                            label="Checkout Date"
+                            type="date"
+                            value={this.state.checkoutDate}
+                            InputLabelProps={{
+                              shrink: true
+                            }}
+                            onChange={this._handleCheckoutDate}
+                          />
+                        </form>
+                      </Grid>
+                      <Grid padding={20}>
+                        <Button component={renderButton}>Confirm</Button>
+                        <Button component={warningButton}>Cancel</Button>
+                      </Grid>
+                    </div>
+                  </Modal>
+
+                  <Button
+                    component={renderButton}
+                    onClick={() => {
+                      this.handleEditOpen(res);
+                    }}
+                  >
+                    Edit
+                  </Button>
                   <Button
                     component={warningButton}
                     onClick={() => {
@@ -246,7 +323,6 @@ class myBooking extends Component {
                   >
                     Cancel
                   </Button>
-
                   <hr />
                 </div>
               )}
@@ -300,9 +376,9 @@ class myBooking extends Component {
   }
 }
 
-export default withFirestore(
+export default withStyles(styles)(withFirestore(
   connect(
     mapState,
     actions
   )(myBooking)
-);
+));
