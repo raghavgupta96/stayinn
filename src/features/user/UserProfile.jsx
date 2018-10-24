@@ -40,6 +40,15 @@ const styles = theme => ({
   }
 });
 
+const renderButton = ({ ...custom }) => (
+  <Button
+    variant="contained"
+    justify="right"
+    color="primary"
+    {...custom}
+  />
+);
+
 function CircularIndeterminate() {
   return (
     <div>
@@ -64,8 +73,6 @@ class UserProfile extends Component {
   // getPhone = () => {
   async componentDidMount() {
     const { firebase } = this.props;
-
-    console.log(this.props);
 
     const obj = this;
     var currentUser;
@@ -207,6 +214,7 @@ class UserProfile extends Component {
                         Reward: {this.state.showReward} points
                       </Typography>
                       <Button
+                      component={renderButton}
                         onClick={() =>
                           this.setState({
                             updating: true
@@ -228,8 +236,8 @@ class UserProfile extends Component {
 
             {this.state.updating && (
               <div>
-                <EditInfoForm />
-                <Button
+                <EditInfoForm userProfile={this} />
+                {/* <Button
                   onClick={() =>
                     this.setState({
                       updating: false
@@ -237,7 +245,7 @@ class UserProfile extends Component {
                   }
                 >
                   Cancel
-                </Button>
+                </Button> */}
               </div>
             )}
           </div>

@@ -89,7 +89,8 @@ const EditInfoForm = ({
   error,
   invalid,
   submitting,
-  auth
+  auth,
+  userProfile
 }) => {
   // redner after auth is loaded
   if (isLoaded(auth)) {
@@ -189,8 +190,12 @@ const EditInfoForm = ({
                   <Typography className={classes.headerInfo}>
                     Password: ********
                   </Typography>
-                  <Button type="submit">Update</Button>
-                  <Button component={renderButton}>Cancel</Button>
+                  <Button component={renderButton} type="submit">Update</Button>
+                  <Button style={{backgroundColor: "#e60000"}} onClick={() => {
+                    userProfile.setState({
+                      updating: false,
+                    })
+                  }}>Cancel</Button>
                 </Paper>
               </Grid>
               <Grid item xs={8}>

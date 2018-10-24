@@ -73,7 +73,6 @@ export const registerUser = user => async (
     let newUser = {
       createdAt: firestore.FieldValue.serverTimestamp(),
       email: user.email,
-      reservations:[],
       firstLogin: true,
       reward: 0
     };
