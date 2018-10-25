@@ -7,16 +7,28 @@ import Typography from "@material-ui/core/Typography";
 import Modal from "@material-ui/core/Modal";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Paper from "@material-ui/core/Paper";
+import { Link } from "react-router-dom";
 
-const styles = () => ({
+const styles = theme => ({
   dateContainer: {
     display: "flex",
     flexWrap: "wrap",
     marginLeft: "15px",
     marginRight: "15px",
     marginBottom: "15px"
-  }
-})
+  },
+  progress: {
+    margin: theme.spacing.unit * 2
+  },
+  photo: {
+    width: "100%"
+  },
+  photoContainer: {
+    marginTop: "5px"
+  },
+});
 
 const actions = {};
 
@@ -35,15 +47,17 @@ const renderButton = ({ ...custom }) => (
   />
 );
 
+function CircularIndeterminate() {
+  return (
+    <div>
+      <CircularProgress />
+    </div>
+  );
+}
+
 // warning (red) button that prevents users to click on it
 const warningButton = ({ ...custom }) => (
-  <Button
-    variant="contained"
-    justify="right"
-    type="submit"
-    color="tertiary_lightblue"
-    {...custom}
-  />
+  <Button variant="contained" justify="right" {...custom} />
 );
 
 const modalStyle = {
@@ -78,41 +92,41 @@ class myBooking extends Component {
     };
   }
 
-    // convertDate = date => {;
-    //   console.log(date);
-    //   // const month = date.getUTCMonth() + 1;
-    //   // const day = date.getUTCDate();
-    //   // const year = date.getUTCFullYear();
-    //   // const dateConversion = year + "-" + month + "-" + day;
-    //   // return dateConversion
-    // };
-  
-    _handleCheckinDate = e => {
-      console.log("CHECKIN MAH MAN")
-      //const date = this.convertDate(e.target.value);
-      const date = e.target.value;
-      console.log(date);
-      this.setState({
-        checkin: date
-      })
-    };
-  
-    _handleCheckoutDate = e => {
-      console.log("CHECKOUT MAH MAN")
-      //const date = this.convertDate(e.target.value);
-      const date = e.target.value;
-      console.log(date);
-      this.setState({
-        checkout: e.target.value
-      })
-    };
+  // convertDate = date => {;
+  //   console.log(date);
+  //   // const month = date.getUTCMonth() + 1;
+  //   // const day = date.getUTCDate();
+  //   // const year = date.getUTCFullYear();
+  //   // const dateConversion = year + "-" + month + "-" + day;
+  //   // return dateConversion
+  // };
+
+  _handleCheckinDate = e => {
+    console.log("CHECKIN MAH MAN");
+    //const date = this.convertDate(e.target.value);
+    const date = e.target.value;
+    console.log(date);
+    this.setState({
+      checkin: date
+    });
+  };
+
+  _handleCheckoutDate = e => {
+    console.log("CHECKOUT MAH MAN");
+    //const date = this.convertDate(e.target.value);
+    const date = e.target.value;
+    console.log(date);
+    this.setState({
+      checkout: e.target.value
+    });
+  };
 
   async componentDidMount() {
     const { firebase } = this.props;
     const obj = this;
 
     // Check if auth changes after initializes
-    firebase.auth().onAuthStateChanged(function (user) {
+    firebase.auth().onAuthStateChanged(function(user) {
       // if user does not log in
       if (!user) {
         return;
@@ -127,21 +141,39 @@ class myBooking extends Component {
 
           //add all reservations in the array
           collection.forEach(doc => {
+            var docRef = firebase
+              .firestore()
+              .collection("testingHotels")
+              .doc(doc.data().HID);
+
+            docRef.get().then(hotelDoc => {
+              if (hotelDoc.exists) {
+                console.log("hotel data", hotelDoc.data());
+                reservations.push({
+                  HID: doc.data().HID,
+                  reservationId: doc.id,
+                  displayName: doc.data().displayName,
+                  checkinDate: doc.data().checkinDate,
+                  checkoutDate: doc.data().checkoutDate,
+                  bookDate: doc.data().bookDate,
+                  totalPrice: doc.data().totalPrice,
+                  userId: doc.data().userId,
+                  isCanceled: doc.data().isCanceled,
+                  photoURL: hotelDoc.data().photoURL,
+                  hotelName: hotelDoc.data().name
+                });
+                obj.setState({ reservations: reservations });
+                // console.log(reservations);
+              } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+              }
+            });
             // doc.data() is never undefined for query doc snapshots
             // add reservation information
-            reservations.push({
-              HID: doc.data().HID,
-              reservationId: doc.id,
-              displayName: doc.data().displayName,
-              checkinDate: doc.data().checkinDate,
-              checkoutDate: doc.data().checkoutDate,
-              bookDate: doc.data().bookDate,
-              totalPrice: doc.data().totalPrice,
-              userId: doc.data().userId,
-              isCanceled: doc.data().isCanceled
-            });
           });
-          obj.setState({ reservations });
+          console.log("Final Reservations", reservations);
+          obj.setState({ reservations: reservations });
           // console.log(reservations)
         });
     });
@@ -167,13 +199,13 @@ class myBooking extends Component {
       editOpen: true,
       currRes: reservation
     });
-  }
+  };
 
   handleEditClose = () => {
     this.setState({
       editOpen: false
     });
-  }
+  };
 
   handleEditRes(reservationId) {
     const { firebase } = this.props;
@@ -182,25 +214,25 @@ class myBooking extends Component {
     console.log("CHECKOUT: " + this.state.checkout);
     const checkin = this.state.checkin;
     const checkout = this.state.checkout;
-    firebase.auth().onAuthStateChanged(function (user) {
+    firebase.auth().onAuthStateChanged(function(user) {
       if (!user) {
         return;
       }
       firebase
-      .firestore()
-      .collection("reservations")
-      .doc(reservationId)
-      .update({
-        checkinDate: checkin,
-        checkoutDate: checkout
-      })
-      .then(function () {
-        window.location.reload();
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    })
+        .firestore()
+        .collection("reservations")
+        .doc(reservationId)
+        .update({
+          checkinDate: checkin,
+          checkoutDate: checkout
+        })
+        .then(function() {
+          window.location.reload();
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    });
   }
 
   handleCancel(reservationId) {
@@ -208,7 +240,7 @@ class myBooking extends Component {
     // console.log("You click:" + this.state.reservations[index].reservationId);
     const { firebase } = this.props;
     // Check if auth changes after initializes
-    firebase.auth().onAuthStateChanged(function (user) {
+    firebase.auth().onAuthStateChanged(function(user) {
       // if user does not log in
       if (!user) {
         return;
@@ -220,56 +252,160 @@ class myBooking extends Component {
         .update({
           isCanceled: true
         })
-        .then(function () {
+        .then(function() {
           window.location.reload();
         })
-        .catch(function (error) {
+        .catch(function(error) {
           console.log(error);
         });
     });
   }
 
-
+  // async getHotel(HID)
+  // {
+  //   const { auth, firebase, classes } = this.props;
+  //   var docRef = firebase
+  //   .firestore()
+  //   .collection("testingHotels")
+  //   .doc(HID);
+  // docRef.get().then(doc => {
+  //   if (doc.exists) {
+  //     console.log("hotel data", doc.data());
+  //     this.setState({
+  //       currHotel: doc.data(),
+  //     })
+  //   } else {
+  //     // doc.data() will be undefined in this case
+  //     console.log("No such document!");
+  //   }
+  // });
+  // }
 
   render() {
     // make a list that contains all reservations user made
     const { auth, firebase, classes } = this.props;
-    console.log(this.props);
+    // console.log(this.props);
     // var thisRes = null;
+    console.log(this.state.reservations);
+    // if (this.state.reservations) {
     const resList =
       this.state.reservations &&
       this.state.reservations.map(res => {
-
-        var docRef = firebase
-          .firestore()
-          .collection("users")
-          .doc(res.HID);
-        docRef.get().then(doc => {
-          if (doc.exists) {
-            console.log("hotel data", doc.data());
-            this.setState({
-              currHotel: doc.data(),
-            })
-          } else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
-          }
-        });
-
-
         return (
           <div key={res.reservationId}>
             {/* Only show reservation that the user has instead of all*/}
             {auth.uid === res.userId &&
               !res.isCanceled && (
                 <div>
-                  <h3>Reservation ID: {res.reservationId}</h3>
-                  <h3>Hotel ID: {res.HID}</h3>
+        <Grid container className={classes.root} xs={12} md={12} lg={12}>
+          <Grid item xs={11} md={11} lg={11}>
+            <Paper className={classes.mainpaper}>
+              <Grid container key={res.HID}>
+                <Grid container xs={7} md={7} lg={7}>
+                  <Grid item xs>
+                    <Grid xs={12} md={12} lg={12}>
+                      <Typography
+                        gutterBottom
+                        variant="title"
+                        className={classes.hotelTitle}
+                      >
+                        Reservations @
+                      </Typography>
+                      <Link to={"/hotel/" + res.HID}>
+                        <Typography
+                          gutterBottom
+                          variant="title"
+                          className={classes.hotelTitle}
+                        >
+                          {res.hotelName}
+                        </Typography>
+                      </Link>
+                    </Grid>
+                    <Grid item xs={12} md={12} lg={12} className={classes.hotelInfo}>
+                    <h3>Hotel Name: {res.hotelName}</h3>
                   <h3>Book Date: {res.bookDate}</h3>
                   <h3>Check-in Date: {res.checkinDate}</h3>
                   <h3>Check-out Date: {res.checkoutDate}</h3>
                   <h3>Total Price: ${res.totalPrice}</h3>
-                  <h3>isCanceled: {String(res.isCanceled)}</h3>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12} md={12} lg={12} container direction="column">
+                    <Grid item xs />
+                    <Grid item>
+                    
+                  <Button
+                    component={renderButton}
+                    onClick={() => {
+                      this.handleEditOpen(res);
+                    }}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    component={warningButton}
+                    onClick={() => {
+                      // this.handleCancel(res.reservationId);
+                      this.handleOpen(res);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid xs={5} md={5} lg={5} className={classes.photoContainer}>
+                  <img
+                    src={res.photoURL}
+                    className={classes.photo}
+                    alt="hotel pic"
+                  />
+                </Grid>
+              </Grid>
+            </Paper>
+          </Grid>
+          <Grid item xs={1} md={1} lg={1} />
+        </Grid>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  {/* <h3>Hotel PhotoURL: {this.state.currHotel.photoURL}</h3> */}
+                  {/* <img
+                    src={res.photoURL}
+                    alt=""
+                    style={{
+                      width: 400,
+                      height: 200
+                    }}
+                  /> */}
+                  {/* <h3>PhotoURL: {res.photoURL}</h3>
+                  <h3>Reservation ID: {res.reservationId}</h3>
+                  <h3>Hotel ID: {res.HID}</h3> */}
+                  {/* <h3>Hotel Name: {res.hotelName}</h3>
+                  <h3>Book Date: {res.bookDate}</h3>
+                  <h3>Check-in Date: {res.checkinDate}</h3>
+                  <h3>Check-out Date: {res.checkoutDate}</h3>
+                  <h3>Total Price: ${res.totalPrice}</h3> */}
+                  {/* <h3>isCanceled: {String(res.isCanceled)}</h3> */}
                   <Modal
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
@@ -327,7 +463,10 @@ class myBooking extends Component {
                     style={{ paddingTop: 50, zIndex: 1, overflow: "auto" }}
                   >
                     <div style={modalStyle}>
-                      <Typography style={regTextStyle}>Select a new check-in and check-out date for your reservation</Typography>
+                      <Typography style={regTextStyle}>
+                        Select a new check-in and check-out date for your
+                        reservation
+                      </Typography>
                       <Grid item xs={6} md={2} lg={1}>
                         <form className={classes.container} noValidate>
                           <TextField
@@ -361,12 +500,15 @@ class myBooking extends Component {
                           component={renderButton}
                           onClick={() => {
                             this.state.currRes &&
-                              this.handleEditRes(this.state.currRes.reservationId);
+                              this.handleEditRes(
+                                this.state.currRes.reservationId
+                              );
                           }}
                         >
                           Confirm
                         </Button>
-                        <Button component={warningButton}
+                        <Button
+                          component={warningButton}
                           onClick={() => {
                             this.handleEditClose();
                           }}
@@ -376,24 +518,6 @@ class myBooking extends Component {
                       </Grid>
                     </div>
                   </Modal>
-
-                  <Button
-                    component={renderButton}
-                    onClick={() => {
-                      this.handleEditOpen(res);
-                    }}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    component={warningButton}
-                    onClick={() => {
-                      // this.handleCancel(res.reservationId);
-                      this.handleOpen(res);
-                    }}
-                  >
-                    Cancel
-                  </Button>
                   <hr />
                 </div>
               )}
@@ -402,14 +526,16 @@ class myBooking extends Component {
             {auth.uid === res.userId &&
               res.isCanceled && (
                 <div>
-                  <h1>This Reservation has been Cancelled</h1>
+                  <h2>This Reservation has been Cancelled</h2>
                   <s>
-                    <h3>Reservation ID: {res.reservationId}</h3>
-                    <h3>Hotel ID: {res.HID}</h3>
-                    <h3>Check-in Date: {res.checkinDate}</h3>
-                    <h3>Check-out Date: {res.checkoutDate}</h3>
-                    <h3>Total Price: ${res.totalPrice}</h3>
-                    <h3>isCanceled: {String(res.isCanceled)}</h3>
+                    {/* <h3>Reservation ID: {res.reservationId}</h3>
+                    <h3>Hotel ID: {res.HID}</h3> */}
+                    <h3>Hotel Name: {res.hotelName}</h3>
+                  <h3>Book Date: {res.bookDate}</h3>
+                  <h3>Check-in Date: {res.checkinDate}</h3>
+                  <h3>Check-out Date: {res.checkoutDate}</h3>
+                  <h3>Total Price: ${res.totalPrice}</h3>
+                    {/* <h3>isCanceled: {String(res.isCanceled)}</h3> */}
                   </s>
                   <hr />
                 </div>
@@ -444,13 +570,19 @@ class myBooking extends Component {
         <hr /> */}
       </div>
     );
+    // }
+    // else
+    // {
+    //   return <CircularIndeterminate/>
+    // }
   }
 }
 
-
-export default withStyles(styles)(withFirestore(
-  connect(
-    mapState,
-    actions
-  )(myBooking)
-));
+export default withStyles(styles)(
+  withFirestore(
+    connect(
+      mapState,
+      actions
+    )(myBooking)
+  )
+);
