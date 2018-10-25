@@ -69,6 +69,16 @@ const paymentSummary = props => {
 
   const { classes } = props;
 
+
+  // datediff(Date1, Date2) : int
+  // Take the difference between the dates and divide by milliseconds per day.
+  // Round to nearest whole number to deal with DST.
+  const datediff = (Date1, Date2) => {
+    return Math.round((Date2-Date1)/(1000*60*60*24));
+  }
+
+  //nights = datediff(startDate,endDate);
+
   // _dateToString(Date) : string
   // Convenience method to convert dates to format
   // specified in wireframe
@@ -101,9 +111,16 @@ const paymentSummary = props => {
     const m = date.getMonth();
     const d = date.getDate();
     const y = date.getFullYear();
+    
+
+  
 
     return `${days[wd]}, ${months[m]} ${d}, ${y}`;
   }
+
+
+
+
 
   // Render
   //
@@ -131,7 +148,7 @@ const paymentSummary = props => {
           </div>
           <div>
             <h2>Nights:</h2>
-            <h2>{nights}</h2>
+            <h2>{datediff(startDate,endDate)}</h2>
           </div>
           <div>
             <h2>Rooms:</h2>
@@ -152,7 +169,7 @@ const paymentSummary = props => {
         <h2>USD {total}</h2>
       </div>
     </div>
-  );
+  )
 };
 
 export default withStyles(styles, { withTheme: true })(paymentSummary);

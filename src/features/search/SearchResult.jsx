@@ -104,7 +104,7 @@ const SearchResult = ({ hotels, classes }) => {
                         variant="contained"
                         onClick={this.submit}
                         className={classes.searchButton}
-                        href="/payment"
+                        href={"/payment/" + hotel.hID}
                       >
                         Book
                       </Button>
