@@ -5,6 +5,7 @@ import Paper from "@material-ui/core/Paper";
 import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import blackstar from "./blackstar.png";
 
 const styles = theme => ({
   root: {
@@ -92,6 +93,30 @@ const SearchResult = ({ hotels, classes }) => {
                       <Grid xs={3} md={3} lg={3} item className={classes.price}>
                         <Typography variant="subtitle1">$103.00</Typography>
                       </Grid>
+                      <img
+                        src={blackstar}
+                        alt="logo"
+                        style={{
+                          height: "15px",
+                          width: "15px"
+                        }}
+                      />
+                      <img
+                        src={blackstar}
+                        alt="logo"
+                        style={{
+                          height: "15px",
+                          width: "15px"
+                        }}
+                      />
+                      <img
+                        src={blackstar}
+                        alt="logo"
+                        style={{
+                          height: "15px",
+                          width: "15px"
+                        }}
+                      />
                     </Grid>
                     <Grid
                       item
