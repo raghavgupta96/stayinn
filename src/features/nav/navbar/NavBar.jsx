@@ -31,7 +31,7 @@ class NavBar extends Component {
     return (
       auth.isLoaded && (
         <AppBar position="static">
-          <img src={require("/logo_transparent.png")} alt="pic" />
+          {/* <img src={require("/logo_transparent.png")} alt="pic" /> */}
           <Toolbar>
             <Link
               to="/"
