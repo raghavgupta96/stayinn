@@ -48,10 +48,14 @@ class NavBar extends Component {
                   color: "#ffffff"
                 }}
               >
-                <img src={logo} alt="logo" style={{
-                height: "30px",
-                width: "40px"
-                }}/>
+                <img
+                  src={logo}
+                  alt="logo"
+                  style={{
+                    height: "30px",
+                    width: "40px"
+                  }}
+                />
                 StayInn
               </Typography>
             </Link>
@@ -73,7 +77,9 @@ class NavBar extends Component {
                 <Button
                   href="/login"
                   style={{
-                    color: "#ffffff"
+                    color: "#ffffff",
+                    fontFamily: "Times",
+                    fontSize: "15px"
                   }}
                 >
                   Login
@@ -81,7 +87,9 @@ class NavBar extends Component {
                 <Button
                   href="/signup"
                   style={{
-                    color: "#ffffff"
+                    color: "#ffffff",
+                    fontFamily: "Times",
+                    fontSize: "15px"
                   }}
                 >
                   Signup
