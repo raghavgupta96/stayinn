@@ -18,8 +18,8 @@ import Rewards from "./RewardsBox";
 import Info from "./Info";
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
-
 import { DateRangePicker } from 'react-dates';
+import moment from 'moment';
 
 const styles = theme => ({
   root: {
@@ -141,20 +141,21 @@ class SearchBox extends Component {
     return d;
   };
 
-  _handleCheckinDate = e => {
-    //convert the iso data "2018-05-15" string to data object
-    const date = this.stringToDate(e.target.value);
-    //set the store state
-    this.props.setStartDate(date);
-  };
+  //----these code for material ui calendar. app has shift to airbnb calendar on 10/25/2018
+  // _handleCheckinDate = e => {
+  //   //convert the iso data "2018-05-15" string to data object
+  //   const date = this.stringToDate(e.target.value);
+  //   //set the store state
+  //   this.props.setStartDate(date);
+  // };
 
-  _handleCheckoutDate = e => {
-    // convert the checkout date string to date object
-    const date = this.stringToDate(e.target.value);
-    // console.log(this.state.checkoutDate);
-    //set the store state
-    this.props.setEndDate(date);
-  };
+  // _handleCheckoutDate = e => {
+  //   // convert the checkout date string to date object
+  //   const date = this.stringToDate(e.target.value);
+  //   // console.log(this.state.checkoutDate);
+  //   //set the store state
+  //   this.props.setEndDate(date);
+  // };
 
   _handleRoomSizeChange = e => {
     this.props.setRoomType(e.target.value);
@@ -185,11 +186,20 @@ class SearchBox extends Component {
     //     this.props.reservation.rooms
     // );
 
+
+
     // console.log("__________submitted_____________");
     //do functional here
-    console.log("Checkin Date" + this.state.startDate);
-    console.log(typeof this.state.endDate);
-    console.log(" Hotels in state: " + this.state.hotels);
+    const startDateOj = new Date(this.state.startDate);
+    const endDateOj = new Date(this.state.endDate);
+    // console.log("Checkin Date: " + startDateOj);
+    // console.log("Checkin Date: " + endDateOj);
+    // console.log(" Hotels in state: " + this.state.hotels);
+    this.props.setStartDate(startDateOj);
+    this.props.setEndDate(endDateOj);
+
+    console.log("Start date in redux store: " + this.props.reservation.startDate);
+    console.log("End date in redux store: " + this.props.reservation.endDate);
 
     //---------------------Searching-----------------------------
     // filtering the hotel with "CityName_RoomCap"
@@ -330,7 +340,7 @@ class SearchBox extends Component {
                   componentRestrictions={{ country: "us" }}
                 />
               </Grid>
-              <Grid item xs={6} md={2} lg={1}>
+              {/* <Grid item xs={6} md={2} lg={1}>
                 <form className={classes.dateContainer} noValidate>
                   <TextField
                     id="date"
@@ -357,8 +367,8 @@ class SearchBox extends Component {
                     onChange={this._handleCheckoutDate}
                   />
                 </form>
-              </Grid>
-              {/* <Grid item xs={8} md={5} lg={4}>
+              </Grid> */}
+              <Grid item xs={8} md={5} lg={4}>
                 <DateRangePicker
                   startDateId="startDate"
                   endDateId="endDate"
@@ -368,7 +378,7 @@ class SearchBox extends Component {
                   focusedInput={this.state.focusedInput}
                   onFocusChange={(focusedInput) => { this.setState({ focusedInput })}}
                 />
-              </Grid> */}
+              </Grid>
               <Grid
                 item
                 xs={12}
