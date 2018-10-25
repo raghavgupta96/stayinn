@@ -16,6 +16,10 @@ import FilterBox from "./filterBox";
 import { connect } from "react-redux";
 import Rewards from "./RewardsBox";
 import Info from "./Info";
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
+
+import { DateRangePicker } from 'react-dates';
 
 const styles = theme => ({
   root: {
@@ -86,7 +90,10 @@ class SearchBox extends Component {
       searchKey: "",
       place: null,
       NumOfRooms: 1,
-      hotels: []
+      hotels: [],
+      startDate: null,
+      endDate: null,
+      focusedInput: null
     };
   }
 
@@ -307,8 +314,8 @@ class SearchBox extends Component {
               <Grid
                 item
                 xs={12}
-                md={7}
-                lg={9}
+                md={6}
+                lg={7}
                 className={classes.googleSearchContainer}
               >
                 <Autocomplete
@@ -323,7 +330,7 @@ class SearchBox extends Component {
                   componentRestrictions={{ country: "us" }}
                 />
               </Grid>
-              <Grid item xs={6} md={2} lg={1}>
+              {/* <Grid item xs={6} md={2} lg={1}>
                 <form className={classes.dateContainer} noValidate>
                   <TextField
                     id="date"
@@ -336,7 +343,7 @@ class SearchBox extends Component {
                     onChange={this._handleCheckinDate}
                   />
                 </form>
-              </Grid>
+              </Grid> 
               <Grid item xs={6} md={2} lg={1}>
                 <form className={classes.dateContainer} noValidate>
                   <TextField
@@ -350,6 +357,17 @@ class SearchBox extends Component {
                     onChange={this._handleCheckoutDate}
                   />
                 </form>
+              </Grid> */}
+              <Grid item xs={8} md={5} lg={4}>
+                <DateRangePicker
+                  startDateId="startDate"
+                  endDateId="endDate"
+                  startDate={this.state.startDate}
+                  endDate={this.state.endDate}
+                  onDatesChange={({ startDate, endDate }) => { this.setState({ startDate, endDate })}}
+                  focusedInput={this.state.focusedInput}
+                  onFocusChange={(focusedInput) => { this.setState({ focusedInput })}}
+                />
               </Grid>
               <Grid
                 item
@@ -383,7 +401,7 @@ class SearchBox extends Component {
               <Info />
             </Grid>
           </Grid>
-          <Grid item xs={9} md={9} lg={9}>
+          <Grid item xs={9} md={9} lg={8}>
             <SearchResult hotels={this.state.hotels} />
           </Grid>
           <Grid item xs={1} md={1} lg={1} />
