@@ -50,13 +50,13 @@ class Rewards extends Component {
         <Paper className={classes.mainpaper}>
           <Grid container spacing={16}>
             <Grid item className={classes.label} xs={12} md={12} lg={12}>
-              Upcoming Reservation : Mariott
+              Upcoming Reservation : TBD
             </Grid>
             <Grid item className={classes.label} xs={12} md={12} lg={12}>
-              Location : San Jose, California 94089
+              Location : TBD
             </Grid>
             <Grid item className={classes.label} xs={12} md={12} lg={12}>
-              Check-in Date : Oct. 8 2018
+              Check-in Date : TBD
             </Grid>
           </Grid>
         </Paper>

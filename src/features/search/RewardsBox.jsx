@@ -49,10 +49,17 @@ class Rewards extends Component {
       <Grid container className={classes.root} xs={12} md={12} lg={12}>
         <Paper className={classes.mainpaper}>
           <Grid container spacing={16}>
-            <Grid item className={classes.label} xs={12} md={12} lg={12} style={{
+            <Grid
+              item
+              className={classes.label}
+              xs={12}
+              md={12}
+              lg={12}
+              style={{
                 color: "#409BE6"
-            }}>
-              Rewards : 437 points
+              }}
+            >
+              Rewards : 0 points
             </Grid>
           </Grid>
         </Paper>

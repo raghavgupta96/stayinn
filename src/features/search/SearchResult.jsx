@@ -17,9 +17,8 @@ const styles = theme => ({
   hotelTitle: {
     fontFamily: "Times",
     fontSize: "30px",
-    marginLeft: "10px",
-    textDecoration: "none",
-    display: "inline"
+    display: "inline",
+    marginLeft: "10px"
   },
   subTypography: {
     fontFamily: "Times",
@@ -43,11 +42,13 @@ const styles = theme => ({
     marginTop: "5px"
   },
   hotelInfo: {
+    marginTop: "10px",
     marginLeft: "10px"
   },
   price: {
-    paddingTop :"30px",
-    paddingRight :"15px"
+    paddingTop: "10px",
+    fontSize: "30px",
+    marginLeft: "35px"
   }
 });
 
@@ -65,8 +66,20 @@ const SearchResult = ({ hotels, classes }) => {
                 <Grid container xs={7} md={7} lg={7}>
                   <Grid item xs>
                     <Grid xs={12} md={12} lg={12} container>
-                      <Grid xs={11} md={11} lg={11}>
-                        <Link to={"/hotel/" + hotel.hID}>
+                      <Grid
+                        xs={8}
+                        md={8}
+                        lg={8}
+                        style={{
+                          paddingTop: "10px"
+                        }}
+                      >
+                        <Link
+                          to={"/hotel/" + hotel.hID}
+                          style={{
+                            textDecoration: "none"
+                          }}
+                        >
                           <Typography
                             gutterBottom
                             variant="title"
@@ -76,18 +89,21 @@ const SearchResult = ({ hotels, classes }) => {
                           </Typography>
                         </Link>
                       </Grid>
-                      <Grid xs={1} md={1} lg={1} item className={classes.price}>
-                        <Typography variant="subtitle1">$19.00</Typography>
+                      <Grid xs={3} md={3} lg={3} item className={classes.price}>
+                        <Typography variant="subtitle1">$103.00</Typography>
                       </Grid>
                     </Grid>
                     <Grid
                       item
-                      xs={12}
-                      md={12}
-                      lg={12}
+                      xs={8}
+                      md={8}
+                      lg={8}
                       className={classes.hotelInfo}
                     >
-                      Hotel Information Booking Information etc.
+                      An intimate and charming atmosphere, high quality comfort
+                      and traditional Bay Area hospitality. Includes
+                      complimentary breakfast, from 6:30 - 10:30AM. We will
+                      offer you the best service that the Bay Area has to offer.
                     </Grid>
                   </Grid>
                   <Grid
@@ -105,6 +121,7 @@ const SearchResult = ({ hotels, classes }) => {
                         onClick={this.submit}
                         className={classes.searchButton}
                         href={"/payment/" + hotel.hID}
+                        color="primary"
                       >
                         Book
                       </Button>
@@ -112,6 +129,7 @@ const SearchResult = ({ hotels, classes }) => {
                         variant="contained"
                         onClick={this.submit}
                         className={classes.searchButton}
+                        color="primary"
                       >
                         More Details
                       </Button>

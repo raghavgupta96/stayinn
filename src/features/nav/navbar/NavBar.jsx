@@ -21,7 +21,7 @@ class NavBar extends Component {
   };
   render() {
     // auth contains all user information (Ex: email, user, displayName, etc.)
-  const { auth } = this.props;
+    const { auth } = this.props;
     const authenticated = auth.isLoaded && !auth.isEmpty && auth.emailVerified;
     //console.log(auth);
     //console.log(authenticated);
@@ -33,9 +33,24 @@ class NavBar extends Component {
       auth.isLoaded && (
         <AppBar position="static">
           <Toolbar>
-            <Typography variant="headline" color="inherit" style={{ flex: 1 }}>
-              <IconButton href="/">StayInn</IconButton>
-            </Typography>
+            <Link
+              to="/"
+              style={{
+                flex: 1,
+                textDecoration: "none"
+              }}
+            >
+              <Typography
+                variant="title"
+                style={{
+                  fontFamily: "Times",
+                  fontSize: "30px",
+                  color: "#ffffff"
+                }}
+              >
+                StayInn
+              </Typography>
+            </Link>
             {authenticated ? (
               <div>
                 {/* Use Link to direct user to the profile URL with user ID */}
@@ -51,10 +66,20 @@ class NavBar extends Component {
               </div>
             ) : (
               <div>
-                <Button href="/login" color="inherit">
+                <Button
+                  href="/login"
+                  style={{
+                    color: "#ffffff"
+                  }}
+                >
                   Login
                 </Button>
-                <Button href="/signup" color="inherit">
+                <Button
+                  href="/signup"
+                  style={{
+                    color: "#ffffff"
+                  }}
+                >
                   Signup
                 </Button>
               </div>
