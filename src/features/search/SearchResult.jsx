@@ -44,6 +44,10 @@ const styles = theme => ({
   },
   hotelInfo: {
     marginLeft: "10px"
+  },
+  price: {
+    paddingTop :"30px",
+    paddingRight :"15px"
   }
 });
 
@@ -60,36 +64,47 @@ const SearchResult = ({ hotels, classes }) => {
               <Grid container key={hotel.id}>
                 <Grid container xs={7} md={7} lg={7}>
                   <Grid item xs>
-                    <Grid xs={12} md={12} lg={12}>
-                      <Typography
-                        gutterBottom
-                        variant="title"
-                        className={classes.hotelTitle}
-                      >
-                        Reservations @
-                      </Typography>
-                      <Link to={"/hotel/" + hotel.hID}>
-                        <Typography
-                          gutterBottom
-                          variant="title"
-                          className={classes.hotelTitle}
-                        >
-                          {hotel.name}
-                        </Typography>
-                      </Link>
+                    <Grid xs={12} md={12} lg={12} container>
+                      <Grid xs={11} md={11} lg={11}>
+                        <Link to={"/hotel/" + hotel.hID}>
+                          <Typography
+                            gutterBottom
+                            variant="title"
+                            className={classes.hotelTitle}
+                          >
+                            {hotel.name}
+                          </Typography>
+                        </Link>
+                      </Grid>
+                      <Grid xs={1} md={1} lg={1} item className={classes.price}>
+                        <Typography variant="subtitle1">$19.00</Typography>
+                      </Grid>
                     </Grid>
-                    <Grid item xs={12} md={12} lg={12} className={classes.hotelInfo}>
+                    <Grid
+                      item
+                      xs={12}
+                      md={12}
+                      lg={12}
+                      className={classes.hotelInfo}
+                    >
                       Hotel Information Booking Information etc.
                     </Grid>
                   </Grid>
-                  <Grid item xs={12} md={12} lg={12} container direction="column">
+                  <Grid
+                    item
+                    xs={12}
+                    md={12}
+                    lg={12}
+                    container
+                    direction="column"
+                  >
                     <Grid item xs />
                     <Grid item>
                       <Button
                         variant="contained"
                         onClick={this.submit}
                         className={classes.searchButton}
-                        href="/payment"
+                        href={"/payment/" + hotel.hID}
                       >
                         Book
                       </Button>
