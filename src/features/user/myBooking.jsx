@@ -88,7 +88,8 @@ class myBooking extends Component {
       currRes: null,
       currHotel: null,
       checkin: null,
-      checkout: null
+      checkout: null,
+      noDateConflict: true
     };
   }
 
@@ -101,32 +102,12 @@ class myBooking extends Component {
   //   // return dateConversion
   // };
 
-  _handleCheckinDate = e => {
-    console.log("CHECKIN MAH MAN");
-    //const date = this.convertDate(e.target.value);
-    const date = e.target.value;
-    console.log(date);
-    this.setState({
-      checkin: date
-    });
-  };
-
-  _handleCheckoutDate = e => {
-    console.log("CHECKOUT MAH MAN");
-    //const date = this.convertDate(e.target.value);
-    const date = e.target.value;
-    console.log(date);
-    this.setState({
-      checkout: e.target.value
-    });
-  };
-
   async componentDidMount() {
     const { firebase } = this.props;
     const obj = this;
 
     // Check if auth changes after initializes
-    firebase.auth().onAuthStateChanged(function(user) {
+    firebase.auth().onAuthStateChanged(function (user) {
       // if user does not log in
       if (!user) {
         return;
@@ -179,6 +160,38 @@ class myBooking extends Component {
     });
   }
 
+  _handleCheckinDate = e => {
+    console.log("CHECKIN");
+    const date = e.target.value;
+    console.log(date);
+    this.setState({
+      checkin: date
+    });
+  };
+
+  _handleCheckoutDate = e => {
+    console.log("CHECKOUT");
+    const date = e.target.value;
+    console.log(date);
+    this.setState({
+      checkout: e.target.value
+    });
+  };
+
+  dateCheck = (date1, date2) => {
+    // Split checkin and checkout dates to separate year, month, day
+    const dateIn = date1.split("-");
+    const dateOut = date2.split("-");
+
+    // dateIn[0] is year, dateIn[1] is month, dateIn[2] is day
+    const checkIn = new Date(dateIn[1], dateIn[2], dateIn[0]);
+    const checkOut = new Date(dateOut[1], dateOut[2], dateOut[0]);
+
+    // compare the dates, will return true or false.
+    console.log(checkIn < checkOut);
+    return checkIn < checkOut;
+  }
+
   rand() {
     return Math.round(Math.random() * 20) - 10;
   }
@@ -214,25 +227,36 @@ class myBooking extends Component {
     console.log("CHECKOUT: " + this.state.checkout);
     const checkin = this.state.checkin;
     const checkout = this.state.checkout;
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (!user) {
-        return;
-      }
-      firebase
-        .firestore()
-        .collection("reservations")
-        .doc(reservationId)
-        .update({
-          checkinDate: checkin,
-          checkoutDate: checkout
-        })
-        .then(function() {
-          window.location.reload();
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    });
+
+    if (this.dateCheck(checkin, checkout)) {
+      this.setState({
+        noDateConflict: true
+      });
+      firebase.auth().onAuthStateChanged(function (user) {
+        if (!user) {
+          return;
+        }
+        firebase
+          .firestore()
+          .collection("reservations")
+          .doc(reservationId)
+          .update({
+            checkinDate: checkin,
+            checkoutDate: checkout
+          })
+          .then(function () {
+            window.location.reload();
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      });
+    } else {
+      this.setState({
+        noDateConflict: false
+      });
+    }
+
   }
 
   handleCancel(reservationId) {
@@ -240,7 +264,7 @@ class myBooking extends Component {
     // console.log("You click:" + this.state.reservations[index].reservationId);
     const { firebase } = this.props;
     // Check if auth changes after initializes
-    firebase.auth().onAuthStateChanged(function(user) {
+    firebase.auth().onAuthStateChanged(function (user) {
       // if user does not log in
       if (!user) {
         return;
@@ -252,10 +276,10 @@ class myBooking extends Component {
         .update({
           isCanceled: true
         })
-        .then(function() {
+        .then(function () {
           window.location.reload();
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     });
@@ -283,7 +307,8 @@ class myBooking extends Component {
 
   render() {
     // make a list that contains all reservations user made
-    const { auth, firebase, classes } = this.props;
+    const { auth, classes, error } = this.props;
+    const noDateConflict = this.state.noDateConflict;
     // console.log(this.props);
     // var thisRes = null;
     console.log(this.state.reservations);
@@ -297,97 +322,73 @@ class myBooking extends Component {
             {auth.uid === res.userId &&
               !res.isCanceled && (
                 <div>
-        <Grid container className={classes.root} xs={12} md={12} lg={12}>
-          <Grid item xs={11} md={11} lg={11}>
-            <Paper className={classes.mainpaper}>
-              <Grid container key={res.HID}>
-                <Grid container xs={7} md={7} lg={7}>
-                  <Grid item xs>
-                    <Grid xs={12} md={12} lg={12}>
-                      <Typography
-                        gutterBottom
-                        variant="title"
-                        className={classes.hotelTitle}
-                      >
-                        Reservations @
-                      </Typography>
-                      <Link to={"/hotel/" + res.HID}>
-                        <Typography
-                          gutterBottom
-                          variant="title"
-                          className={classes.hotelTitle}
-                        >
-                          {res.hotelName}
-                        </Typography>
-                      </Link>
+                  <Grid container className={classes.root} xs={12} md={12} lg={12}>
+                    <Grid item xs={11} md={11} lg={11}>
+                      <Paper className={classes.mainpaper}>
+                        <Grid container key={res.HID}>
+                          <Grid container xs={7} md={7} lg={7}>
+                            <Grid item xs>
+                              <Grid xs={12} md={12} lg={12}>
+                                <Typography
+                                  gutterBottom
+                                  variant="title"
+                                  className={classes.hotelTitle}
+                                >
+                                  Reservations @
+                                </Typography>
+                                <Link to={"/hotel/" + res.HID}>
+                                  <Typography
+                                    gutterBottom
+                                    variant="title"
+                                    className={classes.hotelTitle}
+                                  >
+                                    {res.hotelName}
+                                  </Typography>
+                                </Link>
+                              </Grid>
+                              <Grid item xs={12} md={12} lg={12} className={classes.hotelInfo}>
+                                <h3>Hotel Name: {res.hotelName}</h3>
+                                <h3>Book Date: {res.bookDate}</h3>
+                                <h3>Check-in Date: {res.checkinDate}</h3>
+                                <h3>Check-out Date: {res.checkoutDate}</h3>
+                                <h3>Total Price: ${res.totalPrice}</h3>
+                              </Grid>
+                            </Grid>
+                            <Grid item xs={12} md={12} lg={12} container direction="column">
+                              <Grid item xs />
+                              <Grid item>
+                                <Button
+                                  component={renderButton}
+                                  onClick={() => {
+                                    this.handleEditOpen(res);
+                                  }}
+                                >
+                                  Edit
+                                </Button>
+                                <Button
+                                  component={warningButton}
+                                  onClick={() => {
+                                    // this.handleCancel(res.reservationId);
+                                    this.handleOpen(res);
+                                  }}
+                                >
+                                  Cancel
+                                </Button>
+                              </Grid>
+                            </Grid>
+                          </Grid>
+                          <Grid xs={5} md={5} lg={5} className={classes.photoContainer}>
+                            <img
+                              src={res.photoURL}
+                              className={classes.photo}
+                              alt="hotel pic"
+                            />
+                          </Grid>
+                        </Grid>
+                      </Paper>
                     </Grid>
-                    <Grid item xs={12} md={12} lg={12} className={classes.hotelInfo}>
-                    <h3>Hotel Name: {res.hotelName}</h3>
-                  <h3>Book Date: {res.bookDate}</h3>
-                  <h3>Check-in Date: {res.checkinDate}</h3>
-                  <h3>Check-out Date: {res.checkoutDate}</h3>
-                  <h3>Total Price: ${res.totalPrice}</h3>
-                    </Grid>
+                    <Grid item xs={1} md={1} lg={1} />
                   </Grid>
-                  <Grid item xs={12} md={12} lg={12} container direction="column">
-                    <Grid item xs />
-                    <Grid item>
-                    
-                  <Button
-                    component={renderButton}
-                    onClick={() => {
-                      this.handleEditOpen(res);
-                    }}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    component={warningButton}
-                    onClick={() => {
-                      // this.handleCancel(res.reservationId);
-                      this.handleOpen(res);
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid xs={5} md={5} lg={5} className={classes.photoContainer}>
-                  <img
-                    src={res.photoURL}
-                    className={classes.photo}
-                    alt="hotel pic"
-                  />
-                </Grid>
-              </Grid>
-            </Paper>
-          </Grid>
-          <Grid item xs={1} md={1} lg={1} />
-        </Grid>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                   {/* <h3>Hotel PhotoURL: {this.state.currHotel.photoURL}</h3> */}
                   {/* <img
                     src={res.photoURL}
@@ -465,7 +466,7 @@ class myBooking extends Component {
                     <div style={modalStyle}>
                       <Typography style={regTextStyle}>
                         Select a new check-in and check-out date for your
-                        reservation
+                        reservation.
                       </Typography>
                       <Grid item xs={6} md={2} lg={1}>
                         <form className={classes.container} noValidate>
@@ -496,6 +497,9 @@ class myBooking extends Component {
                         </form>
                       </Grid>
                       <Grid padding={20}>
+                        <div>
+                          {!noDateConflict && <Typography color='error'>The check-in date must be before the check-out date.</Typography>}
+                        </div>
                         <Button
                           component={renderButton}
                           onClick={() => {
@@ -531,10 +535,10 @@ class myBooking extends Component {
                     {/* <h3>Reservation ID: {res.reservationId}</h3>
                     <h3>Hotel ID: {res.HID}</h3> */}
                     <h3>Hotel Name: {res.hotelName}</h3>
-                  <h3>Book Date: {res.bookDate}</h3>
-                  <h3>Check-in Date: {res.checkinDate}</h3>
-                  <h3>Check-out Date: {res.checkoutDate}</h3>
-                  <h3>Total Price: ${res.totalPrice}</h3>
+                    <h3>Book Date: {res.bookDate}</h3>
+                    <h3>Check-in Date: {res.checkinDate}</h3>
+                    <h3>Check-out Date: {res.checkoutDate}</h3>
+                    <h3>Total Price: ${res.totalPrice}</h3>
                     {/* <h3>isCanceled: {String(res.isCanceled)}</h3> */}
                   </s>
                   <hr />
