@@ -99,10 +99,10 @@ class SearchBox extends Component {
 
   //initially mount all the hotels info into the hotel list into state
   componentDidMount() {
-    console.log(
-      "This props reservation start date: -----------> " +
-        this.props.reservation.startdate
-    );
+    // console.log(
+    //   "This props reservation start date: -----------> " +
+    //     this.props.reservation.startdate
+    // );
     // console.log("This state NumOfRoom: -----------> "+ this.state.NumOfRooms);
     const db = firebase.firestore();
 
@@ -111,13 +111,13 @@ class SearchBox extends Component {
       .get()
       .then(collection => {
         const hotels = [];
-        console.log("hotels -----" + hotels);
+        // console.log("hotels -----" + hotels);
 
         //map all the needed hotel information to the state
         collection.forEach(doc => {
           // doc.data() is never undefined for query doc snapshots
           //-----testing-----
-          console.log(doc.id, " => ", doc.data());
+          // console.log(doc.id, " => ", doc.data());
 
           hotels.push({
             name: doc.data().name,
@@ -126,7 +126,7 @@ class SearchBox extends Component {
             photoUrl: doc.data().photoURL,
             type: doc.data().type
           });
-          console.log("hotels -----" + hotels);
+          // console.log("hotels -----" + hotels);
         });
         this.setState({ hotels });
       });
@@ -137,8 +137,8 @@ class SearchBox extends Component {
     var year = date.substring(0, 4);
     var month = date.substring(5, 7);
     var day = date.substring(8, 10);
-    var date = new Date(year, month - 1, day);
-    return date;
+    var d = new Date(year, month - 1, day);
+    return d;
   };
 
   _handleCheckinDate = e => {
@@ -167,28 +167,28 @@ class SearchBox extends Component {
   };
 
   submit = () => {
-    console.log("----- Test the Store values-------------");
-    console.log(
-      "this.props.reservation.startdate ++++++++++++>" +
-        this.props.reservation.startdate
-    );
-    console.log(
-      "this.props.reservation.enddate -------------->" +
-        this.props.reservation.enddate
-    );
-    console.log(
-      "this.props.reservation.roomtype -------------->" +
-        this.props.reservation.roomtype
-    );
-    console.log(
-      "this.props.reservation.rooms -------------->" +
-        this.props.reservation.rooms
-    );
+    // console.log("----- Test the Store values-------------");
+    // console.log(
+    //   "this.props.reservation.startdate ++++++++++++>" +
+    //     this.props.reservation.startdate
+    // );
+    // console.log(
+    //   "this.props.reservation.enddate -------------->" +
+    //     this.props.reservation.enddate
+    // );
+    // console.log(
+    //   "this.props.reservation.roomtype -------------->" +
+    //     this.props.reservation.roomtype
+    // );
+    // console.log(
+    //   "this.props.reservation.rooms -------------->" +
+    //     this.props.reservation.rooms
+    // );
 
-    console.log("__________submitted_____________");
+    // console.log("__________submitted_____________");
     //do functional here
-    console.log("Checkin Date" + this.state.checkinDate);
-    console.log("Checkout Date" + this.state.checkoutDate);
+    console.log("Checkin Date" + this.state.startDate);
+    console.log(typeof this.state.endDate);
     console.log(" Hotels in state: " + this.state.hotels);
 
     //---------------------Searching-----------------------------
@@ -330,7 +330,7 @@ class SearchBox extends Component {
                   componentRestrictions={{ country: "us" }}
                 />
               </Grid>
-              {/* <Grid item xs={6} md={2} lg={1}>
+              <Grid item xs={6} md={2} lg={1}>
                 <form className={classes.dateContainer} noValidate>
                   <TextField
                     id="date"
@@ -357,8 +357,8 @@ class SearchBox extends Component {
                     onChange={this._handleCheckoutDate}
                   />
                 </form>
-              </Grid> */}
-              <Grid item xs={8} md={5} lg={4}>
+              </Grid>
+              {/* <Grid item xs={8} md={5} lg={4}>
                 <DateRangePicker
                   startDateId="startDate"
                   endDateId="endDate"
@@ -368,7 +368,7 @@ class SearchBox extends Component {
                   focusedInput={this.state.focusedInput}
                   onFocusChange={(focusedInput) => { this.setState({ focusedInput })}}
                 />
-              </Grid>
+              </Grid> */}
               <Grid
                 item
                 xs={12}
