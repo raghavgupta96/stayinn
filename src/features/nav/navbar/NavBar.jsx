@@ -5,7 +5,6 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
 import { withFirebase } from "react-redux-firebase";
 
 const mapState = state => ({
@@ -32,6 +31,7 @@ class NavBar extends Component {
     return (
       auth.isLoaded && (
         <AppBar position="static">
+          <img src={require("/logo_transparent.png")} alt="pic" />
           <Toolbar>
             <Link
               to="/"
