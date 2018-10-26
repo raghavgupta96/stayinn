@@ -6,6 +6,11 @@ import { withRouter } from "react-router";
 import { withStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import MyBooking from "./myBooking";
+import EditInfoForm from "./EditInfoForm";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+
 const actions = {};
 
 const mapState = state => ({
@@ -14,8 +19,24 @@ const mapState = state => ({
 });
 
 const styles = theme => ({
+  //added styles for root and paper
+  root: {
+    flexGrow: 1,
+    margin: '12px'
+  },
+  paper: {
+    paddingTop: 30,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
   progress: {
     margin: theme.spacing.unit * 2
+  },
+  title: {
+    fontSize: '36px'
+  },
+  headerInfo: {
+    fontSize: '18px'
   }
 });
 
@@ -27,14 +48,16 @@ function CircularIndeterminate() {
   );
 }
 
-var showPhone = null;
+var phoneNum = null;
 
 class UserProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: 1,
-      id: this.props.match.params
+      showPhone: null,
+      showReward: 100,
+      id: this.props.match.params,
+      updating: false
     };
   }
 
@@ -66,10 +89,11 @@ class UserProfile extends Component {
         .doc(userId);
       docRef.get().then(doc => {
         if (doc.exists) {
-          console.log("Phone Number:", doc.data().phoneNumber);
-          showPhone = doc.data().phoneNumber;
+          console.log("user data", doc.data());
+
           obj.setState({
-            data: showPhone
+            showPhone: doc.data().phoneNumber,
+            showReward: doc.data().reward
           });
         } else {
           // doc.data() will be undefined in this case
@@ -127,36 +151,95 @@ class UserProfile extends Component {
     //   </div>
     // );
 
-    const { auth } = this.props;
+    const { auth, classes } = this.props;
     // console.log("Render Phone Number:" + showPhone);
     console.log(this.props.match.params.id);
     // only show when auth is loaded
-    if (isLoaded(auth)) {
+    if (isLoaded(auth) && this.state.showPhone) {
       // when user does not log in
       if (!auth.isEmpty) {
-        if(auth.uid !== this.props.match.params.id)
-        {
+        if (auth.uid !== this.props.match.params.id) {
           return window.location.replace("/");
         }
         return (
           <div>
             <h1>User Profile</h1>
-            {auth.photoURL && (
-              <img width="200" height="200" src={auth.photoURL} alt="" />
+
+            {!this.state.updating && (
+              <div>
+                <Grid
+                  container
+                  className={classes.root}
+                  justify="center"
+                  spacing={16}
+                >
+                  <Grid item xs={4}>
+                    <Paper className={classes.paper}>
+                      {auth.photoURL && (
+                        <img
+                          width="200"
+                          height="200"
+                          src={auth.photoURL}
+                          alt=""
+                        />
+                      )}
+                      {!auth.photoURL && (
+                        <img
+                          width="200"
+                          height="200"
+                          src="https://www.skylom.com/assets/frontend/images/google_profile.png"
+                          alt=""
+                        />
+                      )}
+                      <Typography className={classes.title}>
+                        {auth.displayName}
+                      </Typography>
+                      <Typography className={classes.headerInfo}>
+                        Email: {auth.email}
+                      </Typography>
+                      <Typography className={classes.headerInfo}>
+                        Phone: {this.state.showPhone}
+                      </Typography>
+                      <Typography className={classes.headerInfo}>
+                        Password: ********
+                      </Typography>
+                      <Typography className={classes.headerInfo}>
+                        Reward: {this.state.showReward} points
+                      </Typography>
+                      <Button
+                        onClick={() =>
+                          this.setState({
+                            updating: true
+                          })
+                        }
+                      >
+                        Update Profile
+                      </Button>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <Paper>
+                      <MyBooking />
+                    </Paper>
+                  </Grid>
+                </Grid>
+              </div>
             )}
-            {!auth.photoURL && (
-              <img
-                width="200"
-                height="200"
-                src="https://www.skylom.com/assets/frontend/images/google_profile.png"
-                alt=""
-              />
+
+            {this.state.updating && (
+              <div>
+                <EditInfoForm />
+                <Button
+                  onClick={() =>
+                    this.setState({
+                      updating: false
+                    })
+                  }
+                >
+                  Cancel
+                </Button>
+              </div>
             )}
-            <h2>Name: {auth.displayName}</h2>
-            <h2>Email: {auth.email}</h2>
-            <h2>Phone Number: {showPhone} </h2>
-            <Button href="/profileEdit">Update Profile</Button>
-            <MyBooking />
           </div>
         );
       } else {

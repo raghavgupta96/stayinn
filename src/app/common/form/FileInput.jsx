@@ -7,19 +7,22 @@ class FileInput extends Component {
     }
 
 
-  render() {
+  render(id) {
     const { input } = this.props;
     delete input.value;
     return (
     <div>
         <input
         type="file"
+        name="photoFile"
+        id={id}
+        accept='.jpg, .png, .jpeg'
         {...input}
         onChange={event => {
           this.displayPicture(event);
         }}/>
         {this.state.pictureUrl && <img src={this.state.pictureUrl} width="200" height="200" alt=""/>}
-        <img src={this.state.pictureUrl} alt=""/>
+        {/* <img src={this.state.pictureUrl} alt=""/> */}
     </div>
     )
   }

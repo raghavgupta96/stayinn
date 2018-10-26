@@ -8,6 +8,8 @@ import { firestoreReducer } from 'redux-firestore'
 // import modalReducer from '../../features/modals/modalReducer'
 import authReducer from '../../features/auth/authReducer'
 import asyncReducer from '../../features/async/asyncReducer'
+import reservationReducer from './reservationReducer'
+import PaymentReducer from '../../features/payment/PaymentReducer'
 
 const rootReducer = combineReducers({
     firebase: firebaseReducer,
@@ -18,7 +20,9 @@ const rootReducer = combineReducers({
     // modals: modalReducer,
     auth: authReducer,
     async: asyncReducer,
-    toastr: toastrReducer
+    toastr: toastrReducer,
+    reservation: reservationReducer,
+    card: PaymentReducer
 })
 
 export default rootReducer

@@ -18,7 +18,7 @@ export const inputCard = (card) => {
 
     //await firebase.auth().signInWithEmailAndPassword(creds.email, creds.password);
     //firebase.firestore().collection("card",{
-    firestore.update(`users/Q9mWtevzhpPXWiXcO1xCZGU80ts1/card`, {card
+    firestore.update(`users/YJlp5wZ4DjfU5LSvQvJUjr8mZhX2/card`, {card
      /* cardname: card.cardname,
       cardnumber: card.cardnumber,
       cvc: card.cvc,

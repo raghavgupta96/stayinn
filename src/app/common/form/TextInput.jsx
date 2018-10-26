@@ -10,7 +10,7 @@ const renderTextField = ({
 }) => (
   <div>
     <TextField
-      style={{ height: 50 }}
+      style={{ height: 50}}
       label={label}
       floatingLabelText={label}
       errorText={touched && error}

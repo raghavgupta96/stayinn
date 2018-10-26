@@ -24,7 +24,8 @@ class myBooking extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      reservations: null
+      reservations: null,
+      currRes: null
     };
   }
 
@@ -39,52 +40,113 @@ class myBooking extends Component {
       if (!user) {
         return;
       }
-      currentUser = user;
+      const db = firebase.firestore();
 
-      console.log(currentUser);
+      //populate population in reservation
+      db.collection("reservations")
+        .get()
+        .then(collection => {
+          const reservations = [];
 
-      var userId = currentUser.uid;
-
-      var userRef = firebase
-        .firestore()
-        .collection("users")
-        .doc(userId);
-
-      userRef.get().then(doc => {
-        if (doc.exists) {
-          console.log("Reservation Array: " + doc.data().reservations);
-
-          // got the reservation data from firestore
-          obj.setState({
-            reservations: doc.data().reservations
+          //add all reservations in the array
+          collection.forEach(doc => {
+            // doc.data() is never undefined for query doc snapshots
+            // add reservation information
+            reservations.push({
+              HID: doc.data().HID,
+              reservationId: doc.id,
+              displayName: doc.data().displayName,
+              checkinDate: doc.data().checkinDate,
+              checkoutDate: doc.data().checkoutDate,
+              bookDate: doc.data().bookDate,
+              totalPrice: doc.data().totalPrice,
+              userId: doc.data().userId,
+              isCanceled: doc.data().isCanceled
+            });
           });
-        } else {
-          // doc.data() will be undefined in this case
-          console.log("No such document!");
-        }
-      });
+          obj.setState({ reservations });
+          // console.log(reservations)
+        });
+    });
+  }
+
+  handleCancel(reservationId) {
+    // console.log(index);
+    // console.log("You click:" + this.state.reservations[index].reservationId);
+    const { firebase } = this.props;
+
+    // Check if auth changes after initializes
+    firebase.auth().onAuthStateChanged(function(user) {
+      // if user does not log in
+      if (!user) {
+        return;
+      }
+
+      firebase
+        .firestore()
+        .collection("reservations")
+        .doc(reservationId)
+        .update({
+          isCanceled: true
+        })
+        .then(function() {
+          window.location.reload();
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     });
   }
 
   render() {
     // make a list that contains all reservations user made
+    const { auth } = this.props;
+    // var thisRes = null;
     const resList =
       this.state.reservations &&
-      this.state.reservations.map((res, index) => {
+      this.state.reservations.map((res) => {
         return (
           <div key={res.reservationId}>
-            <h3>HID: {res.HID}</h3>
-            <h3>Beds: {res.beds}</h3>
-            <h3>Check-in Date: {res.checkinDate}</h3>
-            <h3>Check-out Date: {res.checkoutDate}</h3>
-            <h3>Total Price: ${res.totalPrice}</h3>
-            <Button component={renderButton}>Edit</Button>
-            <Button
-              component={renderButton}
-            >
-              Cancel
-            </Button>
-            <hr />
+            {/* Only show reservation that the user has instead of all*/}
+            {auth.uid === res.userId &&
+              !res.isCanceled && (
+                <div>
+                  <h3>Reservation ID: {res.reservationId}</h3>
+                  <h3>Hotel ID: {res.HID}</h3>
+                  <h3>Book Date: {res.bookDate}</h3>
+                  <h3>Check-in Date: {res.checkinDate}</h3>
+                  <h3>Check-out Date: {res.checkoutDate}</h3>
+                  <h3>Total Price: ${res.totalPrice}</h3>
+                  <h3>isCanceled: {String(res.isCanceled)}</h3>
+                  <Button component={renderButton}>Edit</Button>
+                  <Button
+                    component={renderButton}
+                    onClick={() => {
+                      this.handleCancel(res.reservationId);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <hr />
+                </div>
+              )}
+          
+            {/* Show the reservation that has been cancelled */}
+            {auth.uid === res.userId &&
+              res.isCanceled && (
+                <div>
+                  <h1>This Reservation has been Cancelled</h1>
+                  <s>
+                  <h3>Reservation ID: {res.reservationId}</h3>
+                  <h3>Hotel ID: {res.HID}</h3>
+                  <h3>Check-in Date: {res.checkinDate}</h3>
+                  <h3>Check-out Date: {res.checkoutDate}</h3>
+                  <h3>Total Price: ${res.totalPrice}</h3>
+                  <h3>isCanceled: {String(res.isCanceled)}</h3>
+                  </s>
+                  <hr />
+                </div>
+              )}
           </div>
         );
       });

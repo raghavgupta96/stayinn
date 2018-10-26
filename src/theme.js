@@ -15,7 +15,7 @@ export default createMuiTheme({
           main: "#35495D"
         },
         tertiary_orange: {
-          main: "FF9035"
+          main: "#FF9035"
         }
       }
 });

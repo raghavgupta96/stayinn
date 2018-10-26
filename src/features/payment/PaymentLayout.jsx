@@ -1,66 +1,104 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import { withStyles } from '@material-ui/core/styles';
 import PaymentSummary from './summary/PaymentSummary';
 import PaymentForm from './form/PaymentForm';
 import { connect } from 'react-redux'
-import './PaymentLayout.css';
 import {inputCard} from './PaymentBackend'
 
+import firebase from "../../app/config/firebase";
+
+// Styles
+const styles = {
+  paymentLayout: {
+    display: 'flex',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    padding: '8px',
+    margin: '8px'
+  }
+};
+
+// Some defaults for when data is not available
+const defaults = {
+  hotelSummary: { 
+    hotelName: "hotelName",
+    location: "location",
+    rate: 100.00,
+    nights: 4, // user picks
+    subtotal: 420, // calc
+    tax: 70.32, // calc
+    fees: 15.00, // constant?
+    total: 490.32 // calc
+  },
+  reservation: {
+    startDate: new Date(),
+    endDate: new Date(),
+    rooms: 1,
+    roomType: 1
+  },
+  hID: "lELnUhZ2MHPUTYutXDoy" 
+}
+
+// PaymentLayout Component
+//
 class PaymentLayout extends Component {
   state = {
+    hotelSummary: undefined, // populated in componentDidMount,
     traveler: {
-      firstname: "",
-      lastname: "",
+      firstName: "",
+      lastName: "",
       email: "",
-      phonenumber: "",
-      specialrequest: ""
+      phoneNumber: "",
+      specialRequest: ""
     },
     card: {
-      cardname: "",
-      cardnumber: "",
+      cardName: "",
+      cardNumber: "",
       cvc: "",
-      expirymonth: "",
-      expiryyear: "",
+      expiryMonth: "",
+      expiryYear: "",
     },
     transaction: {
       hotelId: "",
       userId: "",
       total: 0
     },
-    // defaults
-    defaulttrip: { 
-      hotelname: "hotelname",
-      location: "location",
-      startdate: new Date(),
-      enddate: new Date(),
-      roomtype: "roomtype",
-      rate: 100.00,
-      nights: 4,
-      rooms: 1,
-      subtotal: 420,
-      tax: 70.32,
-      fees: 15.00,
-      total: 490.32
-    }
   };
 
+  componentDidMount() {
+    // Populate hotel information
+    const db = firebase.firestore();
+    const hotelRef = db.collection("testingHotels").doc(defaults.hID);
+
+    hotelRef
+      .get()
+      .then((snapShot) => {
+        const h = snapShot.data();
+        const hotel = {
+          hotelName: h.name,
+          location: `${h.city}, ${h.state} ${h.zip}`,
+          rate: h.price
+        };
+        this.setState({ hotelSummary: hotel })
+      });
+  }
 
   handlers = {
     setTraveler: traveler => this.setState({ traveler }),
     setCard: card => this.setState({ card }),
-    checkout: (card) =>{
-      this.props.inputCard(card)
-
-    }, // For Chad
+    checkout: card => this.props.inputCard(card),
     cancel: () => this.props.history.goBack()
-    
   }
 
   render() {
     // PaymentSummary
-    const trip = this.props.trip
-      ? this.props.trip
-      : this.state.defaulttrip;
+    const { hotelSummary } = this.state.hotelSummary
+      ? this.state
+      : defaults
+    const { reservation } = this.props.reservation
+      ? this.props
+      : defaults
 
     // PaymentForm props
     const {
@@ -82,9 +120,10 @@ class PaymentLayout extends Component {
     };
 
     return (
-      <div className="PaymentLayout">
+      <div className={this.props.classes.paymentLayout}>
         <PaymentSummary
-          trip={trip}
+          hotel={hotelSummary}
+          reservation={reservation}
         />
         <PaymentForm
           traveler={traveler}
@@ -95,9 +134,13 @@ class PaymentLayout extends Component {
     )
   }
 }
-// const mapStateToProps = (state) => {return {cardstate: state.card.cardstate}}
-const mapDispatchToProps = (dispatch) => {return{inputCard: (card) => dispatch(inputCard(card))}
-}
 
-// Richard: change mapStateToProps to make the code work temporarily
-export default connect(null, mapDispatchToProps)(withRouter(PaymentLayout))
+const mapStateToProps = state => ({
+  cardstate: state.card.cardstate,
+  reservation: state.reservation
+});
+const mapDispatchToProps = dispatch => ({
+  inputCard: (card) => dispatch(inputCard(card))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(PaymentLayout)));
