@@ -5,8 +5,8 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
 import { withFirebase } from "react-redux-firebase";
+import logo from "./logo_transparent.png";
 
 const mapState = state => ({
   auth: state.firebase.auth,
@@ -21,7 +21,7 @@ class NavBar extends Component {
   };
   render() {
     // auth contains all user information (Ex: email, user, displayName, etc.)
-  const { auth } = this.props;
+    const { auth } = this.props;
     const authenticated = auth.isLoaded && !auth.isEmpty && auth.emailVerified;
     //console.log(auth);
     //console.log(authenticated);
@@ -33,9 +33,32 @@ class NavBar extends Component {
       auth.isLoaded && (
         <AppBar position="static">
           <Toolbar>
-            <Typography variant="headline" color="inherit" style={{ flex: 1 }}>
-              <IconButton href="/">StayInn</IconButton>
-            </Typography>
+            <Link
+              to="/"
+              style={{
+                flex: 1,
+                textDecoration: "none"
+              }}
+            >
+              <Typography
+                variant="title"
+                style={{
+                  fontFamily: "Times",
+                  fontSize: "30px",
+                  color: "#ffffff"
+                }}
+              >
+                <img
+                  src={logo}
+                  alt="logo"
+                  style={{
+                    height: "30px",
+                    width: "40px"
+                  }}
+                />
+                StayInn
+              </Typography>
+            </Link>
             {authenticated ? (
               <div>
                 {/* Use Link to direct user to the profile URL with user ID */}
@@ -51,10 +74,24 @@ class NavBar extends Component {
               </div>
             ) : (
               <div>
-                <Button href="/login" color="inherit">
+                <Button
+                  href="/login"
+                  style={{
+                    color: "#ffffff",
+                    fontFamily: "Times",
+                    fontSize: "15px"
+                  }}
+                >
                   Login
                 </Button>
-                <Button href="/signup" color="inherit">
+                <Button
+                  href="/signup"
+                  style={{
+                    color: "#ffffff",
+                    fontFamily: "Times",
+                    fontSize: "15px"
+                  }}
+                >
                   Signup
                 </Button>
               </div>

@@ -2,15 +2,6 @@ import React, { Component } from "react";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
-import Checkbox from "@material-ui/core/Checkbox";
-import TextField from "@material-ui/core/TextField";
-import Select from "@material-ui/core/Select";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Input from "@material-ui/core/Input";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import Typography from "@material-ui/core/Typography";
-import MenuItem from "@material-ui/core/MenuItem";
 
 const styles = theme => ({
   root: {
@@ -50,13 +41,13 @@ class Rewards extends Component {
         <Paper className={classes.mainpaper}>
           <Grid container spacing={16}>
             <Grid item className={classes.label} xs={12} md={12} lg={12}>
-              Upcoming Reservation : Mariott
+              Upcoming Reservation : TBD
             </Grid>
             <Grid item className={classes.label} xs={12} md={12} lg={12}>
-              Location : San Jose, California 94089
+              Location : TBD
             </Grid>
             <Grid item className={classes.label} xs={12} md={12} lg={12}>
-              Check-in Date : Oct. 8 2018
+              Check-in Date : TBD
             </Grid>
           </Grid>
         </Paper>

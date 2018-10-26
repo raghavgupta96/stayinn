@@ -16,6 +16,9 @@ import FilterBox from "./filterBox";
 import { connect } from "react-redux";
 import Rewards from "./RewardsBox";
 import Info from "./Info";
+import "react-dates/initialize";
+import "react-dates/lib/css/_datepicker.css";
+import { DateRangePicker } from "react-dates";
 
 const styles = theme => ({
   root: {
@@ -23,7 +26,7 @@ const styles = theme => ({
   },
   mainpaper: {
     width: "100%",
-    marginTop: "100px",
+    marginTop: "50px",
     marginBottom: "20px"
   },
   googleSearchContainer: {
@@ -86,16 +89,19 @@ class SearchBox extends Component {
       searchKey: "",
       place: null,
       NumOfRooms: 1,
-      hotels: []
+      hotels: [],
+      startDate: null,
+      endDate: null,
+      focusedInput: null
     };
   }
 
   //initially mount all the hotels info into the hotel list into state
   componentDidMount() {
-    console.log(
-      "This props reservation start date: -----------> " +
-        this.props.reservation.startdate
-    );
+    // console.log(
+    //   "This props reservation start date: -----------> " +
+    //     this.props.reservation.startdate
+    // );
     // console.log("This state NumOfRoom: -----------> "+ this.state.NumOfRooms);
     const db = firebase.firestore();
 
@@ -104,13 +110,13 @@ class SearchBox extends Component {
       .get()
       .then(collection => {
         const hotels = [];
-        console.log("hotels -----" + hotels);
+        // console.log("hotels -----" + hotels);
 
         //map all the needed hotel information to the state
         collection.forEach(doc => {
           // doc.data() is never undefined for query doc snapshots
           //-----testing-----
-          console.log(doc.id, " => ", doc.data());
+          // console.log(doc.id, " => ", doc.data());
 
           hotels.push({
             name: doc.data().name,
@@ -119,7 +125,7 @@ class SearchBox extends Component {
             photoUrl: doc.data().photoURL,
             type: doc.data().type
           });
-          console.log("hotels -----" + hotels);
+          // console.log("hotels -----" + hotels);
         });
         this.setState({ hotels });
       });
@@ -130,24 +136,25 @@ class SearchBox extends Component {
     var year = date.substring(0, 4);
     var month = date.substring(5, 7);
     var day = date.substring(8, 10);
-    var date = new Date(year, month - 1, day);
-    return date;
+    var d = new Date(year, month - 1, day);
+    return d;
   };
 
-  _handleCheckinDate = e => {
-    //convert the iso data "2018-05-15" string to data object
-    const date = this.stringToDate(e.target.value);
-    //set the store state
-    this.props.setStartDate(date);
-  };
+  //----these code for material ui calendar. app has shift to airbnb calendar on 10/25/2018
+  // _handleCheckinDate = e => {
+  //   //convert the iso data "2018-05-15" string to data object
+  //   const date = this.stringToDate(e.target.value);
+  //   //set the store state
+  //   this.props.setStartDate(date);
+  // };
 
-  _handleCheckoutDate = e => {
-    // convert the checkout date string to date object
-    const date = this.stringToDate(e.target.value);
-    // console.log(this.state.checkoutDate);
-    //set the store state
-    this.props.setEndDate(date);
-  };
+  // _handleCheckoutDate = e => {
+  //   // convert the checkout date string to date object
+  //   const date = this.stringToDate(e.target.value);
+  //   // console.log(this.state.checkoutDate);
+  //   //set the store state
+  //   this.props.setEndDate(date);
+  // };
 
   _handleRoomSizeChange = e => {
     this.props.setRoomType(e.target.value);
@@ -160,29 +167,38 @@ class SearchBox extends Component {
   };
 
   submit = () => {
-    console.log("----- Test the Store values-------------");
-    console.log(
-      "this.props.reservation.startdate ++++++++++++>" +
-        this.props.reservation.startdate
-    );
-    console.log(
-      "this.props.reservation.enddate -------------->" +
-        this.props.reservation.enddate
-    );
-    console.log(
-      "this.props.reservation.roomtype -------------->" +
-        this.props.reservation.roomtype
-    );
-    console.log(
-      "this.props.reservation.rooms -------------->" +
-        this.props.reservation.rooms
-    );
+    // console.log("----- Test the Store values-------------");
+    // console.log(
+    //   "this.props.reservation.startdate ++++++++++++>" +
+    //     this.props.reservation.startdate
+    // );
+    // console.log(
+    //   "this.props.reservation.enddate -------------->" +
+    //     this.props.reservation.enddate
+    // );
+    // console.log(
+    //   "this.props.reservation.roomtype -------------->" +
+    //     this.props.reservation.roomtype
+    // );
+    // console.log(
+    //   "this.props.reservation.rooms -------------->" +
+    //     this.props.reservation.rooms
+    // );
 
-    console.log("__________submitted_____________");
+    // console.log("__________submitted_____________");
     //do functional here
-    console.log("Checkin Date" + this.state.checkinDate);
-    console.log("Checkout Date" + this.state.checkoutDate);
-    console.log(" Hotels in state: " + this.state.hotels);
+    const startDateOj = new Date(this.state.startDate);
+    const endDateOj = new Date(this.state.endDate);
+    // console.log("Checkin Date: " + startDateOj);
+    // console.log("Checkin Date: " + endDateOj);
+    // console.log(" Hotels in state: " + this.state.hotels);
+    this.props.setStartDate(startDateOj);
+    this.props.setEndDate(endDateOj);
+
+    console.log(
+      "Start date in redux store: " + this.props.reservation.startDate
+    );
+    console.log("End date in redux store: " + this.props.reservation.endDate);
 
     //---------------------Searching-----------------------------
     // filtering the hotel with "CityName_RoomCap"
@@ -307,8 +323,8 @@ class SearchBox extends Component {
               <Grid
                 item
                 xs={12}
-                md={7}
-                lg={9}
+                md={6}
+                lg={8}
                 className={classes.googleSearchContainer}
               >
                 <Autocomplete
@@ -323,7 +339,7 @@ class SearchBox extends Component {
                   componentRestrictions={{ country: "us" }}
                 />
               </Grid>
-              <Grid item xs={6} md={2} lg={1}>
+              {/* <Grid item xs={6} md={2} lg={1}>
                 <form className={classes.dateContainer} noValidate>
                   <TextField
                     id="date"
@@ -336,7 +352,7 @@ class SearchBox extends Component {
                     onChange={this._handleCheckinDate}
                   />
                 </form>
-              </Grid>
+              </Grid> 
               <Grid item xs={6} md={2} lg={1}>
                 <form className={classes.dateContainer} noValidate>
                   <TextField
@@ -350,6 +366,21 @@ class SearchBox extends Component {
                     onChange={this._handleCheckoutDate}
                   />
                 </form>
+              </Grid> */}
+              <Grid item xs={12} md={12} lg={3}>
+                <DateRangePicker
+                  startDateId="startDate"
+                  endDateId="endDate"
+                  startDate={this.state.startDate}
+                  endDate={this.state.endDate}
+                  onDatesChange={({ startDate, endDate }) => {
+                    this.setState({ startDate, endDate });
+                  }}
+                  focusedInput={this.state.focusedInput}
+                  onFocusChange={focusedInput => {
+                    this.setState({ focusedInput });
+                  }}
+                />
               </Grid>
               <Grid
                 item
@@ -362,6 +393,7 @@ class SearchBox extends Component {
                   variant="contained"
                   onClick={this.submit}
                   className={classes.searchButton}
+                  color="primary"
                 >
                   <SearchIcon />
                 </Button>
@@ -383,7 +415,7 @@ class SearchBox extends Component {
               <Info />
             </Grid>
           </Grid>
-          <Grid item xs={9} md={9} lg={9}>
+          <Grid item xs={9} md={9} lg={8}>
             <SearchResult hotels={this.state.hotels} />
           </Grid>
           <Grid item xs={1} md={1} lg={1} />
