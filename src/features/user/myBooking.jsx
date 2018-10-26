@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 
 const styles = theme => ({
   dateContainer: {
-    display: "flex",
+    //display: "flex",
     flexWrap: "wrap",
     marginLeft: "15px",
     marginRight: "15px",
@@ -407,11 +407,14 @@ class myBooking extends Component {
                   <h3>Check-out Date: {res.checkoutDate}</h3>
                   <h3>Total Price: ${res.totalPrice}</h3> */}
                   {/* <h3>isCanceled: {String(res.isCanceled)}</h3> */}
+
+                  {/* CANCEL MODAL */}
                   <Modal
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                     open={this.state.open}
                     onClose={this.handleClose}
+                    container
                     style={{ paddingTop: 50, zIndex: 1, overflow: "auto" }}
                   >
                     <div style={modalStyle}>
@@ -456,6 +459,7 @@ class myBooking extends Component {
                     </div>
                   </Modal>
 
+                  {/* EDIT MODAL */}
                   <Modal
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
@@ -465,40 +469,42 @@ class myBooking extends Component {
                   >
                     <div style={modalStyle}>
                       <Typography style={regTextStyle}>
-                        Select a new check-in and check-out date for your
+                        Select a new checkin and checkout date for your
                         reservation.
                       </Typography>
-                      <Grid item xs={6} md={2} lg={1}>
-                        <form className={classes.container} noValidate>
-                          <TextField
-                            id="date"
-                            label="Checkin Date"
-                            type="date"
-                            value={this.state.checkinDate}
-                            InputLabelProps={{
-                              shrink: true
-                            }}
-                            onChange={this._handleCheckinDate}
-                          />
-                        </form>
+                      <Grid container spacing={24}>
+                        <Grid item xs={6}>
+                          <form className={classes.dateContainer} noValidate>
+                            <TextField
+                              id="date"
+                              label="Checkin Date"
+                              type="date"
+                              value={this.state.checkinDate}
+                              InputLabelProps={{
+                                shrink: true
+                              }}
+                              onChange={this._handleCheckinDate}
+                            />
+                          </form>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <form className={classes.dateContainer} noValidate>
+                            <TextField
+                              id="date"
+                              label="Checkout Date"
+                              type="date"
+                              value={this.state.checkoutDate}
+                              InputLabelProps={{
+                                shrink: true
+                              }}
+                              onChange={this._handleCheckoutDate}
+                            />
+                          </form>
+                        </Grid>
                       </Grid>
-                      <Grid item xs={6} md={2} lg={1}>
-                        <form className={classes.container} noValidate>
-                          <TextField
-                            id="date"
-                            label="Checkout Date"
-                            type="date"
-                            value={this.state.checkoutDate}
-                            InputLabelProps={{
-                              shrink: true
-                            }}
-                            onChange={this._handleCheckoutDate}
-                          />
-                        </form>
-                      </Grid>
-                      <Grid padding={20}>
+                      <Grid padding={20} spacing={24}>
                         <div>
-                          {!noDateConflict && <Typography color='error'>The check-in date must be before the check-out date.</Typography>}
+                          {!noDateConflict && <Typography color='error'>The checkin date must be before the checkout date.</Typography>}
                         </div>
                         <Button
                           component={renderButton}
