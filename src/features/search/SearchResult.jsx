@@ -166,6 +166,7 @@ const SearchResult = ({ hotels, classes }) => {
                         onClick={this.submit}
                         className={classes.searchButton}
                         color="primary"
+                        href={"/hotel/" + hotel.hID}
                       >
                         More Details
                       </Button>
@@ -173,7 +174,7 @@ const SearchResult = ({ hotels, classes }) => {
                   </Grid>
                 </Grid>
                 <Grid xs={5} md={5} lg={5} className={classes.photoContainer}>
-                  <Link to={"/payment/" + hotel.hID}>
+                  <Link to={"/hotel/" + hotel.hID}>
                     <img
                       src={hotel.photoUrl}
                       className={classes.photo}
