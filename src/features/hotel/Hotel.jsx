@@ -12,7 +12,7 @@ class Hotel extends Component {
 
   //get the hotel id from the link
   componentDidMount() {
-    var id = this.props.match.params.hotel_id;
+    const id = this.props.match.params.hotel_id;
 
     const db = firebase.firestore();
 

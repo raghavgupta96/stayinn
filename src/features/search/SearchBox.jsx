@@ -120,13 +120,19 @@ class SearchBox extends Component {
           // doc.data() is never undefined for query doc snapshots
           //-----testing-----
           // console.log(doc.id, " => ", doc.data());
-
           hotels.push({
             name: doc.data().name,
             hID: doc.id,
             room_cap: doc.data().maxBeds,
             photoUrl: doc.data().photoURL,
-            type: doc.data().type
+            type: doc.data().type,
+            rate1: doc.data().room1,
+            rate2: doc.data().room2,
+            rate3: doc.data().room3,
+            rate4: doc.data().room4,
+            rating: doc.data().rating,
+            address: doc.data().street + ", " + doc.data().city + ", " + doc.data().state + ", " +doc.data().zip,
+            maxCap: doc.data().maxBeds
           });
           // console.log("hotels -----" + hotels);
         });
@@ -255,7 +261,14 @@ class SearchBox extends Component {
               hID: doc.id,
               room_cap: doc.data().maxBeds,
               photoUrl: doc.data().photoURL,
-              type: doc.data().type
+              type: doc.data().type,
+              rate1: doc.data().room1,
+              rate2: doc.data().room2,
+              rate3: doc.data().room3,
+              rate4: doc.data().room4,
+              rating: doc.data().rating,
+              address: doc.data().street + ", " + doc.data().city + ", " + doc.data().state + ", " +doc.data().zip,
+              maxCap: doc.data().maxBeds,
             });
           });
           this.setState({ hotels });

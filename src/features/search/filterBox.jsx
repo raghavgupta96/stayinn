@@ -143,15 +143,15 @@ class filterBox extends Component {
             </Grid>
             <Grid xs={12} md={12} lg={12}>
               <Checkbox color="primary" />
-              swimmingPool
+              Swimming Pool
             </Grid>
             <Grid xs={12} md={12} lg={12}>
               <Checkbox color="primary" />
-              gym
+              Gym
             </Grid>
             <Grid xs={12} md={12} lg={12}>
               <Checkbox color="primary" />
-              bar
+              Bar
             </Grid>
           </Grid>
         </Paper>
