@@ -52,8 +52,8 @@ class NavBar extends Component {
                   src={logo}
                   alt="logo"
                   style={{
-                    height: "30px",
-                    width: "40px"
+                    height: "40px",
+                    width: "50px"
                   }}
                 />
                 StayInn
@@ -66,9 +66,25 @@ class NavBar extends Component {
                   style={{ color: "black", textDecoration: "none" }}
                   to={`/profile/${auth.uid}`}
                 >
-                  <Button color="inherit">{auth.displayName}</Button>
+                  <Button
+                    style={{
+                      color: "#ffffff",
+                      fontFamily: "Times",
+                      fontSize: "15px"
+                    }}
+                  >
+                    {auth.displayName}
+                  </Button>
                 </Link>
-                <Button href="/" color="inherit" onClick={this.handleSignOut}>
+                <Button
+                  href="/"
+                  style={{
+                    color: "#ffffff",
+                    fontFamily: "Times",
+                    fontSize: "15px"
+                  }}
+                  onClick={this.handleSignOut}
+                >
                   Sign Out
                 </Button>
               </div>

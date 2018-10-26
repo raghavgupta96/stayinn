@@ -19,14 +19,17 @@ import Info from "./Info";
 import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
 import { DateRangePicker } from "react-dates";
+import bg from "./bg.png";
 
 const styles = theme => ({
   root: {
     flexGrow: 1
+    //height: "100px",
+    //backgroundImage: `url(${bg})`
   },
   mainpaper: {
     width: "100%",
-    marginTop: "50px",
+    marginTop: "20px",
     marginBottom: "20px"
   },
   googleSearchContainer: {
@@ -264,6 +267,19 @@ class SearchBox extends Component {
     const { classes } = this.props;
     return (
       <Grid container className={classes.root} xs={12} md={12} lg={12}>
+        <Grid>
+          <img
+            src={bg}
+            alt="logo"
+            style={{
+              flex: 1,
+              height: "150px",
+              width: "100%",
+              objectFit: "cover",
+              backgroundPosition: "bottom"
+            }}
+          />
+        </Grid>
         <Grid item xs={1} md={1} lg={1} />
         <Grid item xs={10} md={10} lg={10}>
           <Paper className={classes.mainpaper}>

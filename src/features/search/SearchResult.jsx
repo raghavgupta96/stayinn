@@ -15,6 +15,9 @@ const styles = theme => ({
     width: "100%",
     marginBottom: "10px"
   },
+  stars: {
+    paddingLeft: "10px"
+  },
   hotelTitle: {
     fontFamily: "Times",
     fontSize: "30px",
@@ -93,30 +96,38 @@ const SearchResult = ({ hotels, classes }) => {
                       <Grid xs={3} md={3} lg={3} item className={classes.price}>
                         <Typography variant="subtitle1">$103.00</Typography>
                       </Grid>
-                      <img
-                        src={blackstar}
-                        alt="logo"
-                        style={{
-                          height: "15px",
-                          width: "15px"
-                        }}
-                      />
-                      <img
-                        src={blackstar}
-                        alt="logo"
-                        style={{
-                          height: "15px",
-                          width: "15px"
-                        }}
-                      />
-                      <img
-                        src={blackstar}
-                        alt="logo"
-                        style={{
-                          height: "15px",
-                          width: "15px"
-                        }}
-                      />
+                      <Grid
+                        item
+                        xs={10}
+                        md={10}
+                        lg={10}
+                        className={classes.stars}
+                      >
+                        <img
+                          src={blackstar}
+                          alt="logo"
+                          style={{
+                            height: "15px",
+                            width: "15px"
+                          }}
+                        />
+                        <img
+                          src={blackstar}
+                          alt="logo"
+                          style={{
+                            height: "15px",
+                            width: "15px"
+                          }}
+                        />
+                        <img
+                          src={blackstar}
+                          alt="logo"
+                          style={{
+                            height: "15px",
+                            width: "15px"
+                          }}
+                        />
+                      </Grid>
                     </Grid>
                     <Grid
                       item
@@ -155,6 +166,7 @@ const SearchResult = ({ hotels, classes }) => {
                         onClick={this.submit}
                         className={classes.searchButton}
                         color="primary"
+                        href={"/hotel/" + hotel.hID}
                       >
                         More Details
                       </Button>
@@ -162,11 +174,13 @@ const SearchResult = ({ hotels, classes }) => {
                   </Grid>
                 </Grid>
                 <Grid xs={5} md={5} lg={5} className={classes.photoContainer}>
-                  <img
-                    src={hotel.photoUrl}
-                    className={classes.photo}
-                    alt="hotel pic"
-                  />
+                  <Link to={"/hotel/" + hotel.hID}>
+                    <img
+                      src={hotel.photoUrl}
+                      className={classes.photo}
+                      alt="hotel pic"
+                    />
+                  </Link>
                 </Grid>
               </Grid>
             </Paper>
