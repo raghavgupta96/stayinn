@@ -173,11 +173,13 @@ const SearchResult = ({ hotels, classes }) => {
                   </Grid>
                 </Grid>
                 <Grid xs={5} md={5} lg={5} className={classes.photoContainer}>
-                  <img
-                    src={hotel.photoUrl}
-                    className={classes.photo}
-                    alt="hotel pic"
-                  />
+                  <Link to={"/payment/" + hotel.hID}>
+                    <img
+                      src={hotel.photoUrl}
+                      className={classes.photo}
+                      alt="hotel pic"
+                    />
+                  </Link>
                 </Grid>
               </Grid>
             </Paper>
