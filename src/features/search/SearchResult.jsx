@@ -96,7 +96,13 @@ const SearchResult = ({ hotels, classes }) => {
                       <Grid xs={3} md={3} lg={3} item className={classes.price}>
                         <Typography variant="subtitle1">$103.00</Typography>
                       </Grid>
-                      <Grid item xs={10} md={10} lg={10} className={classes.stars}>
+                      <Grid
+                        item
+                        xs={10}
+                        md={10}
+                        lg={10}
+                        className={classes.stars}
+                      >
                         <img
                           src={blackstar}
                           alt="logo"

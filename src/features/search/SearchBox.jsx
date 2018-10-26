@@ -23,7 +23,7 @@ import bg from "./bg.png";
 
 const styles = theme => ({
   root: {
-    flexGrow: 1,
+    flexGrow: 1
     //height: "100px",
     //backgroundImage: `url(${bg})`
   },
