@@ -550,7 +550,7 @@ class myBooking extends Component {
 
     return (
       <div>
-        <h1>MyBooking</h1>
+        {/* <h1>MyBooking</h1> */}
         {resList}
         {/* <Button
           onClick={() => {

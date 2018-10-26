@@ -170,8 +170,6 @@ class UserProfile extends Component {
         }
         return (
           <div>
-            <h1>User Profile</h1>
-
             {!this.state.updating && (
               <div>
                 <Grid
@@ -181,6 +179,7 @@ class UserProfile extends Component {
                   spacing={16}
                 >
                   <Grid item xs={4}>
+                    <h1>User Profile</h1>
                     <Paper className={classes.paper}>
                       {auth.photoURL && (
                         <img
@@ -226,6 +225,7 @@ class UserProfile extends Component {
                     </Paper>
                   </Grid>
                   <Grid item xs={8}>
+                    <h1>MyBooking</h1>
                     <Paper>
                       <MyBooking />
                     </Paper>
