@@ -285,11 +285,11 @@ class SearchBox extends Component {
             src={bg}
             alt="logo"
             style={{
-              flex: 1,
-              height: "150px",
-              width: "100%",
-              objectFit: "cover",
-              backgroundPosition: "bottom"
+              backgroundSize: "cover",
+              overflow: "hidden",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+              width: "100%"
             }}
           />
         </Grid>
