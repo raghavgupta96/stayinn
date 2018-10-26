@@ -29,7 +29,7 @@ const styles = theme => ({
   },
   mainpaper: {
     width: "100%",
-    marginTop: "50px",
+    marginTop: "20px",
     marginBottom: "20px"
   },
   googleSearchContainer: {
