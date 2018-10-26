@@ -57,10 +57,12 @@ export const registerUser = user => async (
     let createdUser = await firebase
       .auth()
       .createUserWithEmailAndPassword(user.email, user.password);
-    console.log(createdUser);
+    //console.log(createdUser);
+
+    const currUser = firebase.auth().currentUser;
 
     // Send email verification to user email provided
-    await createdUser
+    await currUser
       .sendEmailVerification()
       .then(function() {
         // Email sent.
@@ -77,7 +79,7 @@ export const registerUser = user => async (
       reward: 0
     };
 
-    await firestore.set(`users/${createdUser.uid}`, { ...newUser });
+    await firestore.set(`users/${currUser.uid}`, { ...newUser });
     window.location.href = "/";
     firebase.logout();
   } catch (error) {
@@ -121,7 +123,7 @@ export const updateUser = user => async (
         .catch(function(error) {
           console.log(error);
         });
-        window.location.href = `/profile/${currentUser.uid}`;
+        //window.location.href = `/profile/${currentUser.uid}`;
     }
 
     // Check if user updates the phone number
@@ -142,7 +144,7 @@ export const updateUser = user => async (
         .catch(function(error) {
           console.log(error);
         });
-        window.location.href = `/profile/${currentUser.uid}`;
+        //window.location.href = `/profile/${currentUser.uid}`;
     }
 
     // Check if user updates the profile image
@@ -216,9 +218,8 @@ export const updateUser = user => async (
       );
     } 
 
-    // If first login is true, set to false if at profile setup page.
-    // Profile setup page should only show once.
-    console.log("You logged in man? " + currentUser.firstLogin);
+    else
+    {    console.log("You logged in man? " + currentUser)
     await db.collection("users").doc(currentUser.uid).get().then(doc => {
       const docRef = doc.data();
       console.log(docRef.firstLogin);
@@ -233,8 +234,14 @@ export const updateUser = user => async (
         }).then(function () {
             window.location.href = `/profile/${currentUser.uid}`;
         });
-      } 
-    });
+      } else {
+        window.location.href = `/profile/${currentUser.uid}`;
+      }
+    });}
+
+    // If first login is true, set to false if at profile setup page.
+    // Profile setup page should only show once.
+
   } catch (error) {
     console.log(error);
     throw new SubmissionError({

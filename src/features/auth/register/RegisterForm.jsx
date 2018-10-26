@@ -61,7 +61,6 @@ const RegisterForm = ({ classes, handleSubmit, registerUser, error, invalid, sub
             <Grid item xs={6}>
               <Paper className={classes.paper}>
                 <Typography variant="display1" >Register</Typography>
-                
                     <Field
                       name="email"
                       component={renderTextField}
