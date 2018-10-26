@@ -52,7 +52,7 @@ const styles = theme => ({
   price: {
     paddingTop: "10px",
     fontSize: "30px",
-    marginLeft: "35px"
+    marginLeft: "40px"
   }
 });
 
@@ -94,7 +94,7 @@ const SearchResult = ({ hotels, classes }) => {
                         </Link>
                       </Grid>
                       <Grid xs={3} md={3} lg={3} item className={classes.price}>
-                        <Typography variant="subtitle1">${hotel.rate1}</Typography>
+                        <Typography variant="subtitle1">${hotel.rate1}.00</Typography>
                       </Grid>
                       <Grid
                         item
