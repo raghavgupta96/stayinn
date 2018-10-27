@@ -28,6 +28,16 @@ const styles = theme => ({
   photoContainer: {
     marginTop: "5px"
   },
+  mainpaper: {
+    paddingTop: 30,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 30,
+    marginTop: 20,
+  },
+  customButton: {
+    marginRight: 10,
+  }
 });
 
 const actions = {};
@@ -334,7 +344,7 @@ class myBooking extends Component {
                                   variant="title"
                                   className={classes.hotelTitle}
                                 >
-                                  Reservations @
+                                  Reservation @
                                 </Typography>
                                 <Link to={"/hotel/" + res.HID}>
                                   <Typography
@@ -358,6 +368,10 @@ class myBooking extends Component {
                               <Grid item xs />
                               <Grid item>
                                 <Button
+                                  className={classes.customButton}
+                                  style={{
+                                    color: "#ffffff"
+                                  }}
                                   component={renderButton}
                                   onClick={() => {
                                     this.handleEditOpen(res);
@@ -366,6 +380,7 @@ class myBooking extends Component {
                                   Edit
                                 </Button>
                                 <Button
+                                className={classes.customButton}
                                   component={warningButton}
                                   onClick={() => {
                                     // this.handleCancel(res.reservationId);
@@ -528,7 +543,7 @@ class myBooking extends Component {
                       </Grid>
                     </div>
                   </Modal>
-                  <hr />
+                  
                 </div>
               )}
 
@@ -536,18 +551,22 @@ class myBooking extends Component {
             {auth.uid === res.userId &&
               res.isCanceled && (
                 <div>
-                  <h2>This Reservation has been Cancelled</h2>
-                  <s>
-                    {/* <h3>Reservation ID: {res.reservationId}</h3>
-                    <h3>Hotel ID: {res.HID}</h3> */}
-                    <h3>Hotel Name: {res.hotelName}</h3>
-                    <h3>Book Date: {res.bookDate}</h3>
-                    <h3>Check-in Date: {res.checkinDate}</h3>
-                    <h3>Check-out Date: {res.checkoutDate}</h3>
-                    <h3>Total Price: ${res.totalPrice}</h3>
-                    {/* <h3>isCanceled: {String(res.isCanceled)}</h3> */}
-                  </s>
-                  <hr />
+                  <Grid item xs={11} >
+                    <Paper className={classes.mainpaper}>
+                      <h2>This Reservation has been Cancelled</h2>
+                      <s>
+                        {/* <h3>Reservation ID: {res.reservationId}</h3>
+                        <h3>Hotel ID: {res.HID}</h3> */}
+                        <h3>Hotel Name: {res.hotelName}</h3>
+                        <h3>Book Date: {res.bookDate}</h3>
+                        <h3>Check-in Date: {res.checkinDate}</h3>
+                        <h3>Check-out Date: {res.checkoutDate}</h3>
+                        <h3>Total Price: ${res.totalPrice}</h3>
+                        {/* <h3>isCanceled: {String(res.isCanceled)}</h3> */}
+                      </s>
+                    </Paper>
+                  </Grid>
+                  
                 </div>
               )}
           </div>

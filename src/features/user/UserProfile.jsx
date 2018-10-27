@@ -28,6 +28,7 @@ const styles = theme => ({
     paddingTop: 30,
     paddingLeft: 20,
     paddingRight: 20,
+    paddingBottom: 30
   },
   progress: {
     margin: theme.spacing.unit * 2
@@ -45,6 +46,9 @@ const renderButton = ({ ...custom }) => (
     variant="contained"
     justify="right"
     color="primary"
+    style={{
+      color: "#ffffff"
+    }}
     {...custom}
   />
 );
@@ -226,9 +230,9 @@ class UserProfile extends Component {
                   </Grid>
                   <Grid item xs={8}>
                     <h1>MyBooking</h1>
-                    <Paper>
+                    
                       <MyBooking />
-                    </Paper>
+                    
                   </Grid>
                 </Grid>
               </div>
