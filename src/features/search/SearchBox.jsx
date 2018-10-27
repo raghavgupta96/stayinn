@@ -106,6 +106,25 @@ class SearchBox extends Component {
     //     this.props.reservation.startdate
     // );
     // console.log("This state NumOfRoom: -----------> "+ this.state.NumOfRooms);
+
+    const startDateOj = new Date(this.state.startDate);
+    const endDateOj = new Date(this.state.endDate);
+
+        //convert the date object to string format yyyy-mm-dd
+    //because hotels would not let me push a date object into to hotels array
+    //startDate string
+    const date = startDateOj;
+    const year = date.getFullYear()
+    const month = date.getMonth()+1
+    const day = date.getDate()
+    const sDate =  year +"-"+ month + "-" + day
+    //endDate string
+    const edate = endDateOj;
+    const eYear = edate.getFullYear()
+    const eMonth = edate.getMonth()+1
+    const eDay = edate.getDate()
+    const eDate =  eYear +"-"+ eMonth + "-" + eDay
+
     const db = firebase.firestore();
 
     //uery the hotel data from firestore
@@ -132,7 +151,11 @@ class SearchBox extends Component {
             rate4: doc.data().room4,
             rating: doc.data().rating,
             address: doc.data().street + ", " + doc.data().city + ", " + doc.data().state + ", " +doc.data().zip,
-            maxCap: doc.data().maxBeds
+            maxCap: doc.data().maxBeds,
+            startDate: sDate,
+            endDate: eDate,
+            roomType: this.props.reservation.roomType,
+            rooms: this.props.reservation.rooms,
           });
           // console.log("hotels -----" + hotels);
         });
@@ -204,6 +227,21 @@ class SearchBox extends Component {
     this.props.setStartDate(startDateOj);
     this.props.setEndDate(endDateOj);
 
+    //convert the date object to string format yyyy-mm-dd
+    //because hotels would not let me push a date object into to hotels array
+    //startDate string
+    const date = startDateOj;
+    const year = date.getFullYear()
+    const month = date.getMonth()+1
+    const day = date.getDate()
+    const sDate =  year +"-"+ month + "-" + day
+    //endDate string
+    const edate = endDateOj;
+    const eYear = edate.getFullYear()
+    const eMonth = edate.getMonth()+1
+    const eDay = edate.getDate()
+    const eDate =  eYear +"-"+ eMonth + "-" + eDay
+    
     console.log(
       "Start date in redux store: " + this.props.reservation.startDate
     );
@@ -234,7 +272,18 @@ class SearchBox extends Component {
               hID: doc.id,
               room_cap: doc.data().maxBeds,
               photoUrl: doc.data().photoURL,
-              type: doc.data().type
+              type: doc.data().type,
+              rate1: doc.data().room1,
+              rate2: doc.data().room2,
+              rate3: doc.data().room3,
+              rate4: doc.data().room4,
+              rating: doc.data().rating,
+              address: doc.data().street + ", " + doc.data().city + ", " + doc.data().state + ", " +doc.data().zip,
+              maxCap: doc.data().maxBeds,
+              startDate: sDate,
+              endDate: eDate,
+              roomType: this.props.reservation.roomType,
+              rooms: this.props.reservation.rooms,
             });
           });
           this.setState({ hotels });
@@ -254,7 +303,7 @@ class SearchBox extends Component {
           collection.forEach(doc => {
             // doc.data() is never undefined for query doc snapshots
             //-----testing-----
-            console.log(doc.id, " => ", doc.data());
+            // console.log(doc.id, " => ", doc.data());
 
             hotels.push({
               name: doc.data().name,
@@ -269,6 +318,10 @@ class SearchBox extends Component {
               rating: doc.data().rating,
               address: doc.data().street + ", " + doc.data().city + ", " + doc.data().state + ", " +doc.data().zip,
               maxCap: doc.data().maxBeds,
+              startDate: sDate,
+              endDate: eDate,
+              roomType: this.props.reservation.roomType,
+              rooms: this.props.reservation.rooms,
             });
           });
           this.setState({ hotels });

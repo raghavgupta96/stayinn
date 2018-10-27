@@ -138,6 +138,7 @@ const SearchResult = ({ hotels, classes }) => {
                     >
                       An intimate and charming atmosphere, high quality comfort
                       and traditional Bay Area hospitality...
+                      
                       <p>Address: {hotel.address}</p>
                     </Grid>
                   </Grid>
@@ -153,12 +154,23 @@ const SearchResult = ({ hotels, classes }) => {
                     <Grid item>
                       <Button
                         variant="contained"
-                        onClick={this.submit}
                         className={classes.searchButton}
-                        href={"/payment/" + hotel.hID}
+                        // href={"/payment/" + hotel.hID}
                         color="primary"
                       >
-                        Book
+                        <Link
+                          to={{
+                            pathname: "/payment/" + hotel.hID,
+                            state: { 
+                              startDate: hotel.startDate,
+                              endDate: hotel.endDate,
+                              roomType: hotel.roomType,
+                              rooms: hotel.rooms,
+                            }
+                          }}
+                        >
+                          Book
+                        </Link>
                       </Button>
                       <Button
                         variant="contained"
