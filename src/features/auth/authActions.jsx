@@ -1,5 +1,6 @@
 import { SIGN_OUT_USER } from "./authConstants";
 import { SubmissionError } from "redux-form";
+import {toastr} from 'react-redux-toastr'
 
 export const login = creds => {
   return async (dispatch, getState, { getFirebase }) => {
@@ -80,7 +81,8 @@ export const registerUser = user => async (
     };
 
     await firestore.set(`users/${currUser.uid}`, { ...newUser });
-    window.location.href = "/";
+    toastr.success('Success', 'Please verified your email before logging in');
+    // window.location.href = "/";
     firebase.logout();
   } catch (error) {
     console.log(error);

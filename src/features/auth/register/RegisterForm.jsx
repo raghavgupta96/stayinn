@@ -1,5 +1,5 @@
 import React from "react";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, reset } from "redux-form";
 import { connect } from "react-redux";
 import { registerUser } from "../authActions";
 
@@ -12,7 +12,7 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import { toastr } from "react-redux-toastr";
+
 
 
 
@@ -51,13 +51,21 @@ const styles = theme => ({
   }
 });
 
+const afterSubmit = (result, dispatch, history) =>
+{
+  // dispatch(reset('registerForm'));
+  // dispatch(push('/login'))
+  // console.log(history);
+  history.history.push('/login');
+}
+
 const RegisterForm = ({
   classes,
   handleSubmit,
   registerUser,
   error,
   invalid,
-  submitting
+  submitting,
 }) => {
   return (
     <div>
@@ -111,5 +119,5 @@ export default withStyles(styles)(
   connect(
     null,
     actions
-  )(reduxForm({ form: "registerForm", validate })(RegisterForm))
+  )(reduxForm({ form: "registerForm", onSubmitSuccess: afterSubmit, validate })(RegisterForm))
 );
