@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Autocomplete from "react-google-autocomplete";
 import Paper from "@material-ui/core/Paper";
@@ -38,7 +37,8 @@ const styles = theme => ({
   mainpaper: {
     width: "100%",
     marginTop: "350px",
-    marginBottom: "20px"
+    marginBottom: "20px",
+    padding: "10px"
   },
   googleSearchContainer: {
     paddingLeft: "15px",
@@ -58,7 +58,7 @@ const styles = theme => ({
   googleSearch: {
     width: "100%",
     height: "45px",
-    fontSize: "18px",
+    fontSize: "21px",
     fontFamily: "Times",
     border: "none",
     borderBottomStyle: "solid",
@@ -81,8 +81,7 @@ const styles = theme => ({
     display: "flex"
   },
   typography: {
-    fontFamily: "Times",
-    fontSize: "20px",
+    
     paddingTop: "17px",
     paddingRight: "5px",
     paddingLeft: "15px"
