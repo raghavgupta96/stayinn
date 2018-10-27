@@ -1,9 +1,11 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
+import { isLoaded } from "react-redux-firebase";
+
 
 //Material UI components
-import { isLoaded } from "react-redux-firebase";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Paper from "@material-ui/core/Paper";
@@ -95,6 +97,22 @@ const renderButton = ({ ...custom }) => (
   />
 );
 
+// Working on updating user profile snackbar
+
+// const afterSubmit = (result, dispatch, history) =>
+// {
+//   // dispatch(reset('registerForm'));
+//   // dispatch(push('/login'))
+//   // console.log(history);
+//   let url = window.location.href;
+//   const startChar = url.indexOf('/', 8);
+//   const path = url.substr(startChar, url.length);
+//   console.log(path);
+//   history.history.push(path);
+
+// }
+
+
 const EditInfoForm = ({
   classes,
   handleSubmit,
@@ -105,6 +123,7 @@ const EditInfoForm = ({
   auth,
   userProfile
 }) => {
+
   // redner after auth is loaded
   if (isLoaded(auth)) {
     // if auth is not empty
@@ -196,7 +215,6 @@ const EditInfoForm = ({
                   <Typography className={classes.headerInfo}>
                     Password: ********
                   </Typography>
-                  {console.log(updateUser.photoFile)}
                   <Button disabled={invalid || submitting} component={renderButton} type="submit">Update</Button>
                   <Button component={warningButton}
                     onClick={() => {
@@ -205,7 +223,6 @@ const EditInfoForm = ({
                       })
                     }}
                   >Cancel</Button>
-                  {console.log(error)}
                 </Paper>
           </form>
         </div>
@@ -220,9 +237,16 @@ const EditInfoForm = ({
   }
 };
 
+// working on snackbar....
+// export default withStyles(styles)(
+//   withRouter(connect(
+//     mapState,
+//     actions
+//   )(reduxForm({ form: "editInfoForm", onSubmitSuccess: afterSubmit, validate })(EditInfoForm)))
+// );
 export default withStyles(styles)(
-  connect(
+  withRouter(connect(
     mapState,
     actions
-  )(reduxForm({ form: "editInfoForm", validate })(EditInfoForm))
+  )(reduxForm({ form: "editInfoForm", validate })(EditInfoForm)))
 );
