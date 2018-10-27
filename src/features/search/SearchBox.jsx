@@ -58,7 +58,7 @@ const styles = theme => ({
   googleSearch: {
     width: "100%",
     height: "45px",
-    fontSize: "18px",
+    fontSize: "21px",
     fontFamily: "Times",
     border: "none",
     borderBottomStyle: "solid",
@@ -81,8 +81,7 @@ const styles = theme => ({
     display: "flex"
   },
   typography: {
-    fontFamily: "Times",
-    fontSize: "20px",
+    
     paddingTop: "17px",
     paddingRight: "5px",
     paddingLeft: "15px"
