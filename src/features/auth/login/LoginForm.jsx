@@ -45,7 +45,7 @@ const styles = theme => ({
 })
 
 
-const LoginForm = ({classes, login, handleSubmit, error, invalid, submitting}) => {
+const LoginForm = ({classes, login, handleSubmit, error, invalid, submitting, reset}) => {
 
   return (
     <div>

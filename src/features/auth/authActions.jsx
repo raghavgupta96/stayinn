@@ -1,5 +1,6 @@
 import { SIGN_OUT_USER } from "./authConstants";
 import { SubmissionError } from "redux-form";
+import { toastr } from "react-redux-toastr";
 
 export const login = creds => {
   return async (dispatch, getState, { getFirebase }) => {
@@ -14,17 +15,20 @@ export const login = creds => {
           const verified = user.emailVerified;
           // Check if the user's email address is verified before login completion
           if (verified) {
-            db.collection("users").doc(user.uid).get().then(doc => {
-              const docRef = doc.data();
-              console.log("First Login: " + docRef.firstLogin);
-              // If it is the first time the user is logging in, route to profile setup.
-              // If not, go to the homepage.
-              if(docRef.firstLogin) {
-                window.location.href = "/profileSetup"
-              } else {
-                window.location.href = "/";
-              }
-            });         
+            db.collection("users")
+              .doc(user.uid)
+              .get()
+              .then(doc => {
+                const docRef = doc.data();
+                console.log("First Login: " + docRef.firstLogin);
+                // If it is the first time the user is logging in, route to profile setup.
+                // If not, go to the homepage.
+                if (docRef.firstLogin) {
+                  window.location.href = "/profileSetup";
+                } else {
+                  window.location.href = "/";
+                }
+              });
           } else {
             console.log("Email not verified homie!");
             firebase.logout();
@@ -57,10 +61,12 @@ export const registerUser = user => async (
     let createdUser = await firebase
       .auth()
       .createUserWithEmailAndPassword(user.email, user.password);
-    console.log(createdUser);
+    //console.log(createdUser);
+
+    const currUser = firebase.auth().currentUser;
 
     // Send email verification to user email provided
-    await createdUser
+    await currUser
       .sendEmailVerification()
       .then(function() {
         // Email sent.
@@ -73,13 +79,13 @@ export const registerUser = user => async (
     let newUser = {
       createdAt: firestore.FieldValue.serverTimestamp(),
       email: user.email,
-      reservations:[],
       firstLogin: true,
       reward: 0
     };
 
-    await firestore.set(`users/${createdUser.uid}`, { ...newUser });
-    window.location.href = "/";
+    await firestore.set(`users/${currUser.uid}`, { ...newUser });
+    toastr.success("Success", "Please verified your email before logging in");
+    // window.location.href = "/";
     firebase.logout();
   } catch (error) {
     console.log(error);
@@ -117,11 +123,12 @@ export const updateUser = user => async (
         })
         .then(function() {
           //window.location.href = `/profile/${currentUser.uid}`;
-          console.log("DISPLAY Name")
+          console.log("DISPLAY Name");
         })
         .catch(function(error) {
           console.log(error);
         });
+      //window.location.href = `/profile/${currentUser.uid}`;
     }
 
     // Check if user updates the phone number
@@ -137,18 +144,19 @@ export const updateUser = user => async (
         })
         .then(function() {
           //window.location.href = `/profile/${currentUser.uid}`;
-          console.log("Phone Number")
+          console.log("Phone Number");
         })
         .catch(function(error) {
           console.log(error);
         });
+      //window.location.href = `/profile/${currentUser.uid}`;
     }
 
     // Check if user updates the profile image
     // if it does, update the info stored both in authentication
     // and firestore
     console.log("Upload: " + user.photoFile);
-      if (user.photoFile) {
+    if (user.photoFile) {
       // file uploaded from user will be named
       // after its userId
       var storageRef = await firebase
@@ -213,27 +221,41 @@ export const updateUser = user => async (
           });
         }
       );
-    } 
+    } else {
+      console.log("You logged in man? " + currentUser);
+      await db
+        .collection("users")
+        .doc(currentUser.uid)
+        .get()
+        .then(doc => {
+          const docRef = doc.data();
+          console.log(docRef.firstLogin);
+          if (docRef.firstLogin) {
+            console.log("first login INSIDE");
+            firebase
+              .firestore()
+              .collection("users")
+              .doc(currentUser.uid)
+              .update({
+                firstLogin: false
+              })
+              .then(function() {
+                window.location.href = `/profile/${currentUser.uid}`;
+
+                // snackbar under development...
+                // toastr.success('Success', 'Your information has been updated!');
+              });
+          } else {
+            window.location.href = `/profile/${currentUser.uid}`;
+
+            // snackbar under development...
+            // toastr.success('Success', 'Your information has been updated!');
+          }
+        });
+    }
 
     // If first login is true, set to false if at profile setup page.
     // Profile setup page should only show once.
-    console.log("You logged in man? " + currentUser.firstLogin);
-    await db.collection("users").doc(currentUser.uid).get().then(doc => {
-      const docRef = doc.data();
-      console.log(docRef.firstLogin);
-      if(docRef.firstLogin){
-        console.log("first login INSIDE")
-        firebase
-        .firestore()
-        .collection("users")
-        .doc(currentUser.uid)
-        .update({
-          firstLogin: false
-        }).then(function () {
-            window.location.href = `/profile/${currentUser.uid}`;
-        });
-      } 
-    });
   } catch (error) {
     console.log(error);
     throw new SubmissionError({

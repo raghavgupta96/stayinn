@@ -13,7 +13,7 @@ const renderPasswordField = ({
       required
       style={{ paddingBottom: 10 }}
       type="password"
-      label="Password"
+      label={label}
       hintText={label}
       floatingLabelText={label}
       errorText={touched && error}

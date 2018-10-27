@@ -9,6 +9,9 @@ const renderLoginButton = ({
     justify="right" 
     color="primary"
     type="submit"
+    style={{
+      color: "#ffffff"
+    }}
     {...custom}
     />
   )

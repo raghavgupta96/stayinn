@@ -28,6 +28,7 @@ const styles = theme => ({
     paddingTop: 30,
     paddingLeft: 20,
     paddingRight: 20,
+    paddingBottom: 30
   },
   progress: {
     margin: theme.spacing.unit * 2
@@ -39,6 +40,18 @@ const styles = theme => ({
     fontSize: '18px'
   }
 });
+
+const renderButton = ({ ...custom }) => (
+  <Button
+    variant="contained"
+    justify="right"
+    color="primary"
+    style={{
+      color: "#ffffff"
+    }}
+    {...custom}
+  />
+);
 
 function CircularIndeterminate() {
   return (
@@ -64,8 +77,6 @@ class UserProfile extends Component {
   // getPhone = () => {
   async componentDidMount() {
     const { firebase } = this.props;
-
-    console.log(this.props);
 
     const obj = this;
     var currentUser;
@@ -153,7 +164,7 @@ class UserProfile extends Component {
 
     const { auth, classes } = this.props;
     // console.log("Render Phone Number:" + showPhone);
-    console.log(this.props.match.params.id);
+    // console.log(this.props.match.params.id);
     // only show when auth is loaded
     if (isLoaded(auth) && this.state.showPhone) {
       // when user does not log in
@@ -163,8 +174,6 @@ class UserProfile extends Component {
         }
         return (
           <div>
-            <h1>User Profile</h1>
-
             {!this.state.updating && (
               <div>
                 <Grid
@@ -174,6 +183,7 @@ class UserProfile extends Component {
                   spacing={16}
                 >
                   <Grid item xs={4}>
+                    <h1>User Profile</h1>
                     <Paper className={classes.paper}>
                       {auth.photoURL && (
                         <img
@@ -207,6 +217,7 @@ class UserProfile extends Component {
                         Reward: {this.state.showReward} points
                       </Typography>
                       <Button
+                      component={renderButton}
                         onClick={() =>
                           this.setState({
                             updating: true
@@ -218,9 +229,7 @@ class UserProfile extends Component {
                     </Paper>
                   </Grid>
                   <Grid item xs={8}>
-                    <Paper>
-                      <MyBooking />
-                    </Paper>
+                    <MyBooking />
                   </Grid>
                 </Grid>
               </div>
@@ -228,8 +237,21 @@ class UserProfile extends Component {
 
             {this.state.updating && (
               <div>
-                <EditInfoForm />
-                <Button
+                <Grid
+                  container
+                  className={classes.root}
+                  justify="center"
+                  spacing={16}
+                >
+                  <Grid item xs={4}>
+                    <h1>Update Profile</h1>
+                    <EditInfoForm userProfile={this} />
+                  </Grid>
+                  <Grid item xs={8}>
+                    <MyBooking />
+                  </Grid>
+                </Grid>
+                {/* <Button
                   onClick={() =>
                     this.setState({
                       updating: false
@@ -237,7 +259,7 @@ class UserProfile extends Component {
                   }
                 >
                   Cancel
-                </Button>
+                </Button> */}
               </div>
             )}
           </div>

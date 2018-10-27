@@ -1,19 +1,19 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
+import { isLoaded } from "react-redux-firebase";
+
 
 //Material UI components
-import { isLoaded } from "react-redux-firebase";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import withStyles from "@material-ui/core/styles/withStyles";
-import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import FileInput from "../../app/common/form/FileInput";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { updateUser } from "../auth/authActions";
-import MyBooking from "./myBooking";
 
 const actions = {
   updateUser
@@ -23,6 +23,17 @@ const mapState = state => ({
   auth: state.firebase.auth,
   profile: state.firebase.profile
 });
+
+const validate = values => {
+  const errors = {}
+  const requiredFields = ['photoFile', 'displayName', 'phoneNumber']
+  requiredFields.forEach(field => {
+    if (!values.photoFile && !values.displayName && !values.phoneNumber) {
+      errors[ field ] = 'Required'
+    }
+  })
+  return errors
+}
 
 function CircularIndeterminate() {
   return (
@@ -41,7 +52,7 @@ const styles = theme => ({
   paper: {
     paddingTop: 30,
     paddingLeft: 20,
-    paddingRight: 20
+    paddingRight: 20,
   },
   progress: {
     margin: theme.spacing.unit * 2
@@ -53,6 +64,10 @@ const styles = theme => ({
     fontSize: "18px"
   }
 });
+
+const warningButton = ({ ...custom }) => (
+  <Button variant="contained" justify="right" {...custom} />
+);
 
 //rendering the UI components
 const renderTextField = ({
@@ -82,6 +97,22 @@ const renderButton = ({ ...custom }) => (
   />
 );
 
+// Working on updating user profile snackbar
+
+// const afterSubmit = (result, dispatch, history) =>
+// {
+//   // dispatch(reset('registerForm'));
+//   // dispatch(push('/login'))
+//   // console.log(history);
+//   let url = window.location.href;
+//   const startChar = url.indexOf('/', 8);
+//   const path = url.substr(startChar, url.length);
+//   console.log(path);
+//   history.history.push(path);
+
+// }
+
+
 const EditInfoForm = ({
   classes,
   handleSubmit,
@@ -89,8 +120,10 @@ const EditInfoForm = ({
   error,
   invalid,
   submitting,
-  auth
+  auth,
+  userProfile
 }) => {
+
   // redner after auth is loaded
   if (isLoaded(auth)) {
     // if auth is not empty
@@ -145,13 +178,6 @@ const EditInfoForm = ({
         // </div>
         <div>
           <form size="large" onSubmit={handleSubmit(updateUser)}>
-            <Grid
-              container
-              className={classes.root}
-              justify="center"
-              spacing={16}
-            >
-              <Grid item xs={4}>
                 <Paper className={classes.paper}>
                   {/* {auth.photoURL && (
                     <img width="200" height="200" src={auth.photoURL} alt="" />
@@ -189,16 +215,15 @@ const EditInfoForm = ({
                   <Typography className={classes.headerInfo}>
                     Password: ********
                   </Typography>
-                  <Button type="submit">Update</Button>
-                  <Button component={renderButton}>Cancel</Button>
+                  <Button disabled={invalid || submitting} component={renderButton} type="submit">Update</Button>
+                  <Button component={warningButton}
+                    onClick={() => {
+                      userProfile.setState({
+                        updating: false,
+                      })
+                    }}
+                  >Cancel</Button>
                 </Paper>
-              </Grid>
-              <Grid item xs={8}>
-                <Paper>
-                  <MyBooking />
-                </Paper>              
-              </Grid>
-            </Grid>
           </form>
         </div>
       );
@@ -212,9 +237,16 @@ const EditInfoForm = ({
   }
 };
 
+// working on snackbar....
+// export default withStyles(styles)(
+//   withRouter(connect(
+//     mapState,
+//     actions
+//   )(reduxForm({ form: "editInfoForm", onSubmitSuccess: afterSubmit, validate })(EditInfoForm)))
+// );
 export default withStyles(styles)(
-  connect(
+  withRouter(connect(
     mapState,
     actions
-  )(reduxForm({ form: "editInfoForm" })(EditInfoForm))
+  )(reduxForm({ form: "editInfoForm", validate })(EditInfoForm)))
 );
