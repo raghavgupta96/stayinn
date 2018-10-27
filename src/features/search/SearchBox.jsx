@@ -38,7 +38,8 @@ const styles = theme => ({
     width: "100%",
     marginTop: "350px",
     marginBottom: "20px",
-    padding: "10px"
+    padding: "10px",
+    opacity: "0.95"
   },
   googleSearchContainer: {
     paddingLeft: "15px",
@@ -81,7 +82,6 @@ const styles = theme => ({
     display: "flex"
   },
   typography: {
-    
     paddingTop: "17px",
     paddingRight: "5px",
     paddingLeft: "15px"
