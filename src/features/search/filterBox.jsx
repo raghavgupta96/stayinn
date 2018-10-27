@@ -3,14 +3,16 @@ import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
-import TextField from "@material-ui/core/TextField";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
+import Avatar from "@material-ui/core/Avatar";
+import barIcon from "./bar.png";
+import billiardsIcon from "./billiards.png";
+import swimmingPool from "./swimmingPool.png";
 
 const styles = theme => ({
   root: {
@@ -57,8 +59,8 @@ const styles = theme => ({
   typeTitle: {
     fontFamily: "Times",
     fontSize: "20px",
-    marginTop :"10px",
-    marginLeft : "10px"
+    marginTop: "10px",
+    marginLeft: "10px"
   },
   typeHeading: {
     backgroundColor: "#409BE6",
@@ -66,6 +68,9 @@ const styles = theme => ({
     fontFamily: "Times",
     fontSize: "25px",
     paddingLeft: "10px"
+  },
+  checkboxTitle: {
+    paddingTop: "12px"
   }
 });
 
@@ -141,17 +146,74 @@ class filterBox extends Component {
                 />
               </FormControl>
             </Grid>
-            <Grid xs={12} md={12} lg={12}>
-              <Checkbox color="primary" />
-              Swimming Pool
-            </Grid>
-            <Grid xs={12} md={12} lg={12}>
-              <Checkbox color="primary" />
-              Gym
-            </Grid>
-            <Grid xs={12} md={12} lg={12}>
-              <Checkbox color="primary" />
-              Bar
+            <Grid
+              item
+              xs={12}
+              md={12}
+              lg={12}
+              container
+              style={{
+                display: "flex",
+                marginTop: "10px"
+              }}
+            >
+              <Grid
+                item
+                xs={10}
+                md={10}
+                lg={10}
+                style={{
+                  display: "flex"
+                }}
+                container
+              >
+                <Avatar alt="Billiards" src={billiardsIcon} />
+
+                <Typography gutterBottom className={classes.checkboxTitle}>
+                  Billiards
+                </Typography>
+              </Grid>
+              <Grid item xs={2} md={2} lg={2} container>
+                <Checkbox color="primary" />
+              </Grid>
+              <Grid
+                item
+                xs={10}
+                md={10}
+                lg={10}
+                style={{
+                  display: "flex"
+                }}
+                container
+              >
+                <Avatar alt="Bar" src={barIcon} />
+
+                <Typography gutterBottom className={classes.checkboxTitle}>
+                  Bar
+                </Typography>
+              </Grid>
+              <Grid item xs={2} md={2} lg={2} container>
+                <Checkbox color="primary" />
+              </Grid>
+              <Grid
+                item
+                xs={10}
+                md={10}
+                lg={10}
+                style={{
+                  display: "flex"
+                }}
+                container
+              >
+                <Avatar alt="Swimming Pool" src={swimmingPool} />
+
+                <Typography gutterBottom className={classes.checkboxTitle}>
+                  Swimming Pool
+                </Typography>
+              </Grid>
+              <Grid item xs={2} md={2} lg={2} container>
+                <Checkbox color="primary" />
+              </Grid>
             </Grid>
           </Grid>
         </Paper>
