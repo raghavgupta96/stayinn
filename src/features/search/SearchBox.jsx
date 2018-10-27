@@ -24,12 +24,20 @@ import bg from "./bg.png";
 const styles = theme => ({
   root: {
     flexGrow: 1
-    //height: "100px",
-    //backgroundImage: `url(${bg})`
+  },
+  secondaryContainer: {
+    height: "800px",
+    backgroundImage: `url(${bg})`,
+    backgroundSize: "cover",
+    overflow: "hidden",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    width: "100%",
+    marginBottom: "15px"
   },
   mainpaper: {
     width: "100%",
-    marginTop: "20px",
+    marginTop: "350px",
     marginBottom: "20px"
   },
   googleSearchContainer: {
@@ -106,6 +114,25 @@ class SearchBox extends Component {
     //     this.props.reservation.startdate
     // );
     // console.log("This state NumOfRoom: -----------> "+ this.state.NumOfRooms);
+
+    const startDateOj = new Date(this.state.startDate);
+    const endDateOj = new Date(this.state.endDate);
+
+    //convert the date object to string format yyyy-mm-dd
+    //because hotels would not let me push a date object into to hotels array
+    //startDate string
+    const date = startDateOj;
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const sDate = year + "-" + month + "-" + day;
+    //endDate string
+    const edate = endDateOj;
+    const eYear = edate.getFullYear();
+    const eMonth = edate.getMonth() + 1;
+    const eDay = edate.getDate();
+    const eDate = eYear + "-" + eMonth + "-" + eDay;
+
     const db = firebase.firestore();
 
     //uery the hotel data from firestore
@@ -131,8 +158,19 @@ class SearchBox extends Component {
             rate3: doc.data().room3,
             rate4: doc.data().room4,
             rating: doc.data().rating,
-            address: doc.data().street + ", " + doc.data().city + ", " + doc.data().state + ", " +doc.data().zip,
-            maxCap: doc.data().maxBeds
+            address:
+              doc.data().street +
+              ", " +
+              doc.data().city +
+              ", " +
+              doc.data().state +
+              ", " +
+              doc.data().zip,
+            maxCap: doc.data().maxBeds,
+            startDate: sDate,
+            endDate: eDate,
+            roomType: this.props.reservation.roomType,
+            rooms: this.props.reservation.rooms
           });
           // console.log("hotels -----" + hotels);
         });
@@ -204,6 +242,21 @@ class SearchBox extends Component {
     this.props.setStartDate(startDateOj);
     this.props.setEndDate(endDateOj);
 
+    //convert the date object to string format yyyy-mm-dd
+    //because hotels would not let me push a date object into to hotels array
+    //startDate string
+    const date = startDateOj;
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const sDate = year + "-" + month + "-" + day;
+    //endDate string
+    const edate = endDateOj;
+    const eYear = edate.getFullYear();
+    const eMonth = edate.getMonth() + 1;
+    const eDay = edate.getDate();
+    const eDate = eYear + "-" + eMonth + "-" + eDay;
+
     console.log(
       "Start date in redux store: " + this.props.reservation.startDate
     );
@@ -234,7 +287,25 @@ class SearchBox extends Component {
               hID: doc.id,
               room_cap: doc.data().maxBeds,
               photoUrl: doc.data().photoURL,
-              type: doc.data().type
+              type: doc.data().type,
+              rate1: doc.data().room1,
+              rate2: doc.data().room2,
+              rate3: doc.data().room3,
+              rate4: doc.data().room4,
+              rating: doc.data().rating,
+              address:
+                doc.data().street +
+                ", " +
+                doc.data().city +
+                ", " +
+                doc.data().state +
+                ", " +
+                doc.data().zip,
+              maxCap: doc.data().maxBeds,
+              startDate: sDate,
+              endDate: eDate,
+              roomType: this.props.reservation.roomType,
+              rooms: this.props.reservation.rooms
             });
           });
           this.setState({ hotels });
@@ -254,7 +325,7 @@ class SearchBox extends Component {
           collection.forEach(doc => {
             // doc.data() is never undefined for query doc snapshots
             //-----testing-----
-            console.log(doc.id, " => ", doc.data());
+            // console.log(doc.id, " => ", doc.data());
 
             hotels.push({
               name: doc.data().name,
@@ -267,8 +338,19 @@ class SearchBox extends Component {
               rate3: doc.data().room3,
               rate4: doc.data().room4,
               rating: doc.data().rating,
-              address: doc.data().street + ", " + doc.data().city + ", " + doc.data().state + ", " +doc.data().zip,
+              address:
+                doc.data().street +
+                ", " +
+                doc.data().city +
+                ", " +
+                doc.data().state +
+                ", " +
+                doc.data().zip,
               maxCap: doc.data().maxBeds,
+              startDate: sDate,
+              endDate: eDate,
+              roomType: this.props.reservation.roomType,
+              rooms: this.props.reservation.rooms
             });
           });
           this.setState({ hotels });
@@ -281,7 +363,7 @@ class SearchBox extends Component {
     return (
       <Grid container className={classes.root} xs={12} md={12} lg={12}>
         <Grid>
-          <img
+          {/* <img
             src={bg}
             alt="logo"
             style={{
@@ -291,84 +373,91 @@ class SearchBox extends Component {
               backgroundPosition: "center",
               width: "100%"
             }}
-          />
+          /> */}
         </Grid>
-        <Grid item xs={1} md={1} lg={1} />
-        <Grid item xs={10} md={10} lg={10}>
-          <Paper className={classes.mainpaper}>
-            <Grid container>
+        <Grid
+          container
+          xs={12}
+          md={12}
+          lg={12}
+          className={classes.secondaryContainer}
+        >
+          <Grid item xs={2} md={2} lg={2} />
+          <Grid item xs={8} md={8} lg={8}>
+            <Paper className={classes.mainpaper}>
               <Grid container>
-                <Grid item>
-                  <Typography
-                    gutterBottom
-                    variant="title"
-                    className={classes.typography}
-                  >
-                    Room Capacity:
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <FormControl className={classes.droppedDownNumber}>
-                    <Select
-                      value={this.state.roomSize}
-                      onChange={this._handleRoomSizeChange}
-                      displayEmpty
-                      name="roomSize"
-                      className={classes.selectEmpty}
+                <Grid container>
+                  <Grid item>
+                    <Typography
+                      gutterBottom
+                      variant="title"
+                      className={classes.typography}
                     >
-                      <MenuItem value={1}>1</MenuItem>
-                      <MenuItem value={2}>2</MenuItem>
-                      <MenuItem value={3}>3</MenuItem>
-                      <MenuItem value={4}>4</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item>
-                  <Typography
-                    gutterBottom
-                    variant="title"
-                    className={classes.typography}
-                  >
-                    Number of Rooms:
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <FormControl className={classes.droppedDownNumber}>
-                    <Select
-                      value={this.state.NumOfRooms}
-                      onChange={this._handleNumOfRoomsChange}
-                      displayEmpty
-                      name="NumOfRooms"
-                      className={classes.selectEmpty}
+                      Room Capacity:
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <FormControl className={classes.droppedDownNumber}>
+                      <Select
+                        value={this.state.roomSize}
+                        onChange={this._handleRoomSizeChange}
+                        displayEmpty
+                        name="roomSize"
+                        className={classes.selectEmpty}
+                      >
+                        <MenuItem value={1}>1</MenuItem>
+                        <MenuItem value={2}>2</MenuItem>
+                        <MenuItem value={3}>3</MenuItem>
+                        <MenuItem value={4}>4</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item>
+                    <Typography
+                      gutterBottom
+                      variant="title"
+                      className={classes.typography}
                     >
-                      <MenuItem value={1}>1</MenuItem>
-                      <MenuItem value={2}>2</MenuItem>
-                      <MenuItem value={3}>3</MenuItem>
-                      <MenuItem value={4}>4</MenuItem>
-                    </Select>
-                  </FormControl>
+                      Number of Rooms:
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <FormControl className={classes.droppedDownNumber}>
+                      <Select
+                        value={this.state.NumOfRooms}
+                        onChange={this._handleNumOfRoomsChange}
+                        displayEmpty
+                        name="NumOfRooms"
+                        className={classes.selectEmpty}
+                      >
+                        <MenuItem value={1}>1</MenuItem>
+                        <MenuItem value={2}>2</MenuItem>
+                        <MenuItem value={3}>3</MenuItem>
+                        <MenuItem value={4}>4</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
                 </Grid>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                md={6}
-                lg={8}
-                className={classes.googleSearchContainer}
-              >
-                <Autocomplete
-                  className={classes.googleSearch}
-                  onPlaceSelected={place => {
-                    // console.log(place);
-                    this.setState({ place: place });
-                    //testing
-                    console.log(this.state.place.name);
-                  }}
-                  types={["(regions)"]}
-                  componentRestrictions={{ country: "us" }}
-                />
-              </Grid>
-              {/* <Grid item xs={6} md={2} lg={1}>
+                <Grid
+                  item
+                  xs={12}
+                  md={7}
+                  lg={7}
+                  className={classes.googleSearchContainer}
+                >
+                  <Autocomplete
+                    className={classes.googleSearch}
+                    onPlaceSelected={place => {
+                      // console.log(place);
+                      this.setState({ place: place });
+                      //testing
+                      console.log(this.state.place.name);
+                    }}
+                    types={["(regions)"]}
+                    componentRestrictions={{ country: "us" }}
+                  />
+                </Grid>
+                {/* <Grid item xs={6} md={2} lg={1}>
                 <form className={classes.dateContainer} noValidate>
                   <TextField
                     id="date"
@@ -396,41 +485,42 @@ class SearchBox extends Component {
                   />
                 </form>
               </Grid> */}
-              <Grid item xs={12} md={12} lg={3}>
-                <DateRangePicker
-                  startDateId="startDate"
-                  endDateId="endDate"
-                  startDate={this.state.startDate}
-                  endDate={this.state.endDate}
-                  onDatesChange={({ startDate, endDate }) => {
-                    this.setState({ startDate, endDate });
-                  }}
-                  focusedInput={this.state.focusedInput}
-                  onFocusChange={focusedInput => {
-                    this.setState({ focusedInput });
-                  }}
-                />
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                md={1}
-                lg={1}
-                className={classes.searchButtonWrapper}
-              >
-                <Button
-                  variant="contained"
-                  onClick={this.submit}
-                  className={classes.searchButton}
-                  color="primary"
+                <Grid item xs={12} md={12} lg={4}>
+                  <DateRangePicker
+                    startDateId="startDate"
+                    endDateId="endDate"
+                    startDate={this.state.startDate}
+                    endDate={this.state.endDate}
+                    onDatesChange={({ startDate, endDate }) => {
+                      this.setState({ startDate, endDate });
+                    }}
+                    focusedInput={this.state.focusedInput}
+                    onFocusChange={focusedInput => {
+                      this.setState({ focusedInput });
+                    }}
+                  />
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  md={1}
+                  lg={1}
+                  className={classes.searchButtonWrapper}
                 >
-                  <SearchIcon />
-                </Button>
+                  <Button
+                    variant="contained"
+                    onClick={this.submit}
+                    className={classes.searchButton}
+                    color="primary"
+                  >
+                    <SearchIcon />
+                  </Button>
+                </Grid>
               </Grid>
-            </Grid>
-          </Paper>
+            </Paper>
+          </Grid>
+          <Grid item xs={2} md={2} lg={2} />
         </Grid>
-        <Grid item xs={1} md={1} lg={1} />
         <Grid container className={classes.root} xs={12} md={12} lg={12}>
           <Grid item xs={1} md={1} lg={1} />
           <Grid item xs={2} md={2} lg={2}>
