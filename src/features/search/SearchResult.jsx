@@ -170,6 +170,10 @@ const SearchResult = ({ hotels, classes }) => {
                               rooms: hotel.rooms
                             }
                           }}
+                          style={{
+                            color: "#ffffff",
+                            textDecoration: "none"
+                          }}
                         >
                           Book
                         </Link>
