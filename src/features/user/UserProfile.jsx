@@ -229,10 +229,7 @@ class UserProfile extends Component {
                     </Paper>
                   </Grid>
                   <Grid item xs={8}>
-                    <h1>MyBooking</h1>
-                    
-                      <MyBooking />
-                    
+                    <MyBooking />
                   </Grid>
                 </Grid>
               </div>
@@ -240,7 +237,20 @@ class UserProfile extends Component {
 
             {this.state.updating && (
               <div>
-                <EditInfoForm userProfile={this} />
+                <Grid
+                  container
+                  className={classes.root}
+                  justify="center"
+                  spacing={16}
+                >
+                  <Grid item xs={4}>
+                    <h1>Update Profile</h1>
+                    <EditInfoForm userProfile={this} />
+                  </Grid>
+                  <Grid item xs={8}>
+                    <MyBooking />
+                  </Grid>
+                </Grid>
                 {/* <Button
                   onClick={() =>
                     this.setState({

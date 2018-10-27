@@ -234,10 +234,10 @@ export const updateUser = user => async (
         .update({
           firstLogin: false
         }).then(function () {
-            // window.location.href = `/profile/${currentUser.uid}`;
+          window.location.href = `/profile/${currentUser.uid}`;
         });
       } else {
-        // window.location.href = `/profile/${currentUser.uid}`;
+          window.location.href = `/profile/${currentUser.uid}`;
       }
     });}
 

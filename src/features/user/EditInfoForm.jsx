@@ -6,14 +6,12 @@ import { connect } from "react-redux";
 import { isLoaded } from "react-redux-firebase";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import withStyles from "@material-ui/core/styles/withStyles";
-import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import FileInput from "../../app/common/form/FileInput";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { updateUser } from "../auth/authActions";
-import MyBooking from "./myBooking";
 
 const actions = {
   updateUser
@@ -52,7 +50,7 @@ const styles = theme => ({
   paper: {
     paddingTop: 30,
     paddingLeft: 20,
-    paddingRight: 20
+    paddingRight: 20,
   },
   progress: {
     margin: theme.spacing.unit * 2
@@ -64,6 +62,10 @@ const styles = theme => ({
     fontSize: "18px"
   }
 });
+
+const warningButton = ({ ...custom }) => (
+  <Button variant="contained" justify="right" {...custom} />
+);
 
 //rendering the UI components
 const renderTextField = ({
@@ -157,13 +159,6 @@ const EditInfoForm = ({
         // </div>
         <div>
           <form size="large" onSubmit={handleSubmit(updateUser)}>
-            <Grid
-              container
-              className={classes.root}
-              justify="center"
-              spacing={16}
-            >
-              <Grid item xs={4}>
                 <Paper className={classes.paper}>
                   {/* {auth.photoURL && (
                     <img width="200" height="200" src={auth.photoURL} alt="" />
@@ -203,20 +198,15 @@ const EditInfoForm = ({
                   </Typography>
                   {console.log(updateUser.photoFile)}
                   <Button disabled={invalid || submitting} component={renderButton} type="submit">Update</Button>
-                  <Button s tyle={{backgroundColor: "#e60000"}} onClick={() => {
-                    userProfile.setState({
-                      updating: false,
-                    })
-                  }}>Cancel</Button>
+                  <Button component={warningButton}
+                    onClick={() => {
+                      userProfile.setState({
+                        updating: false,
+                      })
+                    }}
+                  >Cancel</Button>
                   {console.log(error)}
                 </Paper>
-              </Grid>
-              <Grid item xs={8}>
-                <Paper>
-                  <MyBooking />
-                </Paper>              
-              </Grid>
-            </Grid>
           </form>
         </div>
       );

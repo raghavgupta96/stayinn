@@ -33,7 +33,7 @@ const styles = theme => ({
     paddingLeft: 20,
     paddingRight: 20,
     paddingBottom: 30,
-    marginTop: 20,
+    marginBottom: 20,
   },
   customButton: {
     marginRight: 10,
@@ -319,6 +319,7 @@ class myBooking extends Component {
       this.state.reservations &&
       this.state.reservations.map(res => {
         return (
+          
           <div key={res.reservationId}>
             {/* Only show reservation that the user has instead of all*/}
             {auth.uid === res.userId &&
@@ -566,7 +567,7 @@ class myBooking extends Component {
 
     return (
       <div>
-        {/* <h1>MyBooking</h1> */}
+        <h1>MyBooking</h1>
         {resList}
         {/* <Button
           onClick={() => {
