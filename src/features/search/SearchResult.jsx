@@ -94,7 +94,10 @@ const SearchResult = ({ hotels, classes }) => {
                         </Link>
                       </Grid>
                       <Grid xs={3} md={3} lg={3} item className={classes.price}>
-                        <Typography variant="subtitle1">${hotel.rate1}.00</Typography>
+                        <Typography variant="subtitle1">
+                          ${hotel.rate1}
+                          .00
+                        </Typography>
                       </Grid>
                       <Grid
                         item
@@ -153,12 +156,23 @@ const SearchResult = ({ hotels, classes }) => {
                     <Grid item>
                       <Button
                         variant="contained"
-                        onClick={this.submit}
                         className={classes.searchButton}
-                        href={"/payment/" + hotel.hID}
+                        // href={"/payment/" + hotel.hID}
                         color="primary"
                       >
-                        Book
+                        <Link
+                          to={{
+                            pathname: "/payment/" + hotel.hID,
+                            state: {
+                              startDate: hotel.startDate,
+                              endDate: hotel.endDate,
+                              roomType: hotel.roomType,
+                              rooms: hotel.rooms
+                            }
+                          }}
+                        >
+                          Book
+                        </Link>
                       </Button>
                       <Button
                         variant="contained"
