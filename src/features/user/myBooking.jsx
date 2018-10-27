@@ -57,14 +57,6 @@ const renderButton = ({ ...custom }) => (
   />
 );
 
-function CircularIndeterminate() {
-  return (
-    <div>
-      <CircularProgress />
-    </div>
-  );
-}
-
 // warning (red) button that prevents users to click on it
 const warningButton = ({ ...custom }) => (
   <Button variant="contained" justify="right" {...custom} />
@@ -429,7 +421,6 @@ class myBooking extends Component {
                     aria-describedby="simple-modal-description"
                     open={this.state.open}
                     onClose={this.handleClose}
-                    container
                     style={{ paddingTop: 50, zIndex: 1, overflow: "auto" }}
                   >
                     <div style={modalStyle}>

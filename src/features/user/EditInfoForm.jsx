@@ -201,8 +201,9 @@ const EditInfoForm = ({
                   <Typography className={classes.headerInfo}>
                     Password: ********
                   </Typography>
+                  {console.log(updateUser.photoFile)}
                   <Button disabled={invalid || submitting} component={renderButton} type="submit">Update</Button>
-                  <Button style={{backgroundColor: "#e60000"}} onClick={() => {
+                  <Button s tyle={{backgroundColor: "#e60000"}} onClick={() => {
                     userProfile.setState({
                       updating: false,
                     })
