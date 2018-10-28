@@ -186,8 +186,8 @@ class myBooking extends Component {
     const dateOut = date2.split("-");
 
     // dateIn[0] is year, dateIn[1] is month, dateIn[2] is day
-    const checkIn = new Date(dateIn[1], dateIn[2], dateIn[0]);
-    const checkOut = new Date(dateOut[1], dateOut[2], dateOut[0]);
+    const checkIn = new Date(dateIn[0], dateIn[1], dateIn[2]);
+    const checkOut = new Date(dateOut[0], dateOut[1], dateOut[2]);
 
     // compare the dates, will return true or false.
     console.log(checkIn < checkOut);
