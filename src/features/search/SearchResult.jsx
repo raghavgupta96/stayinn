@@ -154,30 +154,30 @@ const SearchResult = ({ hotels, classes }) => {
                   >
                     <Grid item xs />
                     <Grid item>
-                      <Button
-                        variant="contained"
-                        className={classes.searchButton}
-                        // href={"/payment/" + hotel.hID}
-                        color="primary"
+                      <Link
+                        to={{
+                          pathname: "/payment/" + hotel.hID,
+                          state: {
+                            startDate: hotel.startDate,
+                            endDate: hotel.endDate,
+                            roomType: hotel.roomType,
+                            rooms: hotel.rooms
+                          }
+                        }}
+                        style={{
+                          color: "#ffffff",
+                          textDecoration: "none"
+                        }}
                       >
-                        <Link
-                          to={{
-                            pathname: "/payment/" + hotel.hID,
-                            state: {
-                              startDate: hotel.startDate,
-                              endDate: hotel.endDate,
-                              roomType: hotel.roomType,
-                              rooms: hotel.rooms
-                            }
-                          }}
-                          style={{
-                            color: "#ffffff",
-                            textDecoration: "none"
-                          }}
+                        <Button
+                          variant="contained"
+                          className={classes.searchButton}
+                          // href={"/payment/" + hotel.hID}
+                          color="primary"
                         >
-                          Book
-                        </Link>
-                      </Button>
+                            Book
+                        </Button>
+                      </Link>
                       <Button
                         variant="contained"
                         onClick={this.submit}
