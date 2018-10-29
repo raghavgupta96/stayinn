@@ -107,30 +107,6 @@ const SearchResult = ({ hotels, classes }) => {
                         lg={10}
                         className={classes.stars}
                       >
-                        {/* <img
-                          src={blackstar}
-                          alt="logo"
-                          style={{
-                            height: "15px",
-                            width: "15px"
-                          }}
-                        />
-                        <img
-                          src={blackstar}
-                          alt="logo"
-                          style={{
-                            height: "15px",
-                            width: "15px"
-                          }}
-                        />
-                        <img
-                          src={blackstar}
-                          alt="logo"
-                          style={{
-                            height: "15px",
-                            width: "15px"
-                          }}
-                        /> */}
                         <StarRatings
                           rating={parseFloat(hotel.rating)}
                           starRatedColor="red"
