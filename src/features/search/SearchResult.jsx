@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import blackstar from "./blackstar.png";
+import StarRatings from 'react-star-ratings';
 
 const styles = theme => ({
   root: {
@@ -106,7 +107,7 @@ const SearchResult = ({ hotels, classes }) => {
                         lg={10}
                         className={classes.stars}
                       >
-                        <img
+                        {/* <img
                           src={blackstar}
                           alt="logo"
                           style={{
@@ -129,6 +130,14 @@ const SearchResult = ({ hotels, classes }) => {
                             height: "15px",
                             width: "15px"
                           }}
+                        /> */}
+                        <StarRatings
+                          rating={parseFloat(hotel.rating)}
+                          starRatedColor="red"
+                          starDimension='20px'
+                          starSpacing='3px'
+                          numberOfStars={5}
+                          name='rating'
                         />
                       </Grid>
                     </Grid>
