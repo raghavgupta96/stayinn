@@ -26,7 +26,11 @@ export const login = creds => {
                 if (docRef.firstLogin) {
                   window.location.href = "/profileSetup";
                 } else {
-                  window.location.href = "/";
+                  toastr.success(
+                    "Welcome to StayInn",
+                    "You have successfully logged in."
+                  );
+                  // window.location.href = "/";
                 }
               });
           } else {

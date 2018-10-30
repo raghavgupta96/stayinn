@@ -12,6 +12,7 @@ import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import { toastr } from "react-redux-toastr";
 
 const actions = {
   login
@@ -43,6 +44,15 @@ const styles = theme => ({
   },
   
 })
+
+const afterSubmit = (result, dispatch, history) =>
+{
+  // dispatch(reset('registerForm'));
+  // dispatch(push('/login'))
+  // console.log(history);
+  // toastr.success("Welcome to StayInn", "You have successfully logged in.");
+  history.history.push('/');
+}
 
 
 const LoginForm = ({classes, login, handleSubmit, error, invalid, submitting, reset}) => {
@@ -87,6 +97,6 @@ const LoginForm = ({classes, login, handleSubmit, error, invalid, submitting, re
 
 export default withStyles(styles)(
   connect(null, actions)(
-    reduxForm({form: 'loginForm', validate})(LoginForm)
+    reduxForm({form: 'loginForm', onSubmitSuccess: afterSubmit, validate})(LoginForm)
   )
 );

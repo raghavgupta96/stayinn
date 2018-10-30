@@ -51,6 +51,7 @@ const styles = theme => ({
   }
 });
 
+// get called after the form gets submitted
 const afterSubmit = (result, dispatch, history) =>
 {
   // dispatch(reset('registerForm'));
