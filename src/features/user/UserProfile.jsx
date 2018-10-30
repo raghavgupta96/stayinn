@@ -211,9 +211,6 @@ class UserProfile extends Component {
                         Phone: {this.state.showPhone}
                       </Typography>
                       <Typography className={classes.headerInfo}>
-                        Password: ********
-                      </Typography>
-                      <Typography className={classes.headerInfo}>
                         Reward: {this.state.showReward} points
                       </Typography>
                       <Button

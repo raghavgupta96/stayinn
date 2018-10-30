@@ -14,6 +14,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { updateUser } from "../auth/authActions";
+import PhoneInput from "../../app/common/form/PhoneInput";
 
 const actions = {
   updateUser
@@ -207,13 +208,10 @@ const EditInfoForm = ({
                   <Field
                     name="phoneNumber"
                     label="Phone Number"
-                    component={renderTextField}
+                    component={PhoneInput}
                   />
                   <Typography className={classes.headerInfo}>
                     Email: {auth.email}
-                  </Typography>
-                  <Typography className={classes.headerInfo}>
-                    Password: ********
                   </Typography>
                   <Button disabled={invalid || submitting} component={renderButton} type="submit">Update</Button>
                   <Button component={warningButton}

@@ -10,6 +10,8 @@ import TextField from "@material-ui/core/TextField";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Paper from "@material-ui/core/Paper";
 import { Link } from "react-router-dom";
+import CloseIcon from "@material-ui/icons/Close";
+import Fade from "@material-ui/core/Fade";
 
 const styles = theme => ({
   dateContainer: {
@@ -33,10 +35,22 @@ const styles = theme => ({
     paddingLeft: 20,
     paddingRight: 20,
     paddingBottom: 30,
-    marginBottom: 20,
+    marginBottom: 20
   },
   customButton: {
-    marginRight: 10,
+    marginRight: 10
+  },
+  icon: {
+    margin: theme.spacing.unit * 2,
+    color: "lightGray"
+  },
+  iconHover: {
+    margin: theme.spacing.unit * 2,
+    color: "lightGray",
+    "&:hover": {
+      color: "Gray",
+      transition: "color 300ms"
+    }
   }
 });
 
@@ -64,7 +78,7 @@ const warningButton = ({ ...custom }) => (
 
 const modalStyle = {
   backgroundColor: "white",
-  padding: 50,
+  padding: 10,
   textAlign: "center",
   borderRadius: 10,
   marginLeft: 450,
@@ -109,7 +123,7 @@ class myBooking extends Component {
     const obj = this;
 
     // Check if auth changes after initializes
-    firebase.auth().onAuthStateChanged(function (user) {
+    firebase.auth().onAuthStateChanged(function(user) {
       // if user does not log in
       if (!user) {
         return;
@@ -192,7 +206,7 @@ class myBooking extends Component {
     // compare the dates, will return true or false.
     console.log(checkIn < checkOut);
     return checkIn < checkOut;
-  }
+  };
 
   rand() {
     return Math.round(Math.random() * 20) - 10;
@@ -234,7 +248,7 @@ class myBooking extends Component {
       this.setState({
         noDateConflict: true
       });
-      firebase.auth().onAuthStateChanged(function (user) {
+      firebase.auth().onAuthStateChanged(function(user) {
         if (!user) {
           return;
         }
@@ -246,10 +260,10 @@ class myBooking extends Component {
             checkinDate: checkin,
             checkoutDate: checkout
           })
-          .then(function () {
+          .then(function() {
             window.location.reload();
           })
-          .catch(function (error) {
+          .catch(function(error) {
             console.log(error);
           });
       });
@@ -258,7 +272,6 @@ class myBooking extends Component {
         noDateConflict: false
       });
     }
-
   }
 
   handleCancel(reservationId) {
@@ -266,7 +279,7 @@ class myBooking extends Component {
     // console.log("You click:" + this.state.reservations[index].reservationId);
     const { firebase } = this.props;
     // Check if auth changes after initializes
-    firebase.auth().onAuthStateChanged(function (user) {
+    firebase.auth().onAuthStateChanged(function(user) {
       // if user does not log in
       if (!user) {
         return;
@@ -278,10 +291,10 @@ class myBooking extends Component {
         .update({
           isCanceled: true
         })
-        .then(function () {
+        .then(function() {
           window.location.reload();
         })
-        .catch(function (error) {
+        .catch(function(error) {
           console.log(error);
         });
     });
@@ -319,13 +332,18 @@ class myBooking extends Component {
       this.state.reservations &&
       this.state.reservations.map(res => {
         return (
-          
           <div key={res.reservationId}>
             {/* Only show reservation that the user has instead of all*/}
             {auth.uid === res.userId &&
               !res.isCanceled && (
                 <div>
-                  <Grid container className={classes.root} xs={12} md={12} lg={12}>
+                  <Grid
+                    container
+                    className={classes.root}
+                    xs={12}
+                    md={12}
+                    lg={12}
+                  >
                     <Grid item xs={11} md={11} lg={11}>
                       <Paper className={classes.mainpaper}>
                         <Grid container key={res.HID}>
@@ -349,7 +367,13 @@ class myBooking extends Component {
                                   </Typography>
                                 </Link>
                               </Grid>
-                              <Grid item xs={12} md={12} lg={12} className={classes.hotelInfo}>
+                              <Grid
+                                item
+                                xs={12}
+                                md={12}
+                                lg={12}
+                                className={classes.hotelInfo}
+                              >
                                 <h3>Hotel Name: {res.hotelName}</h3>
                                 <h3>Book Date: {res.bookDate}</h3>
                                 <h3>Check-in Date: {res.checkinDate}</h3>
@@ -357,7 +381,14 @@ class myBooking extends Component {
                                 <h3>Total Price: ${res.totalPrice}</h3>
                               </Grid>
                             </Grid>
-                            <Grid item xs={12} md={12} lg={12} container direction="column">
+                            <Grid
+                              item
+                              xs={12}
+                              md={12}
+                              lg={12}
+                              container
+                              direction="column"
+                            >
                               <Grid item xs />
                               <Grid item>
                                 <Button
@@ -373,7 +404,7 @@ class myBooking extends Component {
                                   Edit
                                 </Button>
                                 <Button
-                                className={classes.customButton}
+                                  className={classes.customButton}
                                   component={warningButton}
                                   onClick={() => {
                                     // this.handleCancel(res.reservationId);
@@ -385,7 +416,12 @@ class myBooking extends Component {
                               </Grid>
                             </Grid>
                           </Grid>
-                          <Grid xs={5} md={5} lg={5} className={classes.photoContainer}>
+                          <Grid
+                            xs={5}
+                            md={5}
+                            lg={5}
+                            className={classes.photoContainer}
+                          >
                             <img
                               src={res.photoURL}
                               className={classes.photo}
@@ -424,45 +460,67 @@ class myBooking extends Component {
                     onClose={this.handleClose}
                     style={{ paddingTop: 50, zIndex: 1, overflow: "auto" }}
                   >
+                  {/* The cross sign for closing the modal */}
                     <div style={modalStyle}>
-                      <Typography style={regTextStyle}>
-                        Do you want to cancel this reservation? <br />
-                        Cancelling this reservation will be charged 10%
-                        cancellation fee: <br />
-                        <br />
-                        Reservation Price: $
-                        {this.state.currRes && this.state.currRes.totalPrice}
-                        <br />
-                      </Typography>
-                      <Typography style={highlightTextStyle}>
-                        Cancellation Fee: -$
-                        {this.state.currRes &&
-                          this.state.currRes.totalPrice * 0.1}
-                        <br />
-                      </Typography>
-                      <Typography style={regTextStyle}>
-                        Refund: $
-                        {this.state.currRes &&
-                          this.state.currRes.totalPrice * 0.9}
-                        <br />
-                      </Typography>
-                      <Button
-                        component={renderButton}
-                        onClick={() => {
-                          this.state.currRes &&
-                            this.handleCancel(this.state.currRes.reservationId);
-                        }}
-                      >
-                        Yes
-                      </Button>
-                      <Button
-                        component={warningButton}
-                        onClick={() => {
-                          this.handleClose();
-                        }}
-                      >
-                        No
-                      </Button>
+                      <div style={{ textAlign: "right" }}>
+                        <button
+                          style={{
+                            border: "none",
+                            background: "transparent",
+                            cursor: "pointer",
+                            outline: "none"
+                          }}
+                          onClick={this.handleClose}
+                        >
+                          <CloseIcon className={classes.iconHover} />
+                        </button>
+                      </div>
+                      {/* cancel description */}
+                      <div>
+                        <Typography style={regTextStyle}>
+                          Do you want to cancel this reservation? <br />
+                          Cancelling this reservation will be charged 10%
+                          cancellation fee: <br />
+                          <br />
+                          Reservation Price: $
+                          {this.state.currRes && this.state.currRes.totalPrice}
+                          <br />
+                        </Typography>
+                        <Typography style={highlightTextStyle}>
+                          Cancellation Fee: -$
+                          {this.state.currRes &&
+                            this.state.currRes.totalPrice * 0.1}
+                          <br />
+                        </Typography>
+                        <Typography style={regTextStyle}>
+                          Refund: $
+                          {this.state.currRes &&
+                            this.state.currRes.totalPrice * 0.9}
+                          <br />
+                        </Typography>
+                      </div>
+                      {/* cancel choice */}
+                      <div style={{ padding: 15 }}>
+                        <Button
+                          component={renderButton}
+                          onClick={() => {
+                            this.state.currRes &&
+                              this.handleCancel(
+                                this.state.currRes.reservationId
+                              );
+                          }}
+                        >
+                          Yes
+                        </Button>
+                        <Button
+                          component={warningButton}
+                          onClick={() => {
+                            this.handleClose();
+                          }}
+                        >
+                          No
+                        </Button>
+                      </div>
                     </div>
                   </Modal>
 
@@ -475,10 +533,27 @@ class myBooking extends Component {
                     style={{ paddingTop: 50, zIndex: 1, overflow: "auto" }}
                   >
                     <div style={modalStyle}>
+                    {/* Adding cross icon for users to close modal */}
+                    <div style={{ textAlign: "right" }}>
+                    <button
+                      style={{
+                        border: "none",
+                        background: "transparent",
+                        cursor: "pointer",
+                        outline: "none"
+                      }}
+                      onClick={() => {
+                        this.handleEditClose();
+                      }}                    >
+                      <CloseIcon className={classes.iconHover} />
+                    </button>
+                    </div>
+                    <div>
                       <Typography style={regTextStyle}>
                         Select a new checkin and checkout date for your
                         reservation.
                       </Typography>
+                      <br/>
                       <Grid container spacing={24}>
                         <Grid item xs={6}>
                           <form className={classes.dateContainer} noValidate>
@@ -509,10 +584,16 @@ class myBooking extends Component {
                           </form>
                         </Grid>
                       </Grid>
+                      </div>
                       <Grid padding={20} spacing={24}>
                         <div>
-                          {!noDateConflict && <Typography color='error'>The checkin date must be before the checkout date.</Typography>}
+                          {!noDateConflict && (
+                            <Typography color="error">
+                              The checkin date must be before the checkout date.
+                            </Typography>
+                          )}
                         </div>
+                        <div style={{    padding: 15,}}>
                         <Button
                           component={renderButton}
                           onClick={() => {
@@ -532,10 +613,10 @@ class myBooking extends Component {
                         >
                           Cancel
                         </Button>
+                        </div>
                       </Grid>
                     </div>
                   </Modal>
-                  
                 </div>
               )}
 
@@ -543,7 +624,7 @@ class myBooking extends Component {
             {auth.uid === res.userId &&
               res.isCanceled && (
                 <div>
-                  <Grid item xs={11} >
+                  <Grid item xs={11}>
                     <Paper className={classes.mainpaper}>
                       <h2>This Reservation has been Cancelled</h2>
                       <s>
@@ -558,7 +639,6 @@ class myBooking extends Component {
                       </s>
                     </Paper>
                   </Grid>
-                  
                 </div>
               )}
           </div>
