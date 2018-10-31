@@ -1,11 +1,11 @@
 const filterReducer = (state = {
+    minPrice: "",
+    maxPrice: "",
     hotelType: "nonspecific",
-    minPrice: 100000,
-    maxPrice: 100000,
+    sortOrder: "nonspecific",
     gymChecked: "",
     barChecked: "",
     swimmingPoolChecked: "",
-    sortOrder: "",
 }, action) => {
     switch (action.type) {
         case "SET_HOTELTYPE":

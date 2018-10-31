@@ -366,6 +366,34 @@ class SearchBox extends Component {
             hotels.sort(this.down);
           }
 
+          console.log("the minPrice: -------" + this.props.filter.minPrice)
+          //filter in the hotel by the roomsize and corresponding price, greater than Min price
+          if(this.props.filter.minPrice !== "") {
+            if(this.state.roomSize === 1 ){
+              hotels = hotels.filter(v => v.rate1 >= this.props.filter.minPrice);
+            }else if (this.state.roomSize === 2){
+              hotels = hotels.filter(v => v.rate2 >= this.props.filter.minPrice);
+            }else if (this.state.roomSize === 3){
+              hotels = hotels.filter(v => v.rate3 >= this.props.filter.minPrice);
+            }else if (this.state.roomSize === 2){
+              hotels = hotels.filter(v => v.rate4 >= this.props.filter.minPrice);
+            }
+          }
+
+          console.log("the maxPrice: -------" + this.props.filter.maxPrice)
+          //filter in the hotel by the roomsize and corresponding price, greater than Max price
+          if(this.props.filter.maxPrice !== "") {
+            if(this.state.roomSize === 1 ){
+              hotels = hotels.filter(v => v.rate1 <= this.props.filter.maxPrice);
+            }else if (this.state.roomSize === 2){
+              hotels = hotels.filter(v => v.rate2 <= this.props.filter.maxPrice);
+            }else if (this.state.roomSize === 3){
+              hotels = hotels.filter(v => v.rate3 <= this.props.filter.maxPrice);
+            }else if (this.state.roomSize === 2){
+              hotels = hotels.filter(v => v.rate4 <= this.props.filter.maxPrice);
+            }
+          }
+
 
           this.setState({ hotels });
         });
