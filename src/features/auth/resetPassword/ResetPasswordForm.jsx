@@ -1,10 +1,9 @@
 import React from "react";
-import { login } from "../authActions";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, reset } from "redux-form";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { resetPassword } from "../authActions";
 
-//material ui imports
+//Material UI components
 import renderTextField from "../../../app/common/form/TextInput";
 import renderPasswordField from "../../../app/common/form/PasswordInput";
 import SubmitButton from "../../../app/common/form/SubmitButton";
@@ -13,21 +12,20 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import { toastr } from "react-redux-toastr";
 
 const actions = {
-  login
+  resetPassword
 };
 
 const validate = values => {
-  const errors = {};
-  const requiredFields = ["email", "password"];
-  requiredFields.forEach(field => {
-    if (!values[field]) {
-      errors[field] = "Required";
-    }
-  });
-  return errors;
+    const errors = {};
+    const requiredFields = ["email"];
+    requiredFields.forEach(field => {
+      if (!values[field]) {
+        errors[field] = "Required";
+      }
+    });
+    return errors;
 };
 
 /* Styling */
@@ -39,39 +37,33 @@ const styles = theme => ({
     paddingTop: 30,
     paddingLeft: 20,
     paddingRight: 20,
-    paddingBottom: 30,
+    paddingBottom: 20,
     margin: 30
   },
-  linkHover: {
-    margin: theme.spacing.unit * 2,
-    color: "lightGray",
-    "&:hover": {
-      color: "Gray",
-      transition: "color 300ms"
-    }
+  input: {
+    paddingRight: 20
   }
 });
 
+// get called after the form gets submitted
 const afterSubmit = (result, dispatch, history) => {
   // dispatch(reset('registerForm'));
   // dispatch(push('/login'))
   // console.log(history);
-  // toastr.success("Welcome to StayInn", "You have successfully logged in.");
-  history.history.push("/");
+  history.history.push("/login");
 };
 
-const LoginForm = ({
+const ResetPasswordForm = ({
   classes,
-  login,
   handleSubmit,
+  resetPassword,
   error,
   invalid,
-  submitting,
-  reset
+  submitting
 }) => {
   return (
     <div>
-      <form size="large" onSubmit={handleSubmit(login)}>
+      <form size="large" onSubmit={handleSubmit(resetPassword)}>
         <div>
           <Grid
             container
@@ -82,41 +74,23 @@ const LoginForm = ({
             <Grid item xs={3} />
             <Grid item xs={6}>
               <Paper className={classes.paper}>
-                <Typography variant="display1">Login</Typography>
+                <Typography variant="display1">Reset Password</Typography>
+                <Typography variant="subheading">
+                  Please enter your email to reset the password
+                </Typography>
                 <Field name="email" component={renderTextField} label="Email" />
-                <Field
-                  name="password"
-                  label="Password"
-                  component={renderPasswordField}
-                />
                 <Grid container justify="center">
-                  <Link
-                    to="/resetPassword"
-                    style={{
-                      flex: 1,
-                      textDecoration: "none"
-                    }}
-                  >
-                    <Typography
-                      variant="body2"
-                      className={classes.linkHover}
-                      style={{ margin: 0 }}
-                    >
-                      Forgot your password?
-                    </Typography>
-                  </Link>
-                  <Grid container justify="center">
                   <Button
                     disabled={invalid || submitting}
                     component={SubmitButton}
                   >
-                    LOGIN
+                    Submit
                   </Button>
-                  </Grid>
                   <div>
                     {error && <Typography color="error">{error}</Typography>}
                   </div>
                 </Grid>
+                {/* </Grid> */}
               </Paper>
             </Grid>
             <Grid item xs={3} />
@@ -132,8 +106,8 @@ export default withStyles(styles)(
     null,
     actions
   )(
-    reduxForm({ form: "loginForm", onSubmitSuccess: afterSubmit, validate })(
-      LoginForm
+    reduxForm({ form: "registerForm", onSubmitSuccess: afterSubmit, validate })(
+      ResetPasswordForm
     )
   )
 );

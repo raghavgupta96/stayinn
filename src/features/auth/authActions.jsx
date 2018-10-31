@@ -267,3 +267,56 @@ export const updateUser = user => async (
     });
   }
 };
+
+
+export const resetPassword = creds => {
+  return async (dispatch, getState, { getFirebase }) => {
+    const firebase = getFirebase();
+    const db = firebase.firestore();
+    const emailAddress = creds.email;
+    try {
+      await firebase
+        .auth()
+        .sendPasswordResetEmail(emailAddress)
+        .then(function() {
+          // Email sent.
+
+
+          
+          // const user = firebase.auth().currentUser;
+          // const verified = user.emailVerified;
+          // Check if the user's email address is verified before login completion
+          // if (verified) {
+          //   db.collection("users")
+          //     .doc(user.uid)
+          //     .get()
+          //     .then(doc => {
+          //       const docRef = doc.data();
+          //       console.log("First Login: " + docRef.firstLogin);
+          //       // If it is the first time the user is logging in, route to profile setup.
+          //       // If not, go to the homepage.
+          //       if (docRef.firstLogin) {
+          //         window.location.href = "/profileSetup";
+          //       } else {
+          //         toastr.success(
+          //           "Welcome to StayInn",
+          //           "You have successfully logged in."
+          //         );
+          //         // window.location.href = "/";
+          //       }
+          //     });
+          // } else {
+          //   console.log("Email not verified homie!");
+          //   firebase.logout();
+          // }
+        });
+    } catch (error) {
+      // An error happened.
+      console.log(error);
+      throw new SubmissionError({
+        _error: error.message
+      });
+    }
+  };
+};
+

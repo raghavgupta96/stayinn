@@ -13,6 +13,7 @@ import FilterUi from "./features/filter/Filter.ui";
 import PaymentLayout from "./features/payment/PaymentLayout";
 import HotelDetail from "./features/hotel/HotelDetail";
 import Hotel from "./features/hotel/Hotel";
+import ResetPasswordForm from "./features/auth/resetPassword/ResetPasswordForm"
 import ReduxToastr from "react-redux-toastr";
 
 class App extends Component {
@@ -41,6 +42,7 @@ class App extends Component {
                 <Route path="/signup" component={Signup} />
                 <Route path="/login" component={Login} />
                 {/* <Route path="/profile" component={UserProfile} /> */}
+                <Route path="/resetPassword" component={ResetPasswordForm} />
                 <Route path={"/profile/:id"} component={UserProfile} />
                 <Route path="/profileEdit" component={ProfileUpdate} />
                 <Route path="/profileSetup" component={ProfileSetup} />
