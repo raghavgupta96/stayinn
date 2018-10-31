@@ -280,9 +280,10 @@ export const resetPassword = creds => {
         .sendPasswordResetEmail(emailAddress)
         .then(function() {
           // Email sent.
-
-
-          
+          toastr.success(
+            "Email Sent!",
+            "An email is sent to your inbox to reset password"
+          );
           // const user = firebase.auth().currentUser;
           // const verified = user.emailVerified;
           // Check if the user's email address is verified before login completion
