@@ -28,7 +28,7 @@ class Hotel extends Component {
         this.setState({
           name: ref.name,
           hID: doc.id,
-          room_cap: ref.maxBeds,
+          maxCap: ref.maxBeds,
           photoUrl: ref.photoURL,
           type: ref.type,
           street: ref.street,

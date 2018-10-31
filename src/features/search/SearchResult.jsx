@@ -95,8 +95,13 @@ const SearchResult = ({ hotels, classes }) => {
                       </Grid>
                       <Grid xs={3} md={3} lg={3} item className={classes.price}>
                         <Typography variant="subtitle1">
-                          ${hotel.rate1}
-                          .00
+                          ${hotel.roomType === 1 && hotel.rate1}
+                          {hotel.roomType === 2 && hotel.rate2}
+                          {hotel.roomType === 3 && hotel.rate3}
+                          {hotel.roomType === 4 && hotel.rate4}
+                          <div style={{ fontSize: "15px", color:"gray" }}>
+                            for {hotel.roomType} people
+                          </div>
                         </Typography>
                       </Grid>
                       <Grid
@@ -123,9 +128,16 @@ const SearchResult = ({ hotels, classes }) => {
                       lg={8}
                       className={classes.hotelInfo}
                     >
-                      An intimate and charming atmosphere, high quality comfort
-                      and traditional Bay Area hospitality...
-                      <p>Address: {hotel.address}</p>
+                      <p>Available facility:</p>
+                      <span style={{ fontSize: "15px", color:"blue" }}>
+                        {hotel.gym && <span>Gym,  </span>}
+                        {hotel.bar && <span>Bar,  </span>}
+                        {hotel.swimmingPool && <span>Swimming Pool</span>}
+                        {!hotel.bar && !hotel.gym && !hotel.swimmingPool && <span>None.</span>}
+
+                      </span>
+                      <p>Address:</p>
+                      <p style={{ fontSize: "15px", color:"gray" }}>{hotel.address}</p>
                     </Grid>
                   </Grid>
                   <Grid
