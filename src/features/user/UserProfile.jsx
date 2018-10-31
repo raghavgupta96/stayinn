@@ -22,7 +22,7 @@ const styles = theme => ({
   //added styles for root and paper
   root: {
     flexGrow: 1,
-    margin: '12px'
+    margin: "12px"
   },
   paper: {
     paddingTop: 30,
@@ -34,10 +34,10 @@ const styles = theme => ({
     margin: theme.spacing.unit * 2
   },
   title: {
-    fontSize: '36px'
+    fontSize: "36px"
   },
   headerInfo: {
-    fontSize: '18px'
+    fontSize: "18px"
   }
 });
 
@@ -166,7 +166,7 @@ class UserProfile extends Component {
     // console.log("Render Phone Number:" + showPhone);
     // console.log(this.props.match.params.id);
     // only show when auth is loaded
-    if (isLoaded(auth) && this.state.showPhone) {
+    if (isLoaded(auth)) {
       // when user does not log in
       if (!auth.isEmpty) {
         if (auth.uid !== this.props.match.params.id) {
@@ -214,7 +214,7 @@ class UserProfile extends Component {
                         Reward: {this.state.showReward} points
                       </Typography>
                       <Button
-                      component={renderButton}
+                        component={renderButton}
                         onClick={() =>
                           this.setState({
                             updating: true

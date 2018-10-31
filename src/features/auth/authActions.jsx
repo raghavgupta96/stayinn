@@ -321,3 +321,38 @@ export const resetPassword = creds => {
   };
 };
 
+export const socialLogin = (selectedProvider) =>
+  async (dispatch, getState, {getFirebase, getFirestore}) => {
+    const firebase = getFirebase();
+    const firestore = getFirestore();
+    try
+    {
+      // Login with selected providers such as Google or Facebook
+      let user = await firebase.login({
+        provider: selectedProvider,
+        type: 'popup'
+      })
+
+      // make a user profile data in firesotre if first logs in
+      if(user.additionalUserInfo.isNewUser){
+        await firestore.set(`users/${user.user.uid}`, {
+          displayName: user.profile.displayName,
+          photoURL: user.profile.avatarUrl,
+          createdAt: firestore.FieldValue.serverTimestamp(),
+          reward: 0,
+          firstLogin: false,
+        })
+      }
+      // window.location.href = "/";
+      toastr.success(
+        "Welcome to StayInn",
+        "You have successfully logged in."
+      );
+    }
+
+    catch(error)
+    {
+      console.log(error)
+    }
+  }
+

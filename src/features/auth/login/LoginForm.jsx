@@ -1,5 +1,5 @@
 import React from "react";
-import { login } from "../authActions";
+import { login, socialLogin } from "../authActions";
 import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -13,11 +13,18 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import { toastr } from "react-redux-toastr";
-
+import Divider from "@material-ui/core/Divider";
+import SocialLogin from "../socialLogin/SocialLogin";
 const actions = {
-  login
+  login,
+  socialLogin
 };
+
+const mapState = state => ({
+  auth: state.firebase.auth,
+  profile: state.firebase.profile,
+  firebase: state.firebase
+});
 
 const validate = values => {
   const errors = {};
@@ -49,7 +56,11 @@ const styles = theme => ({
       color: "Gray",
       transition: "color 300ms"
     }
-  }
+  },
+  divider: {
+    width: "100%",
+    margin: "15px 0px",
+  },
 });
 
 const afterSubmit = (result, dispatch, history) => {
@@ -63,11 +74,11 @@ const afterSubmit = (result, dispatch, history) => {
 const LoginForm = ({
   classes,
   login,
+  socialLogin,
   handleSubmit,
   error,
   invalid,
-  submitting,
-  reset
+  submitting
 }) => {
   return (
     <div>
@@ -106,16 +117,18 @@ const LoginForm = ({
                     </Typography>
                   </Link>
                   <Grid container justify="center">
-                  <Button
-                    disabled={invalid || submitting}
-                    component={SubmitButton}
-                  >
-                    LOGIN
-                  </Button>
+                    <Button
+                      disabled={invalid || submitting}
+                      component={SubmitButton}
+                    >
+                      LOGIN
+                    </Button>
                   </Grid>
                   <div>
                     {error && <Typography color="error">{error}</Typography>}
                   </div>
+                  <Divider className={classes.divider}/>
+                  <SocialLogin socialLogin={socialLogin}/>
                 </Grid>
               </Paper>
             </Grid>
@@ -129,7 +142,7 @@ const LoginForm = ({
 
 export default withStyles(styles)(
   connect(
-    null,
+    mapState,
     actions
   )(
     reduxForm({ form: "loginForm", onSubmitSuccess: afterSubmit, validate })(

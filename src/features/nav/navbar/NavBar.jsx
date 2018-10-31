@@ -22,7 +22,18 @@ class NavBar extends Component {
   render() {
     // auth contains all user information (Ex: email, user, displayName, etc.)
     const { auth } = this.props;
-    const authenticated = auth.isLoaded && !auth.isEmpty && auth.emailVerified;
+    let authenticated;
+    // if user is logged in from social media, no need to do email verification
+    if (auth.providerData) {
+      let providerId = auth.providerData[0].providerId;
+      if (providerId === "password") {
+        authenticated = auth.isLoaded && !auth.isEmpty && auth.emailVerified;
+      } else {
+        authenticated = auth.isLoaded && !auth.isEmpty;
+      }
+    }
+    // console.log("isLoaded: ", auth.isLoaded);
+
     //console.log(auth);
     //console.log(authenticated);
 

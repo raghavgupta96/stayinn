@@ -1,7 +1,7 @@
 import React from "react";
 import { Field, reduxForm, reset } from "redux-form";
 import { connect } from "react-redux";
-import { registerUser } from "../authActions";
+import { registerUser, socialLogin } from "../authActions";
 
 //Material UI components
 import renderTextField from "../../../app/common/form/TextInput";
@@ -12,12 +12,12 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-
-
-
+import Divider from "@material-ui/core/Divider";
+import SocialLogin from "../socialLogin/SocialLogin";
 
 const actions = {
-  registerUser
+  registerUser,
+  socialLogin
 };
 
 const validate = values => {
@@ -48,17 +48,20 @@ const styles = theme => ({
   },
   input: {
     paddingRight: 20
+  },
+  divider: {
+    width: "100%",
+    margin: "15px 0px",
   }
 });
 
 // get called after the form gets submitted
-const afterSubmit = (result, dispatch, history) =>
-{
+const afterSubmit = (result, dispatch, history) => {
   // dispatch(reset('registerForm'));
   // dispatch(push('/login'))
   // console.log(history);
-  history.history.push('/login');
-}
+  history.history.push("/login");
+};
 
 const RegisterForm = ({
   classes,
@@ -67,6 +70,7 @@ const RegisterForm = ({
   error,
   invalid,
   submitting,
+  socialLogin
 }) => {
   return (
     <div>
@@ -104,6 +108,10 @@ const RegisterForm = ({
                     {error && <Typography color="error">{error}</Typography>}
                   </div>
                 </Grid>
+                <div style={{textAlign: "center"}}>
+                  <Divider className={classes.divider} />
+                  <SocialLogin socialLogin={socialLogin} />
+                </div>
 
                 {/* </Grid> */}
               </Paper>
@@ -120,5 +128,9 @@ export default withStyles(styles)(
   connect(
     null,
     actions
-  )(reduxForm({ form: "registerForm", onSubmitSuccess: afterSubmit, validate })(RegisterForm))
+  )(
+    reduxForm({ form: "registerForm", onSubmitSuccess: afterSubmit, validate })(
+      RegisterForm
+    )
+  )
 );
