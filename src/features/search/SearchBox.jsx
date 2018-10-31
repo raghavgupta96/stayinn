@@ -25,7 +25,7 @@ const styles = theme => ({
     flexGrow: 1
   },
   secondaryContainer: {
-    height: "800px",
+    height: "455px",
     backgroundImage: `url(${bg})`,
     backgroundSize: "cover",
     overflow: "hidden",
@@ -36,7 +36,7 @@ const styles = theme => ({
   },
   mainpaper: {
     width: "100%",
-    marginTop: "350px",
+    marginTop: "35px",
     marginBottom: "20px",
     padding: "10px",
     opacity: "0.95"
@@ -77,6 +77,15 @@ const styles = theme => ({
     marginBottom: "15px",
     minWidth: "30px"
   },
+  filterButton: {
+    backgroundColor: "#409BE6",
+    height: "40px",
+    color: "#ffffff",
+    marginRight: "15px",
+    width: "96%",
+    marginBottom: "15px",
+    minWidth: "30px"
+  },
   searchButtonWrapper: {
     flexWrap: "wrap",
     display: "flex"
@@ -108,11 +117,6 @@ class SearchBox extends Component {
 
   //initially mount all the hotels info into the hotel list into state
   componentDidMount() {
-    // console.log(
-    //   "This props reservation start date: -----------> " +
-    //     this.props.reservation.startdate
-    // );
-    // console.log("This state NumOfRoom: -----------> "+ this.state.NumOfRooms);
 
     const startDateOj = new Date(this.state.startDate);
     const endDateOj = new Date(this.state.endDate);
@@ -138,7 +142,7 @@ class SearchBox extends Component {
     db.collection("testingHotels")
       .get()
       .then(collection => {
-        const hotels = [];
+        var hotels = [];
         // console.log("hotels -----" + hotels);
 
         //map all the needed hotel information to the state
@@ -168,11 +172,12 @@ class SearchBox extends Component {
             maxCap: doc.data().maxBeds,
             startDate: sDate,
             endDate: eDate,
+            city: doc.data().city,
             roomType: this.props.reservation.roomType,
             rooms: this.props.reservation.rooms
           });
-          // console.log("hotels -----" + hotels);
         });
+        
         this.setState({ hotels });
       });
   }
@@ -212,32 +217,11 @@ class SearchBox extends Component {
     this.setState({ NumOfRooms: e.target.value });
   };
 
+    //--------------------- Search button -----------------------------
   submit = () => {
-    // console.log("----- Test the Store values-------------");
-    // console.log(
-    //   "this.props.reservation.startdate ++++++++++++>" +
-    //     this.props.reservation.startdate
-    // );
-    // console.log(
-    //   "this.props.reservation.enddate -------------->" +
-    //     this.props.reservation.enddate
-    // );
-    // console.log(
-    //   "this.props.reservation.roomtype -------------->" +
-    //     this.props.reservation.roomtype
-    // );
-    // console.log(
-    //   "this.props.reservation.rooms -------------->" +
-    //     this.props.reservation.rooms
-    // );
-
-    // console.log("__________submitted_____________");
     //do functional here
     const startDateOj = new Date(this.state.startDate);
     const endDateOj = new Date(this.state.endDate);
-    // console.log("Checkin Date: " + startDateOj);
-    // console.log("Checkin Date: " + endDateOj);
-    // console.log(" Hotels in state: " + this.state.hotels);
     this.props.setStartDate(startDateOj);
     this.props.setEndDate(endDateOj);
 
@@ -275,7 +259,7 @@ class SearchBox extends Component {
         .where("maxBeds", "<=", upperBoundOfSearchKey)
         .get()
         .then(collection => {
-          const hotels = [];
+          var hotels = [];
           //map all the needed hotel information to the state
           collection.forEach(doc => {
             //-----testing-----
@@ -307,19 +291,20 @@ class SearchBox extends Component {
               rooms: this.props.reservation.rooms
             });
           });
-          this.setState({ hotels });
+          var filteredResult = hotels;
+          this.setState({ filteredResult });
         });
     } else {
       const searchKey = this.state.place.name + "_" + this.state.roomSize;
-      const upperBoundOfSearchKey = this.state.place.name + "_" + "4";
+      const upperBoundOfSearchKey = this.state.place.name + "_4";
       console.log("searchKey ------->" + searchKey);
       db.collection("testingHotels")
         .where("searchKey", ">=", searchKey)
         .where("searchKey", "<=", upperBoundOfSearchKey)
         .get()
         .then(collection => {
-          const hotels = [];
-          console.log("hotels ----->" + hotels);
+          var hotels = [];
+          // console.log("hotels ----->" + hotels);
           //map all the needed hotel information to the state
           collection.forEach(doc => {
             // doc.data() is never undefined for query doc snapshots
@@ -349,13 +334,52 @@ class SearchBox extends Component {
               startDate: sDate,
               endDate: eDate,
               roomType: this.props.reservation.roomType,
-              rooms: this.props.reservation.rooms
+              rooms: this.props.reservation.rooms,
+              gym: doc.data().gym,
+              bar: doc.data().bar,
+              swimmingPool: doc.data().swimmingPool,
             });
           });
+          console.log("-- ---this.props.filter.type" + this.props.filter.hotelType)
+
+          // filtering from the hotles object
+          // var filteredResult = hotels;
+          if(this.props.filter.hotelType === 'hotel'){
+            hotels = hotels.filter(v => v.type === 'hotel');
+          }
+          if(this.props.filter.hotelType === 'motel'){
+            hotels = hotels.filter(v => v.type === 'motel');
+          }
+          if(this.props.filter.gymChecked === true) {
+            hotels = hotels.filter(v => v.gym === true);
+          }
+          if(this.props.filter.barChecked === true) {
+            hotels = hotels.filter(v => v.bar === true);
+          }
+          if(this.props.filter.swimmingPoolChecked === true) {
+            hotels = hotels.filter(v => v.swimmingPool === true);
+          }
+          if(this.props.filter.sortOrder === "up") {
+            hotels.sort(this.up);
+          }
+          if(this.props.filter.sortOrder === "down") {
+            hotels.sort(this.down);
+          }
+
+
           this.setState({ hotels });
         });
     }
   };
+
+  up = (x, y) => {
+    return x.rate1 - y.rate1;
+  } 
+
+  down = (y, x) => {
+    return x.rate1 - y.rate1;
+  } 
+  
 
   render() {
     const { classes } = this.props;
@@ -525,6 +549,14 @@ class SearchBox extends Component {
           <Grid item xs={2} md={2} lg={2}>
             <Grid xs={12} md={12} lg={12}>
               <FilterBox />
+              <Button
+                    variant="contained"
+                    onClick={this.submit}
+                    className={classes.filterButton}
+                    color="primary"
+                  > apply
+                    
+            </Button>
             </Grid>
             <Grid xs={12} md={12} lg={12} className={classes.rewardsBox}>
               <Rewards />
@@ -545,7 +577,8 @@ class SearchBox extends Component {
 
 const mapStateToProps = state => {
   return {
-    reservation: state.reservation
+    reservation: state.reservation,
+    filter: state.filter,
   };
 };
 

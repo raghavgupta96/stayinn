@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -13,6 +14,7 @@ import Avatar from "@material-ui/core/Avatar";
 import barIcon from "./bar.png";
 import billiardsIcon from "./billiards.png";
 import swimmingPool from "./swimmingPool.png";
+import { connect } from "react-redux";
 
 const styles = theme => ({
   root: {
@@ -78,11 +80,43 @@ class filterBox extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      checked: [0],
       amount: null,
-      roomSize: "Hotel"
+      minPrice: 100000,
+      maxPrice: 100000,
+      hotelType: "nonspecific",
+      sortOrder: "nonspecific",
+      gymChecked: "",
+      barChecked: "",
+      swimmingPoolChecked: "",
     };
   }
+
+  _handleGymCheckedChange(ev) {
+    this.setState({gymChecked: ev.target.checked});
+    this.props.setGymChecked(ev.target.checked);
+  }
+
+  _handleBarCheckedChange = ev => {
+    this.setState({barChecked: ev.target.checked});
+    this.props.setBarChecked(ev.target.checked);
+  }
+
+  _handleSwimmingPoolCheckedChange = ev => {
+    this.setState({swimmingPoolChecked: ev.target.checked});
+    this.props.setSwimmingPoolChecked(ev.target.checked);
+  }
+
+  _handleHotelTypeChange = ev =>  {
+    this.setState({ hotelType: ev.target.value });
+    this.props.setHotelType(ev.target.value);
+  }
+
+  _handleSortOrder = ev => {
+    this.setState({ sortOrder: ev.target.value });
+    this.props.setSortOrder(ev.target.value);
+  }
+
+
   render() {
     const { classes } = this.props;
     return (
@@ -90,16 +124,8 @@ class filterBox extends Component {
         <Paper className={classes.mainpaper}>
           <Grid container>
             <Grid xs={12} md={12} lg={12}>
-              {/* <Typography
-                className={classes.typeHeading}
-                xs={12}
-                md={12}
-                lg={12}
-              >
-                Filter
-              </Typography> */}
               <Typography className={classes.typeTitle} xs={12} md={12} lg={12}>
-                Room Type
+                Hotel Type
               </Typography>
             </Grid>
             <Grid
@@ -110,13 +136,40 @@ class filterBox extends Component {
             >
               <FormControl className={classes.droppedDownType}>
                 <Select
-                  value={this.state.roomSize}
+                  value={this.state.hotelType}
                   displayEmpty
-                  name="roomType"
+                  name="hotelType"
+                  onChange={this._handleHotelTypeChange}
                   className={classes.selectEmpty}
                 >
-                  <MenuItem value={"Hotel"}>Hotel</MenuItem>
-                  <MenuItem value={"Motel"}>Motel</MenuItem>
+                  <MenuItem value={"nonspecific"}>Nonspecific</MenuItem>
+                  <MenuItem value={"hotel"}>Hotel</MenuItem>
+                  <MenuItem value={"motel"}>Motel</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid xs={12} md={12} lg={12}>
+              <Typography className={classes.typeTitle} xs={12} md={12} lg={12}>
+                Sort
+              </Typography>
+            </Grid>
+            <Grid
+              xs={12}
+              md={12}
+              lg={12}
+              className={classes.droppedDownContainer}
+            >
+              <FormControl className={classes.droppedDownType}>
+                <Select
+                  value={this.state.sortOrder}
+                  displayEmpty
+                  name="sorting"
+                  onChange={this._handleSortOrder}
+                  className={classes.selectEmpty}
+                >
+                  <MenuItem value={"nonspecific"}>Nonspecific</MenuItem>
+                  <MenuItem value={"up"}>Low to high</MenuItem>
+                  <MenuItem value={"down"}>High to low</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -170,11 +223,14 @@ class filterBox extends Component {
                 <Avatar alt="Billiards" src={billiardsIcon} />
 
                 <Typography gutterBottom className={classes.checkboxTitle}>
-                  Billiards
+                  Gym
                 </Typography>
               </Grid>
               <Grid item xs={2} md={2} lg={2} container>
-                <Checkbox color="primary" />
+                <Checkbox
+                  color="primary"
+                  onChange={this._handleGymCheckedChange.bind(this)}
+                />
               </Grid>
               <Grid
                 item
@@ -193,7 +249,10 @@ class filterBox extends Component {
                 </Typography>
               </Grid>
               <Grid item xs={2} md={2} lg={2} container>
-                <Checkbox color="primary" />
+                <Checkbox
+                  color="primary"
+                  onChange={this._handleBarCheckedChange.bind(this)}
+                />
               </Grid>
               <Grid
                 item
@@ -212,7 +271,10 @@ class filterBox extends Component {
                 </Typography>
               </Grid>
               <Grid item xs={2} md={2} lg={2} container>
-                <Checkbox color="primary" />
+                <Checkbox
+                  color="primary"
+                  onChange={this._handleSwimmingPoolCheckedChange.bind(this)}
+                />
               </Grid>
             </Grid>
           </Grid>
@@ -222,4 +284,62 @@ class filterBox extends Component {
   }
 }
 
-export default withStyles(styles)(filterBox);
+const mapStateToProps = state => {
+  return {
+    filter: state.filter
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setMinPrice: price => {
+      dispatch({
+        type: "SET_MINPRICE",
+        payload: price
+      });
+    },
+    setMaxPrice: price => {
+      dispatch({
+        type: "SET_MAXPRICE",
+        payload: price
+      });
+    },
+    setHotelType: hType => {
+      dispatch({
+        type: "SET_HOTELTYPE",
+        payload: hType
+      });
+    },
+    setGymChecked: isChecked => {
+      dispatch({
+        type: "SET_GYMCHECKED",
+        payload: isChecked
+      });
+    },
+    setBarChecked: isChecked => {
+      dispatch({
+        type: "SET_BARCHECKED",
+        payload: isChecked
+      });
+    },
+    setSwimmingPoolChecked: isChecked => {
+      dispatch({
+        type: "SET_SWIMMINGPOOLCHECKED",
+        payload: isChecked
+      });
+    },
+    setSortOrder: order => {
+      dispatch({
+        type: "SET_SORTORDER",
+        payload: order
+      });
+    },
+  };
+};
+
+export default withStyles(styles)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(filterBox)
+);

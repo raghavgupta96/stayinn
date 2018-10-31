@@ -9,6 +9,7 @@ import { firestoreReducer } from 'redux-firestore'
 import authReducer from '../../features/auth/authReducer'
 import asyncReducer from '../../features/async/asyncReducer'
 import reservationReducer from './reservationReducer'
+import filterReducer from './filterReducer'
 import PaymentReducer from '../../features/payment/PaymentReducer'
 
 const rootReducer = combineReducers({
@@ -22,7 +23,8 @@ const rootReducer = combineReducers({
     async: asyncReducer,
     toastr: toastrReducer,
     reservation: reservationReducer,
-    card: PaymentReducer
+    filter: filterReducer,
+    card: PaymentReducer,
 })
 
 export default rootReducer
