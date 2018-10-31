@@ -5,7 +5,6 @@ import Paper from "@material-ui/core/Paper";
 import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import blackstar from "./blackstar.png";
 import StarRatings from 'react-star-ratings';
 
 const styles = theme => ({
