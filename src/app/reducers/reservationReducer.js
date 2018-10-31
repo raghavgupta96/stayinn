@@ -1,6 +1,6 @@
 const reservationReducer = (state = {
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: null,
+    endDate: null,
     rooms: 1,
     roomType: 1
 }, action) => {

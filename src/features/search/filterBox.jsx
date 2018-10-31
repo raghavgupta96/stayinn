@@ -81,7 +81,7 @@ class filterBox extends Component {
     super(props);
     this.state = {
       amount: null,
-      minPrice: 100000,
+      minPrice: 0,
       maxPrice: 100000,
       hotelType: "nonspecific",
       sortOrder: "nonspecific",
@@ -114,6 +114,15 @@ class filterBox extends Component {
   _handleSortOrder = ev => {
     this.setState({ sortOrder: ev.target.value });
     this.props.setSortOrder(ev.target.value);
+  }
+
+  _handleMinChange = e => {
+    this.setState({ minPrice: e.target.value });
+    this.props.setMinPrice(e.target.value);
+  }
+  _handleMaxChange = e => {
+    this.setState({ maxPrice: e.target.value });
+    this.props.setMaxPrice(e.target.value);
   }
 
 
@@ -180,6 +189,7 @@ class filterBox extends Component {
               <FormControl className={classes.budgetRange1}>
                 <Input
                   value={this.state.amount}
+                  onChange= {this._handleMinChange}
                   startAdornment={
                     <InputAdornment position="start">$</InputAdornment>
                   }
@@ -193,6 +203,7 @@ class filterBox extends Component {
               <FormControl className={classes.budgetRange2}>
                 <Input
                   value={this.state.amount}
+                  onChange= {this._handleMaxChange}
                   startAdornment={
                     <InputAdornment position="start">$</InputAdornment>
                   }
