@@ -177,8 +177,8 @@ class filterBox extends Component {
                   className={classes.selectEmpty}
                 >
                   <MenuItem value={"nonspecific"}>Nonspecific</MenuItem>
-                  <MenuItem value={"up"}>Low to high</MenuItem>
-                  <MenuItem value={"down"}>High to low</MenuItem>
+                  <MenuItem value={"up"}>Price: low to high</MenuItem>
+                  <MenuItem value={"down"}>Price: high to low</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
