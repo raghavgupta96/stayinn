@@ -59,8 +59,8 @@ const styles = theme => ({
   },
   divider: {
     width: "100%",
-    margin: "15px 0px",
-  },
+    margin: "15px 0px"
+  }
 });
 
 const afterSubmit = (result, dispatch, history) => {
@@ -116,6 +116,21 @@ const LoginForm = ({
                       Forgot your password?
                     </Typography>
                   </Link>
+                  <Link
+                    to="/signup"
+                    style={{
+                      flex: 1,
+                      textDecoration: "none"
+                    }}
+                  >
+                    <Typography
+                      variant="body2"
+                      className={classes.linkHover}
+                      style={{ margin: 0, float: "right" }}
+                    >
+                      Don't have a account? Sign up
+                    </Typography>
+                  </Link>
                   <Grid container justify="center">
                     <Button
                       disabled={invalid || submitting}
@@ -127,8 +142,8 @@ const LoginForm = ({
                   <div>
                     {error && <Typography color="error">{error}</Typography>}
                   </div>
-                  <Divider className={classes.divider}/>
-                  <SocialLogin socialLogin={socialLogin}/>
+                  <Divider className={classes.divider} />
+                  <SocialLogin socialLogin={socialLogin} />
                 </Grid>
               </Paper>
             </Grid>

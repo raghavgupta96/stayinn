@@ -68,7 +68,7 @@ const styles = theme => ({
 });
 
 const SocialLogin = ({ socialLogin, history, firebase, classes }) => {
-  console.log("Social Login: ", firebase);
+  // console.log("Social Login: ", firebase);
   firebase.auth().currentUser && history.push("/");
   return (
     <div>

@@ -123,7 +123,7 @@ class myBooking extends Component {
     const obj = this;
 
     // Check if auth changes after initializes
-    firebase.auth().onAuthStateChanged(function(user) {
+    await firebase.auth().onAuthStateChanged(function(user) {
       // if user does not log in
       if (!user) {
         return;
@@ -169,12 +169,22 @@ class myBooking extends Component {
             // doc.data() is never undefined for query doc snapshots
             // add reservation information
           });
-          console.log("Final Reservations", reservations);
+          // console.log("Final Reservations", reservations);
           obj.setState({ reservations: reservations });
-          // console.log(reservations)
         });
+      console.log("Reservations to sort: " + obj)
     });
   }
+
+  // sort reservations array by its check-in date
+  sortByCheckinDate = (r1, r2) => {
+    const r1DateArr = r1.checkinDate.split("-");
+    const r2DateArr = r2.checkinDate.split("-");
+
+    const r1Date = new Date(r1DateArr[0], r1DateArr[1], r1DateArr[2]);
+    const r2Date = new Date(r2DateArr[0], r2DateArr[1], r2DateArr[2]);
+    return r1Date < r2Date;
+  };
 
   _handleCheckinDate = e => {
     console.log("CHECKIN");
@@ -328,8 +338,10 @@ class myBooking extends Component {
     // var thisRes = null;
     console.log(this.state.reservations);
     // if (this.state.reservations) {
+    // sorting checkin date and map the reservations to show
     const resList =
       this.state.reservations &&
+      this.state.reservations.sort(this.sortByCheckinDate) &&
       this.state.reservations.map(res => {
         return (
           <div key={res.reservationId}>
@@ -460,7 +472,7 @@ class myBooking extends Component {
                     onClose={this.handleClose}
                     style={{ paddingTop: 50, zIndex: 1, overflow: "auto" }}
                   >
-                  {/* The cross sign for closing the modal */}
+                    {/* The cross sign for closing the modal */}
                     <div style={modalStyle}>
                       <div style={{ textAlign: "right" }}>
                         <button
@@ -533,57 +545,58 @@ class myBooking extends Component {
                     style={{ paddingTop: 50, zIndex: 1, overflow: "auto" }}
                   >
                     <div style={modalStyle}>
-                    {/* Adding cross icon for users to close modal */}
-                    <div style={{ textAlign: "right" }}>
-                    <button
-                      style={{
-                        border: "none",
-                        background: "transparent",
-                        cursor: "pointer",
-                        outline: "none"
-                      }}
-                      onClick={() => {
-                        this.handleEditClose();
-                      }}                    >
-                      <CloseIcon className={classes.iconHover} />
-                    </button>
-                    </div>
-                    <div>
-                      <Typography style={regTextStyle}>
-                        Select a new checkin and checkout date for your
-                        reservation.
-                      </Typography>
-                      <br/>
-                      <Grid container spacing={24}>
-                        <Grid item xs={6}>
-                          <form className={classes.dateContainer} noValidate>
-                            <TextField
-                              id="date"
-                              label="Checkin Date"
-                              type="date"
-                              value={this.state.checkinDate}
-                              InputLabelProps={{
-                                shrink: true
-                              }}
-                              onChange={this._handleCheckinDate}
-                            />
-                          </form>
+                      {/* Adding cross icon for users to close modal */}
+                      <div style={{ textAlign: "right" }}>
+                        <button
+                          style={{
+                            border: "none",
+                            background: "transparent",
+                            cursor: "pointer",
+                            outline: "none"
+                          }}
+                          onClick={() => {
+                            this.handleEditClose();
+                          }}
+                        >
+                          <CloseIcon className={classes.iconHover} />
+                        </button>
+                      </div>
+                      <div>
+                        <Typography style={regTextStyle}>
+                          Select a new checkin and checkout date for your
+                          reservation.
+                        </Typography>
+                        <br />
+                        <Grid container spacing={24}>
+                          <Grid item xs={6}>
+                            <form className={classes.dateContainer} noValidate>
+                              <TextField
+                                id="date"
+                                label="Checkin Date"
+                                type="date"
+                                value={this.state.checkinDate}
+                                InputLabelProps={{
+                                  shrink: true
+                                }}
+                                onChange={this._handleCheckinDate}
+                              />
+                            </form>
+                          </Grid>
+                          <Grid item xs={6}>
+                            <form className={classes.dateContainer} noValidate>
+                              <TextField
+                                id="date"
+                                label="Checkout Date"
+                                type="date"
+                                value={this.state.checkoutDate}
+                                InputLabelProps={{
+                                  shrink: true
+                                }}
+                                onChange={this._handleCheckoutDate}
+                              />
+                            </form>
+                          </Grid>
                         </Grid>
-                        <Grid item xs={6}>
-                          <form className={classes.dateContainer} noValidate>
-                            <TextField
-                              id="date"
-                              label="Checkout Date"
-                              type="date"
-                              value={this.state.checkoutDate}
-                              InputLabelProps={{
-                                shrink: true
-                              }}
-                              onChange={this._handleCheckoutDate}
-                            />
-                          </form>
-                        </Grid>
-                      </Grid>
                       </div>
                       <Grid padding={20} spacing={24}>
                         <div>
@@ -593,26 +606,26 @@ class myBooking extends Component {
                             </Typography>
                           )}
                         </div>
-                        <div style={{    padding: 15,}}>
-                        <Button
-                          component={renderButton}
-                          onClick={() => {
-                            this.state.currRes &&
-                              this.handleEditRes(
-                                this.state.currRes.reservationId
-                              );
-                          }}
-                        >
-                          Confirm
-                        </Button>
-                        <Button
-                          component={warningButton}
-                          onClick={() => {
-                            this.handleEditClose();
-                          }}
-                        >
-                          Cancel
-                        </Button>
+                        <div style={{ padding: 15 }}>
+                          <Button
+                            component={renderButton}
+                            onClick={() => {
+                              this.state.currRes &&
+                                this.handleEditRes(
+                                  this.state.currRes.reservationId
+                                );
+                            }}
+                          >
+                            Confirm
+                          </Button>
+                          <Button
+                            component={warningButton}
+                            onClick={() => {
+                              this.handleEditClose();
+                            }}
+                          >
+                            Cancel
+                          </Button>
                         </div>
                       </Grid>
                     </div>

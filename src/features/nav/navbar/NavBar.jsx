@@ -101,26 +101,28 @@ class NavBar extends Component {
               </div>
             ) : (
               <div>
-                <Button
-                  href="/login"
-                  style={{
-                    color: "#ffffff",
-                    fontFamily: "Times",
-                    fontSize: "15px"
-                  }}
-                >
-                  Login
-                </Button>
-                <Button
-                  href="/signup"
-                  style={{
-                    color: "#ffffff",
-                    fontFamily: "Times",
-                    fontSize: "15px"
-                  }}
-                >
-                  Signup
-                </Button>
+                <Link style={{ textDecoration: "none" }} to={"/login"}>
+                  <Button
+                    style={{
+                      color: "#ffffff",
+                      fontFamily: "Times",
+                      fontSize: "15px"
+                    }}
+                  >
+                    Login
+                  </Button>
+                </Link>
+                <Link style={{ textDecoration: "none" }} to={"/signup"}>
+                  <Button
+                    style={{
+                      color: "#ffffff",
+                      fontFamily: "Times",
+                      fontSize: "15px"
+                    }}
+                  >
+                    Signup
+                  </Button>
+                </Link>
               </div>
             )}
           </Toolbar>
