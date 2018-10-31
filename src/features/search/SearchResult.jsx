@@ -128,9 +128,16 @@ const SearchResult = ({ hotels, classes }) => {
                       lg={8}
                       className={classes.hotelInfo}
                     >
-                      An intimate and charming atmosphere, high quality comfort
-                      and traditional Bay Area hospitality...
-                      <p>Address: {hotel.address}</p>
+                      <p>Available facility:</p>
+                      <span style={{ fontSize: "15px", color:"blue" }}>
+                        {hotel.gym && <span>Gym,  </span>}
+                        {hotel.bar && <span>Bar,  </span>}
+                        {hotel.swimmingPool && <span>Swimming Pool</span>}
+                        {!hotel.bar && !hotel.gym && !hotel.swimmingPool && <span>None.</span>}
+
+                      </span>
+                      <p>Address:</p>
+                      <p style={{ fontSize: "15px", color:"gray" }}>{hotel.address}</p>
                     </Grid>
                   </Grid>
                   <Grid

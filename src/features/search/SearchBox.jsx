@@ -161,6 +161,9 @@ class SearchBox extends Component {
             rate3: doc.data().room3,
             rate4: doc.data().room4,
             rating: doc.data().rating,
+            gym: doc.data().gym,
+            bar: doc.data().bar,
+            swimmingPool: doc.data().swimmingPool,
             address:
               doc.data().street +
               ", " +
@@ -288,7 +291,10 @@ class SearchBox extends Component {
               startDate: sDate,
               endDate: eDate,
               roomType: this.props.reservation.roomType,
-              rooms: this.props.reservation.rooms
+              rooms: this.props.reservation.rooms,
+              gym: doc.data().gym,
+              bar: doc.data().bar,
+              swimmingPool: doc.data().swimmingPool,
             });
           });
           var filteredResult = hotels;
