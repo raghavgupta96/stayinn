@@ -398,7 +398,7 @@ class myBooking extends Component {
                                 <h3>Check-in Date: {res.checkinDate}</h3>
                                 <h3>Check-out Date: {res.checkoutDate}</h3>
                                 <h3>Total Price: ${res.totalPrice}</h3>
-                                <h3>Total Price: {res.hotelAddress}</h3>
+                                <h3>Address: {res.hotelAddress}</h3>
                               </Grid>
                             </Grid>
                             <Grid

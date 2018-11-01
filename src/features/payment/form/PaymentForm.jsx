@@ -6,6 +6,10 @@ import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
+import firebase from "../../../app/config/firebase";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
+
 
 // Styles
 //
@@ -83,6 +87,12 @@ const styles = theme => ({
     }
   }
 });
+
+const mapState = state => ({
+  auth: state.firebase.auth,
+  profile: state.firebase.profile,
+});
+
 //
 // end styles
 
@@ -132,8 +142,46 @@ const paymentForm = props => {
     traveler,
     card,
     handlers,
-    classes
+    classes,
+    hotel,
+    reservation,
+    auth,
+    match
   } = props
+
+  const datediff = (Date1, Date2) => {
+    return Math.round((Date2-Date1)/(1000*60*60*24));
+  }
+
+  function reserve(hotel,reservation)
+  {
+    // console.log("match from Paymentform: ", match.params);
+    // console.log("Paymentform Hotel: ", hotel);
+    // console.log("Paymentform Reservation: ", reservation);
+    const db = firebase.firestore();
+    let hID = match.params.hotel_id;
+    let numOfNight = datediff(reservation.startDate, reservation.endDate);
+    let totalPrice = hotel.rate * datediff(reservation.startDate, reservation.endDate);
+    // console.log("Reservation Price: ", totalPrice);
+
+    db.collection("reservations").add({
+      HID: hID,
+      hotelName: hotel.hotelName,
+      rate: hotel.rate,
+      bookDate: new Date(),
+      location: hotel.location,
+      startDate: reservation.startDate,
+      endDate: reservation.endDate,
+      numOfNight: numOfNight,
+      beds: reservation.roomType,
+      isCanceled: false,
+      refund: 0,
+      totalPrice: totalPrice,
+      userId: auth.uid,
+      reward: totalPrice,
+    })
+    // console.log(firebase.firestore());
+  }
 
   return (
     <form className={classes.paymentForm}>
@@ -231,14 +279,14 @@ const paymentForm = props => {
             </Select>
           </FormControl>
          </div>
-      </section>
+      </section>reservation
       <p></p>
       <section className={classes.controls}>
-        <Button variant="contained" color="primary" onClick={() => handlers.checkout(card)}>Submit</Button>
+        <Button variant="contained" color="primary" onClick={() => {handlers.checkout(card); reserve(hotel, reservation)}}>Submit</Button>
         <Button variant="contained" onClick={handlers.cancel}>Cancel</Button>
       </section>
     </form>
   )
 };
 
-export default withStyles(styles)(paymentForm);
+export default withRouter(connect(mapState, null)(withStyles(styles)(paymentForm)));

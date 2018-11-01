@@ -19,3 +19,13 @@ export const paydata = card => {
     }
       )}
 };
+
+// export const reserve = (hotel, reservation) => {
+//   return async (dispatch, add, { getFirebase,getFirestore }) => {
+//     console.log("From Payment Backend: ", hotel)
+//     // const firestore = getFirestore();
+//     // firestore.collection('reservations').add({
+//     //   checkinDate: 
+//     // })
+//   }
+// }

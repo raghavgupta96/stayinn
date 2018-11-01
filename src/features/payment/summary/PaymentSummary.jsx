@@ -119,6 +119,23 @@ const paymentSummary = props => {
   }
 
 
+  // const mydb = firebase.getFirestore()
+  //    console.log(mydb)
+  //    mydb.collection("reservations").doc('13PaE47mzPkWHdW4nm9o').set({
+  //      HID: this.state.hotelSummary.hotelName,
+  //      bookDate: new Date(),
+  //      checkinDate: 'hi',
+  //      checkoutDate: 'bye',
+  //      isCanceled: false,
+  //      numOfNights: '3',
+  //      paymentID: 'reservationID',
+  //      refund: 0,
+  //      reward: 1,
+  //      totalPrice: 'money',
+  //      userID: 'this.props.params.userID'
+
+  //  })
+
 
 
 
