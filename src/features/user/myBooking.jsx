@@ -157,8 +157,8 @@ class myBooking extends Component {
                     hotelDoc.data().zip,
                   reservationId: doc.id,
                   displayName: doc.data().displayName,
-                  checkinDate: doc.data().checkinDate,
-                  checkoutDate: doc.data().checkoutDate,
+                  startDate: doc.data().startDate,
+                  endDate: doc.data().endDate,
                   bookDate: doc.data().bookDate,
                   totalPrice: doc.data().totalPrice,
                   userId: doc.data().userId,
@@ -350,6 +350,11 @@ class myBooking extends Component {
       this.state.reservations &&
       this.state.reservations.sort(this.sortByCheckinDate) &&
       this.state.reservations.map(res => {
+        // convert timestamps to date objects first
+        console.log(res);
+        const bookDate = res.bookDate.toDate();
+        const startDate = res.startDate.toDate();
+        const endDate = res.endDate.toDate();
         return (
           <div key={res.reservationId}>
             {/* Only show reservation that the user has instead of all*/}
@@ -394,9 +399,9 @@ class myBooking extends Component {
                                 className={classes.hotelInfo}
                               >
                                 <h3>Hotel Name: {res.hotelName}</h3>
-                                <h3>Book Date: {res.bookDate}</h3>
-                                <h3>Check-in Date: {res.checkinDate}</h3>
-                                <h3>Check-out Date: {res.checkoutDate}</h3>
+                                <h3>Book Date: {bookDate.toString()}</h3>
+                                <h3>Check-in Date: {startDate.toString()}</h3>
+                                <h3>Check-out Date: {endDate.toString()}</h3>
                                 <h3>Total Price: ${res.totalPrice}</h3>
                                 <h3>Address: {res.hotelAddress}</h3>
                               </Grid>

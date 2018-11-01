@@ -19,6 +19,7 @@ import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
 import { DateRangePicker } from "react-dates";
 import bg from "./bg.jpg";
+import { toastr } from 'react-redux-toastr'
 
 
 const styles = theme => ({
@@ -113,13 +114,14 @@ class SearchBox extends Component {
       hotels: [],
       startDate: null,
       endDate: null,
-      focusedInput: null
+      focusedInput: null,
+      userReservations: [ ],
+      disabled: false
     };
   }
 
   //initially mount all the hotels info into the hotel list into state
   componentDidMount() {
-
     const startDateOj = new Date(this.state.startDate);
     const endDateOj = new Date(this.state.endDate);
 
@@ -185,6 +187,27 @@ class SearchBox extends Component {
 
         this.setState({ hotels });
       });
+
+      // Get users reservation dates if logged in
+      if (this.props.auth.uid) {
+        const reservationsQuery = db.collection("reservations")
+          .where('userId', '==', this.props.auth.uid);
+
+        console.log(this.props.auth.uid);
+
+        reservationsQuery.get()
+          .then(collection => {
+            const userReservations = [];
+  
+            collection.forEach(doc => {
+              const { startDate, endDate } = doc.data();
+              userReservations.push({ startDate: startDate.toDate(), endDate: endDate.toDate() });
+            })
+
+            console.log(userReservations);
+            this.setState({ userReservations });
+          })
+      }
   }
 
   //convert the ISO format data "2018-10-15" string to data object
@@ -416,6 +439,29 @@ class SearchBox extends Component {
     return x.rate1 - y.rate1;
   }
 
+  _updateButtonDisable = ({ startDate, endDate }) => {
+    const { userReservations } = this.state;
+
+    const startDateObj = new Date(startDate);
+    const endDateObj = new Date(endDate);
+
+    let disabled = false;
+    for (let reservation in userReservations) {
+      if (startDateObj.getTime() <= userReservations[reservation].endDate.getTime()
+          && endDateObj.getTime() >= userReservations[reservation].startDate.getTime()
+      ) {
+        disabled = true;
+      }
+    }
+
+    // toastr gets called
+    if (disabled) {
+      // toastr.warning('Conflicting Book Dates', 'Cannot book multiple hotels during the same time period.');
+      window.alert('Conflicting reservation dates');
+    }
+
+    this.setState({ disabled });
+  }
 
   render() {
     const { classes } = this.props;
@@ -552,6 +598,7 @@ class SearchBox extends Component {
                     endDate={this.state.endDate}
                     onDatesChange={({ startDate, endDate }) => {
                       this.setState({ startDate, endDate });
+                      this._updateButtonDisable({ startDate, endDate });
                     }}
                     focusedInput={this.state.focusedInput}
                     onFocusChange={focusedInput => {
@@ -602,7 +649,7 @@ class SearchBox extends Component {
             </Grid>
           </Grid>
           <Grid item xs={9} md={9} lg={8}>
-            <SearchResult hotels={this.state.hotels} />
+            <SearchResult disabled={this.state.disabled} hotels={this.state.hotels} />
           </Grid>
           <Grid item xs={1} md={1} lg={1} />
         </Grid>
@@ -615,6 +662,7 @@ const mapStateToProps = state => {
   return {
     reservation: state.reservation,
     filter: state.filter,
+    auth: state.firebase.auth // auth.uid
   };
 };
 
