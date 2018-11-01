@@ -53,18 +53,13 @@ const paymentSummary = props => {
     hotelName,
     location,
     rate,
-    nights, // Not a prop
-    subtotal, // Not a prop
-    tax, // Not a prop
-    fees, // Not a prop
     total // Not a prop
   } = props.hotel;
 
   const {
     startDate,
     endDate,
-    rooms,
-    roomType
+    rooms
   } = props.reservation;
 
   const { classes } = props;
@@ -76,6 +71,14 @@ const paymentSummary = props => {
   const datediff = (Date1, Date2) => {
     return Math.round((Date2-Date1)/(1000*60*60*24));
   }
+
+  const sum = (...args) => {
+    let total = 0;
+    for (let arg in args) {
+      total += args[arg];
+    }
+    return total;
+  } 
 
   //nights = datediff(startDate,endDate);
 
@@ -111,33 +114,14 @@ const paymentSummary = props => {
     const m = date.getMonth();
     const d = date.getDate();
     const y = date.getFullYear();
-    
-
-  
-
     return `${days[wd]}, ${months[m]} ${d}, ${y}`;
   }
 
-
-  // const mydb = firebase.getFirestore()
-  //    console.log(mydb)
-  //    mydb.collection("reservations").doc('13PaE47mzPkWHdW4nm9o').set({
-  //      HID: this.state.hotelSummary.hotelName,
-  //      bookDate: new Date(),
-  //      checkinDate: 'hi',
-  //      checkoutDate: 'bye',
-  //      isCanceled: false,
-  //      numOfNights: '3',
-  //      paymentID: 'reservationID',
-  //      refund: 0,
-  //      reward: 1,
-  //      totalPrice: 'money',
-  //      userID: 'this.props.params.userID'
-
-  //  })
-
-
-
+  const subtotal = rate * datediff(startDate, endDate);
+  const taxRate = .1;
+  const feesRate = .05;
+  const tax = subtotal * taxRate;
+  const fees = subtotal * feesRate;
 
   // Render
   //
@@ -153,10 +137,6 @@ const paymentSummary = props => {
           <h2>Travel Dates</h2>
           <p>Check-in: {_dateToString(startDate)}</p>
           <p>Check-out: {_dateToString(endDate)}</p>
-        </section>
-        <section>
-          <h2>Room Type</h2>
-          <p>{roomType}</p>
         </section>
         <section className={classes.calculation}>
           <div>
@@ -177,13 +157,13 @@ const paymentSummary = props => {
           </div>
           <div>
             <h2>Tax + Service Fees</h2>
-            <h2>USD {tax + fees}</h2>
+            <h2>USD {`${tax} + ${fees}`}</h2>
           </div>
         </section>
       </div>
       <div className={classes.total}>
         <h2>StayInn total</h2>
-        <h2>USD {total}</h2>
+        <h2>USD {sum(subtotal, tax, fees)}</h2>
       </div>
     </div>
   )

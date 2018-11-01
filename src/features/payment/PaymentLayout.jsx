@@ -67,44 +67,23 @@ class PaymentLayout extends Component {
   };
 
   componentDidMount() {
-    const hID = this.props.match.params.hotel_id
     // Populate hotel information
+    const id = this.props.match.params.hotel_id;
     const db = firebase.firestore();
-    const hotelRef = db.collection("testingHotels").doc(hID);
-
-    hotelRef.get().then(snapShot => {
-      const h = snapShot.data();
-      // console.log("Hotel Trying to reserve: ", h);
-      let roomRate = 0;
-      let roomType = this.props.reservation.roomType;
-      console.log(roomType);
-
-      // check the room rate based on the selected room type
-      if(roomType === 1)
-      {
-        roomRate = h.room1;
-      }
-      else if(roomType === 2)
-      {
-        roomRate = h.room2;
-      }
-      else if(roomType === 3)
-      {
-        roomRate = h.room3;
-      }
-      else if(roomType === 4)
-      {
-        roomRate = h.room4;
-      }
-      console.log(roomRate);
-      const hotel = {
-        hotelName: h.name,
-        hID: h.hID,
-        location: `${h.street}, ${h.city}, ${h.state} ${h.zip}`,
-        rate: roomRate
-      };
-      this.setState({ hotelSummary: hotel });
-    });
+    const hotelRef = db.collection("testingHotels").doc(id);
+    hotelRef
+      .get()
+      .then((snapShot) => {
+        const h = snapShot.data();
+        const hotel = {
+          hotelName: h.name,
+          location: `${h.street}, ${h.city}, ${h.state} ${h.zip}`,
+          // according to Vivian, only need number of rooms but no room type
+          rate: h.room2,
+        };
+        this.setState({ hotelSummary: hotel })
+      });
+    
   }
 
   handlers = {

@@ -42,7 +42,7 @@ class NavBar extends Component {
     // even though a user logs in
     return (
       auth.isLoaded && (
-        <AppBar position="static">
+        <AppBar position="static" style={{ background: 'transparent', boxShadow: 'none'}}>
           <Toolbar>
             <Link
               to="/"

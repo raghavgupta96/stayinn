@@ -18,26 +18,28 @@ import Info from "./Info";
 import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
 import { DateRangePicker } from "react-dates";
-import bg from "./bg.png";
+import bg from "./bg.jpg";
+
 
 const styles = theme => ({
   root: {
     flexGrow: 1
   },
   secondaryContainer: {
-    height: "455px",
+    // Make into 100%
+    height: "850px",
     backgroundImage: `url(${bg})`,
     backgroundSize: "cover",
     overflow: "hidden",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
     width: "100%",
-    marginBottom: "15px"
+    marginBottom: "15px",
+    marginTop: "-75px"
   },
   mainpaper: {
-    width: "100%",
-    marginTop: "35px",
-    marginBottom: "20px",
+    position: "absolute",
+    top: "35%",
     padding: "10px",
     opacity: "0.95"
   },
@@ -180,7 +182,7 @@ class SearchBox extends Component {
             rooms: this.props.reservation.rooms
           });
         });
-        
+
         this.setState({ hotels });
       });
   }
@@ -408,12 +410,12 @@ class SearchBox extends Component {
 
   up = (x, y) => {
     return x.rate1 - y.rate1;
-  } 
+  }
 
   down = (y, x) => {
     return x.rate1 - y.rate1;
-  } 
-  
+  }
+
 
   render() {
     const { classes } = this.props;
@@ -527,7 +529,7 @@ class SearchBox extends Component {
                     onChange={this._handleCheckinDate}
                   />
                 </form>
-              </Grid> 
+              </Grid>
               <Grid item xs={6} md={2} lg={1}>
                 <form className={classes.dateContainer} noValidate>
                   <TextField
@@ -589,7 +591,7 @@ class SearchBox extends Component {
                     className={classes.filterButton}
                     color="primary"
                   > apply
-                    
+
             </Button>
             </Grid>
             <Grid xs={12} md={12} lg={12} className={classes.rewardsBox}>
