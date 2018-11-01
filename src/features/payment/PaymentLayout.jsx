@@ -68,20 +68,22 @@ class PaymentLayout extends Component {
 
   componentDidMount() {
     // Populate hotel information
+    const id = this.props.match.params.hotel_id;
     const db = firebase.firestore();
-    const hotelRef = db.collection("testingHotels").doc(defaults.hID);
-
+    const hotelRef = db.collection("testingHotels").doc(id);
     hotelRef
       .get()
       .then((snapShot) => {
         const h = snapShot.data();
         const hotel = {
           hotelName: h.name,
-          location: `${h.city}, ${h.state} ${h.zip}`,
-          rate: h.price
+          location: `${h.street}, ${h.city}, ${h.state} ${h.zip}`,
+          // according to Vivian, only need number of rooms but no room type
+          rate: h.room2,
         };
         this.setState({ hotelSummary: hotel })
       });
+    
   }
 
   handlers = {
