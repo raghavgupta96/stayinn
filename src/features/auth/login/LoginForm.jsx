@@ -15,6 +15,8 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import SocialLogin from "../socialLogin/SocialLogin";
+import TextField from "@material-ui/core/TextField";
+
 const actions = {
   login,
   socialLogin
@@ -25,6 +27,53 @@ const mapState = state => ({
   profile: state.firebase.profile,
   firebase: state.firebase
 });
+
+// const renderErrorPasswordField = ({
+//   input,
+//   label,
+//   meta: { touched, error },
+//   ...custom
+// }) => (
+//   <div>
+//     <TextField
+//       error
+//       required
+//       style={{ paddingBottom: 10 }}
+//       type="password"
+//       label={label}
+//       hintText={label}
+//       floatingLabelText={label}
+//       errorText={touched && error}
+//       {...input}
+//       {...custom}
+//       margin="normal"
+//       fullWidth
+//     />
+//     <Typography color='error'>{touched && error}</Typography>
+//   </div>
+// );
+
+// const renderErrorTextField = ({
+//   input,
+//   label,
+//   meta: { touched, error },
+//   ...custom
+// }) => (
+//   <div>
+//     <TextField
+//       error
+//       style={{ height: 50 }}
+//       label={label}
+//       floatingLabelText={label}
+//       errorText={touched && error}
+//       {...input}
+//       {...custom}
+//       margin="normal"
+//       fullWidth
+//     />
+//     <Typography color="error">{touched && error}</Typography>
+//   </div>
+// );
 
 const validate = values => {
   const errors = {};
@@ -94,12 +143,39 @@ const LoginForm = ({
             <Grid item xs={6}>
               <Paper className={classes.paper}>
                 <Typography variant="display1">Login</Typography>
-                <Field name="email" component={renderTextField} label="Email" />
-                <Field
-                  name="password"
-                  label="Password"
-                  component={renderPasswordField}
-                />
+                {!error && (
+                  <Field
+                    name="email"
+                    component={renderTextField}
+                    label="Email"
+                  />
+                )}
+                {error && (
+                  <Field
+                    name="email"
+                    component={renderTextField}
+                    label="Email"
+                    errorMessage={error}
+                  />                  
+                )}
+
+                {!error && (
+                  <Field
+                    name="password"
+                    label="Password"
+                    component={renderPasswordField}
+                    errorMessage={error}
+                  />
+                )}
+                {error && (
+                  <Field
+                    name="password"
+                    label="Password"
+                    errorMessage={error}
+                    component={renderPasswordField}
+                  />
+                )}
+
                 <Grid container justify="center">
                   <Link
                     to="/resetPassword"
@@ -128,7 +204,7 @@ const LoginForm = ({
                       className={classes.linkHover}
                       style={{ margin: 0, float: "right" }}
                     >
-                      Don't have a account? Sign up
+                      Don't have a account? Sign upex
                     </Typography>
                   </Link>
                   <Grid container justify="center">

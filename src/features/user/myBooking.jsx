@@ -11,7 +11,6 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Paper from "@material-ui/core/Paper";
 import { Link } from "react-router-dom";
 import CloseIcon from "@material-ui/icons/Close";
-import Fade from "@material-ui/core/Fade";
 
 const styles = theme => ({
   dateContainer: {
@@ -148,6 +147,14 @@ class myBooking extends Component {
                 console.log("hotel data", hotelDoc.data());
                 reservations.push({
                   HID: doc.data().HID,
+                  hotelAddress:
+                    hotelDoc.data().street +
+                    ", " +
+                    hotelDoc.data().city +
+                    ", " +
+                    hotelDoc.data().state +
+                    ", " +
+                    hotelDoc.data().zip,
                   reservationId: doc.id,
                   displayName: doc.data().displayName,
                   checkinDate: doc.data().checkinDate,
@@ -172,7 +179,7 @@ class myBooking extends Component {
           // console.log("Final Reservations", reservations);
           obj.setState({ reservations: reservations });
         });
-      console.log("Reservations to sort: " + obj)
+      console.log("Reservations to sort: " + obj);
     });
   }
 
@@ -391,6 +398,7 @@ class myBooking extends Component {
                                 <h3>Check-in Date: {res.checkinDate}</h3>
                                 <h3>Check-out Date: {res.checkoutDate}</h3>
                                 <h3>Total Price: ${res.totalPrice}</h3>
+                                <h3>Total Price: {res.hotelAddress}</h3>
                               </Grid>
                             </Grid>
                             <Grid

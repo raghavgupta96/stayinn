@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { isLoaded } from "react-redux-firebase";
 
-
 //Material UI components
 import CircularProgress from "@material-ui/core/CircularProgress";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -26,15 +25,15 @@ const mapState = state => ({
 });
 
 const validate = values => {
-  const errors = {}
-  const requiredFields = ['photoFile', 'displayName', 'phoneNumber']
+  const errors = {};
+  const requiredFields = ["photoFile", "displayName", "phoneNumber"];
   requiredFields.forEach(field => {
     if (!values.photoFile && !values.displayName && !values.phoneNumber) {
-      errors[ field ] = 'Required'
+      errors[field] = "Required";
     }
-  })
-  return errors
-}
+  });
+  return errors;
+};
 
 function CircularIndeterminate() {
   return (
@@ -53,10 +52,11 @@ const styles = theme => ({
   paper: {
     paddingTop: 30,
     paddingLeft: 20,
-    paddingRight: 20,
+    paddingRight: 20
   },
   progress: {
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing.unit * 2,
+    size: 20
   },
   title: {
     fontSize: "36px"
@@ -88,14 +88,22 @@ const renderTextField = ({
   />
 );
 
-const renderButton = ({ ...custom }) => (
+const renderButton = ({ loading, classes, ...custom }) => (
   <Button
     variant="contained"
     justify="right"
     color="primary"
     type="submit"
     {...custom}
-  />
+    style={{
+      color: "white"
+    }}
+  >
+    Update
+    {loading && (
+      <CircularProgress style={{ marginLeft: 5, width: 20, height: 20 }} />
+    )}
+  </Button>
 );
 
 // Working on updating user profile snackbar
@@ -113,7 +121,6 @@ const renderButton = ({ ...custom }) => (
 
 // }
 
-
 const EditInfoForm = ({
   classes,
   handleSubmit,
@@ -124,7 +131,6 @@ const EditInfoForm = ({
   auth,
   userProfile
 }) => {
-
   // redner after auth is loaded
   if (isLoaded(auth)) {
     // if auth is not empty
@@ -179,8 +185,8 @@ const EditInfoForm = ({
         // </div>
         <div>
           <form size="large" onSubmit={handleSubmit(updateUser)}>
-                <Paper className={classes.paper}>
-                  {/* {auth.photoURL && (
+            <Paper className={classes.paper}>
+              {/* {auth.photoURL && (
                     <img width="200" height="200" src={auth.photoURL} alt="" />
                   )}
                   {!auth.photoURL && (
@@ -191,37 +197,47 @@ const EditInfoForm = ({
                       alt=""
                     />
                   )} */}
-                  {/* The way to make an image to upload button */}
-                  {/* without upload button, Field cannot access data, always show undefined */}
-                  <Field
-                    id="photoFile"
-                    type="text"
-                    name="photoFile"
-                    component={FileInput}
-                  />
-                  {/* <Field name="photoFile" component="input" type="file" /> */}
-                  <Field
-                    name="displayName"
-                    label="Name"
-                    component={renderTextField}
-                  />
-                  <Field
-                    name="phoneNumber"
-                    label="Phone Number"
-                    component={PhoneInput}
-                  />
-                  <Typography className={classes.headerInfo}>
-                    Email: {auth.email}
-                  </Typography>
-                  <Button disabled={invalid || submitting} component={renderButton} type="submit">Update</Button>
-                  <Button component={warningButton}
-                    onClick={() => {
-                      userProfile.setState({
-                        updating: false,
-                      })
-                    }}
-                  >Cancel</Button>
-                </Paper>
+              {/* The way to make an image to upload button */}
+              {/* without upload button, Field cannot access data, always show undefined */}
+              <Field
+                id="photoFile"
+                type="text"
+                name="photoFile"
+                component={FileInput}
+              />
+              {/* <Field name="photoFile" component="input" type="file" /> */}
+              <Field
+                name="displayName"
+                label="Name"
+                component={renderTextField}
+              />
+              <Field
+                name="phoneNumber"
+                label="Phone Number"
+                component={PhoneInput}
+              />
+              <Typography className={classes.headerInfo}>
+                Email: {auth.email}
+              </Typography>
+              <Button
+                loading={submitting}
+                disabled={invalid || submitting}
+                component={renderButton}
+                type="submit"
+              >
+                Update
+              </Button>
+              <Button
+                component={warningButton}
+                onClick={() => {
+                  userProfile.setState({
+                    updating: false
+                  });
+                }}
+              >
+                Cancel
+              </Button>
+            </Paper>
           </form>
         </div>
       );
@@ -243,8 +259,10 @@ const EditInfoForm = ({
 //   )(reduxForm({ form: "editInfoForm", onSubmitSuccess: afterSubmit, validate })(EditInfoForm)))
 // );
 export default withStyles(styles)(
-  withRouter(connect(
-    mapState,
-    actions
-  )(reduxForm({ form: "editInfoForm", validate })(EditInfoForm)))
+  withRouter(
+    connect(
+      mapState,
+      actions
+    )(reduxForm({ form: "editInfoForm", validate })(EditInfoForm))
+  )
 );

@@ -6,20 +6,38 @@ const renderTextField = ({
   input,
   label,
   meta: { touched, error },
+  errorMessage,
   ...custom
 }) => (
   <div>
-    <TextField
-      style={{ height: 50}}
-      label={label}
-      floatingLabelText={label}
-      errorText={touched && error}
-      {...input}
-      {...custom}
-      margin="normal"
-      fullWidth
-    />
+    {errorMessage && (
+      <TextField
+        error
+        style={{ height: 50 }}
+        label={label}
+        floatingLabelText={label}
+        errorText={touched && error}
+        {...input}
+        {...custom}
+        margin="normal"
+        fullWidth
+      />
+    )}
+    {!errorMessage && (
+      <TextField
+        style={{ height: 50 }}
+        label={label}
+        floatingLabelText={label}
+        errorText={touched && error}
+        {...input}
+        {...custom}
+        margin="normal"
+        fullWidth
+      />
+    )}
     <Typography color="error">{touched && error}</Typography>
+    {console.log("Error: ", error)}
+    {console.log("Error Message: ", errorMessage)}
   </div>
 );
 

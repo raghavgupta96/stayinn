@@ -183,14 +183,15 @@ class UserProfile extends Component {
                   spacing={16}
                 >
                   <Grid item xs={4}>
-                    <h1>User Profile</h1>
-                    <Paper className={classes.paper}>
+                    <h1 style={{textAlign: "center",}}>User Profile</h1>
+                    <Paper className={classes.paper}style={{textAlign: "center",}}>
                       {auth.photoURL && (
                         <img
                           width="200"
                           height="200"
                           src={auth.photoURL}
                           alt=""
+                          style={{borderRadius: "100%"}}
                         />
                       )}
                       {!auth.photoURL && (
