@@ -178,7 +178,7 @@ const paymentForm = props => {
       refund: 0,
       totalPrice: totalPrice,
       userId: auth.uid,
-      reward: totalPrice,
+      reward: totalPrice * 10,
     })
     // console.log(firebase.firestore());
   }
