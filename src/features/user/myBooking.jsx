@@ -185,12 +185,7 @@ class myBooking extends Component {
 
   // sort reservations array by its check-in date
   sortByCheckinDate = (r1, r2) => {
-    const r1DateArr = r1.checkinDate.split("-");
-    const r2DateArr = r2.checkinDate.split("-");
-
-    const r1Date = new Date(r1DateArr[0], r1DateArr[1], r1DateArr[2]);
-    const r2Date = new Date(r2DateArr[0], r2DateArr[1], r2DateArr[2]);
-    return r1Date < r2Date;
+    return r1.startDate < r2.endDate;
   };
 
   _handleCheckinDate = e => {
@@ -265,6 +260,15 @@ class myBooking extends Component {
       this.setState({
         noDateConflict: true
       });
+      // Split checkin and checkout dates to separate year, month, day
+      const dateIn = checkin.split("-");
+      const dateOut = checkout.split("-");
+
+      // dateIn[0] is year, dateIn[1] is month, dateIn[2] is day
+      const startDate = new Date(dateIn[0], dateIn[1], dateIn[2]);
+      const endDate = new Date(dateOut[0], dateOut[1], dateOut[2]);
+      console.log("Start Date: ", startDate);
+      console.log("End Date: ", endDate);
       firebase.auth().onAuthStateChanged(function(user) {
         if (!user) {
           return;
@@ -274,8 +278,8 @@ class myBooking extends Component {
           .collection("reservations")
           .doc(reservationId)
           .update({
-            checkinDate: checkin,
-            checkoutDate: checkout
+            startDate: startDate,
+            endDate: endDate
           })
           .then(function() {
             window.location.reload();
@@ -657,9 +661,9 @@ class myBooking extends Component {
                         {/* <h3>Reservation ID: {res.reservationId}</h3>
                         <h3>Hotel ID: {res.HID}</h3> */}
                         <h3>Hotel Name: {res.hotelName}</h3>
-                        <h3>Book Date: {res.bookDate}</h3>
-                        <h3>Check-in Date: {res.checkinDate}</h3>
-                        <h3>Check-out Date: {res.checkoutDate}</h3>
+                        <h3>Book Date: {bookDate.toString()}</h3>
+                        <h3>Check-in Date: {startDate.toString()}</h3>
+                        <h3>Check-out Date: {endDate.toString()}</h3>
                         <h3>Total Price: ${res.totalPrice}</h3>
                         {/* <h3>isCanceled: {String(res.isCanceled)}</h3> */}
                       </s>
