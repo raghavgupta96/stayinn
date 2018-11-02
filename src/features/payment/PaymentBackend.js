@@ -28,6 +28,7 @@ export const inputCard = (card) => {
 
     }).then(() =>{
       dispatch({ type:'INPUT_CARD', card});
+      window.location.href = `/profile/${user}`
     }).catch((error) => {
       dispatch({type: 'INPUT_CARD_ERROR', error});
     })

@@ -312,7 +312,11 @@ const paymentForm = props => {
       </section>reservation
       <p></p>
       <section className={classes.controls}>
-        <Button variant="contained" color="primary" onClick={() => {handlers.checkout(card); reserve(hotel, reservation)}}>Submit</Button>
+        <Button variant="contained" color="primary" onClick={() => {
+          handlers.checkout(card); 
+          reserve(hotel, reservation)
+          
+          }}>Submit</Button>
         <Button variant="contained" onClick={handlers.cancel}>Cancel</Button>
       </section>
     </form>
