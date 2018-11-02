@@ -95,12 +95,9 @@ const SearchResult = ({ hotels, classes, disabled }) => {
                       </Grid>
                       <Grid xs={3} md={3} lg={3} item className={classes.price}>
                         <Typography variant="subtitle1">
-                          ${hotel.roomType === 1 && hotel.rate1}
-                          {hotel.roomType === 2 && hotel.rate2}
-                          {hotel.roomType === 3 && hotel.rate3}
-                          {hotel.roomType === 4 && hotel.rate4}
+                          ${hotel.price}
                           <div style={{ fontSize: "15px", color:"gray" }}>
-                            for {hotel.roomType} people
+                            per night
                           </div>
                         </Typography>
                       </Grid>

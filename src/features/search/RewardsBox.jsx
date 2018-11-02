@@ -50,7 +50,7 @@ class Rewards extends Component {
                 color: "#409BE6"
               }}
             >
-              Rewards : 0 points
+              Rewards : {this.props.reward}
             </Grid>
           </Grid>
         </Paper>
