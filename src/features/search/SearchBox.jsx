@@ -161,14 +161,12 @@ class SearchBox extends Component {
             room_cap: doc.data().maxBeds,
             photoUrl: doc.data().photoURL,
             type: doc.data().type,
+            price: doc.data().price,
             rate1: doc.data().room1,
             rate2: doc.data().room2,
             rate3: doc.data().room3,
             rate4: doc.data().room4,
             rating: doc.data().rating,
-            gym: doc.data().gym,
-            bar: doc.data().bar,
-            swimmingPool: doc.data().swimmingPool,
             address:
               doc.data().street +
               ", " +
@@ -180,9 +178,11 @@ class SearchBox extends Component {
             maxCap: doc.data().maxBeds,
             startDate: sDate,
             endDate: eDate,
-            city: doc.data().city,
             roomType: this.props.reservation.roomType,
-            rooms: this.props.reservation.rooms
+            rooms: this.props.reservation.rooms,
+            gym: doc.data().gym,
+            bar: doc.data().bar,
+            swimmingPool: doc.data().swimmingPool,
           });
         });
 
@@ -313,6 +313,7 @@ class SearchBox extends Component {
               room_cap: doc.data().maxBeds,
               photoUrl: doc.data().photoURL,
               type: doc.data().type,
+              price: doc.data().price,
               rate1: doc.data().room1,
               rate2: doc.data().room2,
               rate3: doc.data().room3,
@@ -336,8 +337,43 @@ class SearchBox extends Component {
               swimmingPool: doc.data().swimmingPool,
             });
           });
-          var filteredResult = hotels;
-          this.setState({ filteredResult });
+
+                    // filtering from the hotles object
+          // var filteredResult = hotels;
+          if(this.props.filter.hotelType === 'hotel'){
+            hotels = hotels.filter(v => v.type === 'hotel');
+          }
+          if(this.props.filter.hotelType === 'motel'){
+            hotels = hotels.filter(v => v.type === 'motel');
+          }
+          if(this.props.filter.gymChecked === true) {
+            hotels = hotels.filter(v => v.gym === true);
+          }
+          if(this.props.filter.barChecked === true) {
+            hotels = hotels.filter(v => v.bar === true);
+          }
+          if(this.props.filter.swimmingPoolChecked === true) {
+            hotels = hotels.filter(v => v.swimmingPool === true);
+          }
+          if(this.props.filter.sortOrder === "up") {
+            hotels.sort(this.up);
+          }
+          if(this.props.filter.sortOrder === "down") {
+            hotels.sort(this.down);
+          }
+
+          console.log("the minPrice: -------" + this.props.filter.minPrice)
+          //filter in the hotel by the roomsize and corresponding price, greater than Min price
+          if(this.props.filter.minPrice !== "") {
+            hotels = hotels.filter(v => v.price >= this.props.filter.minPrice);
+          }
+
+          console.log("the maxPrice: -------" + this.props.filter.maxPrice)
+          //filter in the hotel by the roomsize and corresponding price, greater than Max price
+          if(this.props.filter.maxPrice !== "") {
+              hotels = hotels.filter(v => v.price <= this.props.filter.maxPrice);
+          }
+          this.setState({ hotels });
         });
     } else {
       const searchKey = this.state.place.name + "_" + this.state.roomSize;
@@ -362,6 +398,7 @@ class SearchBox extends Component {
               room_cap: doc.data().maxBeds,
               photoUrl: doc.data().photoURL,
               type: doc.data().type,
+              price: doc.data().price,
               rate1: doc.data().room1,
               rate2: doc.data().room2,
               rate3: doc.data().room3,
@@ -414,31 +451,14 @@ class SearchBox extends Component {
           console.log("the minPrice: -------" + this.props.filter.minPrice)
           //filter in the hotel by the roomsize and corresponding price, greater than Min price
           if(this.props.filter.minPrice !== "") {
-            if(this.state.roomSize === 1 ){
-              hotels = hotels.filter(v => v.rate1 >= this.props.filter.minPrice);
-            }else if (this.state.roomSize === 2){
-              hotels = hotels.filter(v => v.rate2 >= this.props.filter.minPrice);
-            }else if (this.state.roomSize === 3){
-              hotels = hotels.filter(v => v.rate3 >= this.props.filter.minPrice);
-            }else if (this.state.roomSize === 2){
-              hotels = hotels.filter(v => v.rate4 >= this.props.filter.minPrice);
-            }
+            hotels = hotels.filter(v => v.price >= this.props.filter.minPrice);
           }
 
           console.log("the maxPrice: -------" + this.props.filter.maxPrice)
           //filter in the hotel by the roomsize and corresponding price, greater than Max price
           if(this.props.filter.maxPrice !== "") {
-            if(this.state.roomSize === 1 ){
-              hotels = hotels.filter(v => v.rate1 <= this.props.filter.maxPrice);
-            }else if (this.state.roomSize === 2){
-              hotels = hotels.filter(v => v.rate2 <= this.props.filter.maxPrice);
-            }else if (this.state.roomSize === 3){
-              hotels = hotels.filter(v => v.rate3 <= this.props.filter.maxPrice);
-            }else if (this.state.roomSize === 2){
-              hotels = hotels.filter(v => v.rate4 <= this.props.filter.maxPrice);
-            }
+              hotels = hotels.filter(v => v.price <= this.props.filter.maxPrice);
           }
-
 
           this.setState({ hotels });
         });
@@ -446,11 +466,11 @@ class SearchBox extends Component {
   };
 
   up = (x, y) => {
-    return x.rate1 - y.rate1;
+    return x.price - y.price;
   }
 
   down = (y, x) => {
-    return x.rate1 - y.rate1;
+    return x.price - y.price;
   }
 
   _updateButtonDisable = ({ startDate, endDate }) => {

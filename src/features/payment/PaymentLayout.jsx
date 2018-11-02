@@ -79,7 +79,7 @@ class PaymentLayout extends Component {
           hotelName: h.name,
           location: `${h.street}, ${h.city}, ${h.state} ${h.zip}`,
           // according to Vivian, only need number of rooms but no room type
-          rate: h.room2,
+          rate: h.price,
         };
         this.setState({ hotelSummary: hotel })
       });
