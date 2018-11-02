@@ -104,7 +104,8 @@ class myBooking extends Component {
       currHotel: null,
       checkin: null,
       checkout: null,
-      noDateConflict: true
+      noDateConflict: true,
+      disabled: false
     };
   }
 
@@ -164,7 +165,8 @@ class myBooking extends Component {
                   userId: doc.data().userId,
                   isCanceled: doc.data().isCanceled,
                   photoURL: hotelDoc.data().photoURL,
-                  hotelName: hotelDoc.data().name
+                  hotelName: hotelDoc.data().name,
+                  rate: hotelDoc.data().room2 //<-------- CHANGE THIS TO RATE WHEN IT IS UPDATED FROM JUN !!!!!
                 });
                 obj.setState({ reservations: reservations });
                 // console.log(reservations);
@@ -224,6 +226,27 @@ class myBooking extends Component {
     return Math.round(Math.random() * 20) - 10;
   }
 
+  // multipleBooking = (startDate, endDate) => {
+  //   let disabled = false;
+
+  //   const startDateObj = new Date(startDate);
+  //   const endDateObj = new Date(endDate);
+  //   for (let reservation in this.state.reservations) {
+  //     console.log("YOOO", this.state.reservations[reservation]);
+  //     if (startDateObj.getTime() <= this.state.reservations[reservation].endDate.getTime()
+  //         && endDateObj.getTime() >= this.state.reservations[reservation].startDate.getTime()
+  //     ) {
+  //       disabled = true;
+  //     }
+  //   }
+
+  //   if(disabled) {
+  //     window.alert('Conflicting reservation dates')
+  //   }
+
+  //   this.setState({ disabled });
+  // }
+
   handleOpen = reservation => {
     this.setState({
       open: true,
@@ -248,6 +271,10 @@ class myBooking extends Component {
     });
   };
 
+  datediff = (date1, date2) => {
+    return Math.round((date2-date1)/(1000*60*60*24));
+  }
+
   handleEditRes(reservationId) {
     const { firebase } = this.props;
     console.log("RESERVATION ID: " + reservationId);
@@ -255,7 +282,7 @@ class myBooking extends Component {
     console.log("CHECKOUT: " + this.state.checkout);
     const checkin = this.state.checkin;
     const checkout = this.state.checkout;
-
+    const currentRes = this.state.currRes;
     if (this.dateCheck(checkin, checkout)) {
       this.setState({
         noDateConflict: true
@@ -265,28 +292,59 @@ class myBooking extends Component {
       const dateOut = checkout.split("-");
 
       // dateIn[0] is year, dateIn[1] is month, dateIn[2] is day
-      const startDate = new Date(dateIn[0], dateIn[1], dateIn[2]);
-      const endDate = new Date(dateOut[0], dateOut[1], dateOut[2]);
-      console.log("Start Date: ", startDate);
-      console.log("End Date: ", endDate);
+      const startDate = new Date(dateIn[0], dateIn[1] - 1, dateIn[2]);
+      const endDate = new Date(dateOut[0], dateOut[1] - 1, dateOut[2]);
+
+      //this.multipleBooking(startDate, endDate);
+
+      let numOfNights = this.datediff(startDate, endDate);
+
+      let adjustedPrice = this.state.currRes.rate * numOfNights ;
+
+
+
       firebase.auth().onAuthStateChanged(function(user) {
         if (!user) {
           return;
         }
-        firebase
-          .firestore()
-          .collection("reservations")
-          .doc(reservationId)
-          .update({
-            startDate: startDate,
-            endDate: endDate
-          })
-          .then(function() {
-            window.location.reload();
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
+        let userRef = firebase.firestore().collection("users").doc(user.uid);
+        userRef.get().then(doc => {
+          if(doc.exists) {
+            let userRewards = doc.data().reward;
+            let resRef = firebase.firestore().collection("reservations").doc(reservationId);
+
+            resRef.get().then(doc2 => {
+              let resRewards = doc2.data().reward;
+              let finalReward = 0;
+              if (userRewards >= resRewards) {
+                finalReward = userRewards - resRewards
+              }
+
+              let editResReward = currentRes.rate * numOfNights / 100;
+              finalReward = finalReward + editResReward;
+
+              resRef
+              .update({
+                startDate: startDate,
+                endDate: endDate,
+                totalPrice: adjustedPrice,
+                reward: editResReward,
+                numOfNight: numOfNights
+              }).then(function() {
+                  userRef.update({
+                    reward: finalReward
+                  })
+                  .then(function() {
+                    window.location.reload();
+                  })
+                  .catch(function(error) {
+                    console.log(error);
+                  });
+              })
+            })
+            
+          }
+        })
       });
     } else {
       this.setState({
