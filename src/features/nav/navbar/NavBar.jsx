@@ -42,23 +42,32 @@ class NavBar extends Component {
     // even though a user logs in
     return (
       auth.isLoaded && (
-        <AppBar position="static" style={{ background: 'transparent', boxShadow: 'none'}}>
+        <AppBar position="static">
           <Toolbar>
-            <Link
+            <span
               to="/"
               style={{
-                flex: 1,
-                textDecoration: "none"
+                flex: 1
               }}
             >
+
               <Typography
                 variant="title"
                 style={{
-                  fontFamily: "Times",
-                  fontSize: "30px",
+                  fontWeight: "500",
+                  fontSize: "40px",
                   color: "#ffffff"
                 }}
               >
+              <Link
+              to="/"
+              style={{
+                color: 'inherit',
+                textDecoration: 'inherit',
+                '&:hover': {
+                  textDecoration: 'underline',
+                }
+              }}>
                 <img
                   src={logo}
                   alt="logo"
@@ -68,8 +77,10 @@ class NavBar extends Component {
                   }}
                 />
                 StayInn
+                </Link>
               </Typography>
-            </Link>
+
+            </span>
             {authenticated ? (
               <div>
                 {/* Use Link to direct user to the profile URL with user ID */}
@@ -80,7 +91,6 @@ class NavBar extends Component {
                   <Button
                     style={{
                       color: "#ffffff",
-                      fontFamily: "Times",
                       fontSize: "15px"
                     }}
                   >
@@ -91,7 +101,6 @@ class NavBar extends Component {
                   href="/"
                   style={{
                     color: "#ffffff",
-                    fontFamily: "Times",
                     fontSize: "15px"
                   }}
                   onClick={this.handleSignOut}
@@ -105,7 +114,6 @@ class NavBar extends Component {
                   <Button
                     style={{
                       color: "#ffffff",
-                      fontFamily: "Times",
                       fontSize: "15px"
                     }}
                   >
@@ -116,7 +124,6 @@ class NavBar extends Component {
                   <Button
                     style={{
                       color: "#ffffff",
-                      fontFamily: "Times",
                       fontSize: "15px"
                     }}
                   >

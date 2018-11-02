@@ -73,7 +73,7 @@ const styles = theme => ({
     marginBottom: "15px"
   },
   searchButton: {
-    backgroundColor: "#409BE6",
+    backgroundColor: "primary",
     height: "47px",
     color: "#ffffff",
     marginLeft: "15px",
@@ -83,7 +83,7 @@ const styles = theme => ({
     minWidth: "30px"
   },
   filterButton: {
-    backgroundColor: "#409BE6",
+    backgroundColor: "primary",
     height: "40px",
     color: "#ffffff",
     marginRight: "15px",
@@ -203,7 +203,7 @@ class SearchBox extends Component {
           .then(collection => {
             //get all reservation for booking conflict check
             const userReservations = [];
-  
+
             collection.forEach(doc => {
               const { startDate, endDate } = doc.data();
               userReservations.push({ startDate: startDate.toDate(), endDate: endDate.toDate() });
@@ -218,7 +218,7 @@ class SearchBox extends Component {
             .doc(this.props.auth.uid);
           docRef.get().then(doc => {
             if (doc.exists) {
-              this.setState({        
+              this.setState({
                 reward: doc.data().reward
               });
             } else {

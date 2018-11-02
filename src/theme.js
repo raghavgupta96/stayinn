@@ -3,19 +3,19 @@ import { createMuiTheme } from  '@material-ui/core';
 export default createMuiTheme({
     palette: {
         primary: {
-          main: '#409BE6',
+          main: '#F69A33',
         },
         secondary: {
-          main: '#FAEF40',
+          main: '#F4F1BB',
         },
         tertiary_lightblue: {
-          main: '#E6F6FF'
+          main: '#9BC1BC'
         },
         tertiary_darkblue: {
-          main: "#35495D"
+          main: "#5CA4A9"
         },
         tertiary_orange: {
-          main: "#FF9035"
+          main: "#E6EBE0"
         }
       }
 });

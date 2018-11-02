@@ -52,7 +52,7 @@ class App extends Component {
                 <Route path="/hotelDetail" component={HotelDetail} />
                 {/* an individual hotel page  */}
                 <Route path="/hotel/:hotel_id" component={Hotel} />
-                <Route path="/populate" component={PopulateHotels} /> 
+                <Route path="/populate" component={PopulateHotels} />
               </Switch>
             </div>
           )}
