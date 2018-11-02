@@ -116,7 +116,8 @@ class SearchBox extends Component {
       endDate: null,
       focusedInput: null,
       userReservations: [ ],
-      disabled: false
+      disabled: false,
+      reward: null,
     };
   }
 
@@ -193,21 +194,34 @@ class SearchBox extends Component {
         const reservationsQuery = db.collection("reservations")
           .where('userId', '==', this.props.auth.uid);
 
-        console.log(this.props.auth.uid);
-
         reservationsQuery.get()
           .then(collection => {
+            //get all reservation for booking conflict check
             const userReservations = [];
   
             collection.forEach(doc => {
               const { startDate, endDate } = doc.data();
               userReservations.push({ startDate: startDate.toDate(), endDate: endDate.toDate() });
             })
-
-            console.log(userReservations);
             this.setState({ userReservations });
           })
+
+          //get the user rewards info
+          var docRef = firebase
+            .firestore()
+            .collection("users")
+            .doc(this.props.auth.uid);
+          docRef.get().then(doc => {
+            if (doc.exists) {
+              this.setState({        
+                reward: doc.data().reward
+              });
+            } else {
+              console.log("No such document!");
+            }
+          });
       }
+
   }
 
   //convert the ISO format data "2018-10-15" string to data object
@@ -498,31 +512,6 @@ class SearchBox extends Component {
                       variant="title"
                       className={classes.typography}
                     >
-                      Room Capacity:
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <FormControl className={classes.droppedDownNumber}>
-                      <Select
-                        value={this.state.roomSize}
-                        onChange={this._handleRoomSizeChange}
-                        displayEmpty
-                        name="roomSize"
-                        className={classes.selectEmpty}
-                      >
-                        <MenuItem value={1}>1</MenuItem>
-                        <MenuItem value={2}>2</MenuItem>
-                        <MenuItem value={3}>3</MenuItem>
-                        <MenuItem value={4}>4</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                  <Grid item>
-                    <Typography
-                      gutterBottom
-                      variant="title"
-                      className={classes.typography}
-                    >
                       Number of Rooms:
                     </Typography>
                   </Grid>
@@ -642,7 +631,7 @@ class SearchBox extends Component {
             </Button>
             </Grid>
             <Grid xs={12} md={12} lg={12} className={classes.rewardsBox}>
-              <Rewards />
+              <Rewards reward={this.state.reward}/>
             </Grid>
             <Grid xs={12} md={12} lg={12} className={classes.rewardsBox}>
               <Info />

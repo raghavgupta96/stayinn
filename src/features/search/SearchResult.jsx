@@ -100,7 +100,7 @@ const SearchResult = ({ hotels, classes, disabled }) => {
                           {hotel.roomType === 3 && hotel.rate3}
                           {hotel.roomType === 4 && hotel.rate4}
                           <div style={{ fontSize: "15px", color:"gray" }}>
-                            for {hotel.roomType} people
+                            per night
                           </div>
                         </Typography>
                       </Grid>
