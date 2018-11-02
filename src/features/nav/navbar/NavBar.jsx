@@ -127,7 +127,7 @@ class NavBar extends Component {
                       fontSize: "15px"
                     }}
                   >
-                    Signup
+                    Sign Up
                   </Button>
                 </Link>
               </div>
