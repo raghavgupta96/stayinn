@@ -7,7 +7,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
-import SearchResult from "./SearchResult";
+import SearchResult from "./result/SearchResult";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import firebase from "../../app/config/firebase";

@@ -224,7 +224,8 @@ const SearchResult = ({ hotels, classes, disabled }) => {
       null;
     })
   ) : (
-    <p> There is no hotel match your searching.</p>
+    // <p> There is no hotel match your searching.</p>
+    <div>Loading</div>
   );
 
   return <div>{hotelList}</div>;
