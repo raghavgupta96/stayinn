@@ -39,10 +39,11 @@ const styles = theme => ({
     marginTop: "-75px"
   },
   mainpaper: {
-    position: "absolute",
+    position: "",
     top: "35%",
     padding: "10px",
-    opacity: "0.95"
+    opacity: "0.95",
+    marginTop: "400px"
   },
   googleSearchContainer: {
     paddingLeft: "15px",
