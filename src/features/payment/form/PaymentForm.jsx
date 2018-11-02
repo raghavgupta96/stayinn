@@ -6,6 +6,10 @@ import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
+import firebase from "../../../app/config/firebase";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
+
 
 // Styles
 //
@@ -83,6 +87,12 @@ const styles = theme => ({
     }
   }
 });
+
+const mapState = state => ({
+  auth: state.firebase.auth,
+  profile: state.firebase.profile,
+});
+
 //
 // end styles
 
@@ -127,13 +137,81 @@ for (let i = expiryYearSelectStart; i <= expiryYearSelectEnd; i++) {
 //
 // End init MenuItems
 
+const addRewards = (rewardPoints) => {
+  const db = firebase.firestore();
+  const currentUser = firebase.auth().currentUser;
+  console.log("REWARDS: " , rewardPoints)
+  let docRef = firebase.firestore().collection("users").doc(currentUser.uid);
+
+  docRef.get().then(doc => {
+    let reward = doc.data().reward;
+    console.log("User REWARDS: ", reward)
+    console.log("New Rewards: ", reward + rewardPoints);
+    if (doc.exists) {
+      db.collection("users").doc(currentUser.uid).update({
+        reward: reward + rewardPoints
+      })
+    }
+  })
+
+}
+
 const paymentForm = props => {
   const {
     traveler,
     card,
     handlers,
-    classes
+    classes,
+    hotel,
+    reservation,
+    auth,
+    match
   } = props
+
+  const datediff = (Date1, Date2) => {
+    return Math.round((Date2-Date1)/(1000*60*60*24));
+  }
+
+  function reserve(hotel,reservation)
+  {
+    // console.log("match from Paymentform: ", match.params);
+    // console.log("Paymentform Hotel: ", hotel);
+    // console.log("Paymentform Reservation: ", reservation);
+    const db = firebase.firestore();
+    let hID = match.params.hotel_id;
+    let numOfNight = datediff(reservation.startDate, reservation.endDate);
+    
+    // subtotal will be rate per night times number of night
+    let subtotal = hotel.rate * datediff(reservation.startDate, reservation.endDate);
+    
+    // service fee and tax
+    const taxRate = .1;
+    const feesRate = .05;
+    const tax = subtotal * taxRate;
+    const fees = subtotal * feesRate;
+    let totalPrice = subtotal + tax + fees;
+
+    addRewards(subtotal * 10);
+
+    db.collection("reservations").add({
+      HID: hID,
+      hotelName: hotel.hotelName,
+      rate: hotel.rate,
+      bookDate: new Date(),
+      location: hotel.location,
+      startDate: reservation.startDate,
+      endDate: reservation.endDate,
+      numOfNight: numOfNight,
+      beds: reservation.roomType,
+      isCanceled: false,
+      refund: 0,
+      subtotal: subtotal,
+      totalPrice: totalPrice,
+      userId: auth.uid,
+      reward: subtotal * 10,
+    })
+    // console.log(firebase.firestore());
+  }
 
   return (
     <form className={classes.paymentForm}>
@@ -231,14 +309,14 @@ const paymentForm = props => {
             </Select>
           </FormControl>
          </div>
-      </section>
+      </section>reservation
       <p></p>
       <section className={classes.controls}>
-        <Button variant="contained" color="primary" onClick={() => handlers.checkout(card)}>Submit</Button>
+        <Button variant="contained" color="primary" onClick={() => {handlers.checkout(card); reserve(hotel, reservation)}}>Submit</Button>
         <Button variant="contained" onClick={handlers.cancel}>Cancel</Button>
       </section>
     </form>
   )
 };
 
-export default withStyles(styles)(paymentForm);
+export default withRouter(connect(mapState, null)(withStyles(styles)(paymentForm)));

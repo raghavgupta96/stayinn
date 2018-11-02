@@ -22,7 +22,18 @@ class NavBar extends Component {
   render() {
     // auth contains all user information (Ex: email, user, displayName, etc.)
     const { auth } = this.props;
-    const authenticated = auth.isLoaded && !auth.isEmpty && auth.emailVerified;
+    let authenticated;
+    // if user is logged in from social media, no need to do email verification
+    if (auth.providerData) {
+      let providerId = auth.providerData[0].providerId;
+      if (providerId === "password") {
+        authenticated = auth.isLoaded && !auth.isEmpty && auth.emailVerified;
+      } else {
+        authenticated = auth.isLoaded && !auth.isEmpty;
+      }
+    }
+    // console.log("isLoaded: ", auth.isLoaded);
+
     //console.log(auth);
     //console.log(authenticated);
 
@@ -90,26 +101,28 @@ class NavBar extends Component {
               </div>
             ) : (
               <div>
-                <Button
-                  href="/login"
-                  style={{
-                    color: "#ffffff",
-                    fontFamily: "Times",
-                    fontSize: "15px"
-                  }}
-                >
-                  Login
-                </Button>
-                <Button
-                  href="/signup"
-                  style={{
-                    color: "#ffffff",
-                    fontFamily: "Times",
-                    fontSize: "15px"
-                  }}
-                >
-                  Signup
-                </Button>
+                <Link style={{ textDecoration: "none" }} to={"/login"}>
+                  <Button
+                    style={{
+                      color: "#ffffff",
+                      fontFamily: "Times",
+                      fontSize: "15px"
+                    }}
+                  >
+                    Login
+                  </Button>
+                </Link>
+                <Link style={{ textDecoration: "none" }} to={"/signup"}>
+                  <Button
+                    style={{
+                      color: "#ffffff",
+                      fontFamily: "Times",
+                      fontSize: "15px"
+                    }}
+                  >
+                    Signup
+                  </Button>
+                </Link>
               </div>
             )}
           </Toolbar>

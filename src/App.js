@@ -13,13 +13,22 @@ import FilterUi from "./features/filter/Filter.ui";
 import PaymentLayout from "./features/payment/PaymentLayout";
 import HotelDetail from "./features/hotel/HotelDetail";
 import Hotel from "./features/hotel/Hotel";
-import ReduxToastr from 'react-redux-toastr'
+import ResetPasswordForm from "./features/auth/resetPassword/ResetPasswordForm"
+import ReduxToastr from "react-redux-toastr";
+import PopulateHotels from "./features/hotel/PopulateHotels";
 
 class App extends Component {
   render() {
     return (
       <MuiThemeProvider theme={theme}>
         <NavBar theme={theme} />
+        {/* notification */}
+        <ReduxToastr
+          sleep={7000}
+          position="top-center"
+          transitionIn="fadeIn"
+          transitionOut="fadeOut"
+        />
         <Switch>
           {/* Adding exact to prevent home page showing when there is '/' in web address */}
           <Route exact path="/" component={HomePage} />
@@ -34,6 +43,7 @@ class App extends Component {
                 <Route path="/signup" component={Signup} />
                 <Route path="/login" component={Login} />
                 {/* <Route path="/profile" component={UserProfile} /> */}
+                <Route path="/resetPassword" component={ResetPasswordForm} />
                 <Route path={"/profile/:id"} component={UserProfile} />
                 <Route path="/profileEdit" component={ProfileUpdate} />
                 <Route path="/profileSetup" component={ProfileSetup} />
@@ -42,13 +52,8 @@ class App extends Component {
                 <Route path="/hotelDetail" component={HotelDetail} />
                 {/* an individual hotel page  */}
                 <Route path="/hotel/:hotel_id" component={Hotel} />
+                <Route path="/populate" component={PopulateHotels} /> 
               </Switch>
-              <ReduxToastr
-                sleep={7000}
-                position="top-center"
-                transitionIn="fadeIn"
-                transitionOut="fadeOut"
-              />
             </div>
           )}
         />

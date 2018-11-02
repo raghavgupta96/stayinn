@@ -26,7 +26,11 @@ export const login = creds => {
                 if (docRef.firstLogin) {
                   window.location.href = "/profileSetup";
                 } else {
-                  window.location.href = "/";
+                  toastr.success(
+                    "Welcome to StayInn",
+                    "You have successfully logged in."
+                  );
+                  // window.location.href = "/";
                 }
               });
           } else {
@@ -263,3 +267,93 @@ export const updateUser = user => async (
     });
   }
 };
+
+
+export const resetPassword = creds => {
+  return async (dispatch, getState, { getFirebase }) => {
+    const firebase = getFirebase();
+    const db = firebase.firestore();
+    const emailAddress = creds.email;
+    try {
+      await firebase
+        .auth()
+        .sendPasswordResetEmail(emailAddress)
+        .then(function() {
+          // Email sent.
+          toastr.success(
+            "Email Sent!",
+            "An email is sent to your inbox to reset password"
+          );
+          // const user = firebase.auth().currentUser;
+          // const verified = user.emailVerified;
+          // Check if the user's email address is verified before login completion
+          // if (verified) {
+          //   db.collection("users")
+          //     .doc(user.uid)
+          //     .get()
+          //     .then(doc => {
+          //       const docRef = doc.data();
+          //       console.log("First Login: " + docRef.firstLogin);
+          //       // If it is the first time the user is logging in, route to profile setup.
+          //       // If not, go to the homepage.
+          //       if (docRef.firstLogin) {
+          //         window.location.href = "/profileSetup";
+          //       } else {
+          //         toastr.success(
+          //           "Welcome to StayInn",
+          //           "You have successfully logged in."
+          //         );
+          //         // window.location.href = "/";
+          //       }
+          //     });
+          // } else {
+          //   console.log("Email not verified homie!");
+          //   firebase.logout();
+          // }
+        });
+    } catch (error) {
+      // An error happened.
+      console.log(error);
+      throw new SubmissionError({
+        _error: error.message
+      });
+    }
+  };
+};
+
+export const socialLogin = (selectedProvider) =>
+  async (dispatch, getState, {getFirebase, getFirestore}) => {
+    const firebase = getFirebase();
+    const firestore = getFirestore();
+    try
+    {
+      // Login with selected providers such as Google or Facebook
+      let user = await firebase.login({
+        provider: selectedProvider,
+        type: 'popup'
+      })
+
+      // make a user profile data in firesotre if first logs in
+      if(user.additionalUserInfo.isNewUser){
+        await firestore.set(`users/${user.user.uid}`, {
+          email: user.profile.email,
+          displayName: user.profile.displayName,
+          photoURL: user.profile.avatarUrl,
+          createdAt: firestore.FieldValue.serverTimestamp(),
+          reward: 0,
+          firstLogin: false,
+        })
+      }
+      // window.location.href = "/";
+      toastr.success(
+        "Welcome to StayInn",
+        "You have successfully logged in."
+      );
+    }
+
+    catch(error)
+    {
+      console.log(error)
+    }
+  }
+

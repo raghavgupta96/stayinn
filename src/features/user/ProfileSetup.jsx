@@ -12,6 +12,7 @@ import Paper from '@material-ui/core/Paper';
 import TextField from "@material-ui/core/TextField";
 import { updateUser } from "../auth/authActions";
 import { Typography } from "@material-ui/core";
+import PhoneInput from "../../app/common/form/PhoneInput";
 
 const actions = {
   updateUser
@@ -120,7 +121,7 @@ const setupProfileForm = ({
                     <Field
                       name="phoneNumber"
                       label="Phone Number"
-                      component={renderTextField}
+                      component={PhoneInput}
                     />
                     <Grid container justify="center">
                       <Button component={renderButton}>Confirm</Button>

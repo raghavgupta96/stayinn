@@ -1,7 +1,7 @@
 import React from "react";
 import { Field, reduxForm, reset } from "redux-form";
 import { connect } from "react-redux";
-import { registerUser, socialLogin } from "../authActions";
+import { resetPassword } from "../authActions";
 
 //Material UI components
 import renderTextField from "../../../app/common/form/TextInput";
@@ -12,26 +12,20 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import Divider from "@material-ui/core/Divider";
-import SocialLogin from "../socialLogin/SocialLogin";
 
 const actions = {
-  registerUser,
-  socialLogin
+  resetPassword
 };
 
 const validate = values => {
-  const errors = {};
-  const requiredFields = ["email", "password", "reEnterPassword"];
-  requiredFields.forEach(field => {
-    if (!values[field]) {
-      errors[field] = "Required";
-    }
-    if (values.password !== values.reEnterPassword) {
-      errors.reEnterPassword = "Password not matches";
-    }
-  });
-  return errors;
+    const errors = {};
+    const requiredFields = ["email"];
+    requiredFields.forEach(field => {
+      if (!values[field]) {
+        errors[field] = "Required";
+      }
+    });
+    return errors;
 };
 
 /* Styling */
@@ -48,10 +42,6 @@ const styles = theme => ({
   },
   input: {
     paddingRight: 20
-  },
-  divider: {
-    width: "100%",
-    margin: "15px 0px",
   }
 });
 
@@ -63,18 +53,17 @@ const afterSubmit = (result, dispatch, history) => {
   history.history.push("/login");
 };
 
-const RegisterForm = ({
+const ResetPasswordForm = ({
   classes,
   handleSubmit,
-  registerUser,
+  resetPassword,
   error,
   invalid,
-  submitting,
-  socialLogin
+  submitting
 }) => {
   return (
     <div>
-      <form size="large" onSubmit={handleSubmit(registerUser)}>
+      <form size="large" onSubmit={handleSubmit(resetPassword)}>
         <div>
           <Grid
             container
@@ -85,18 +74,11 @@ const RegisterForm = ({
             <Grid item xs={3} />
             <Grid item xs={6}>
               <Paper className={classes.paper}>
-                <Typography variant="display1">Register</Typography>
+                <Typography variant="display1">Reset Password</Typography>
+                <Typography variant="subheading">
+                  Please enter your email to reset the password
+                </Typography>
                 <Field name="email" component={renderTextField} label="Email" />
-                <Field
-                  name="password"
-                  label="Password"
-                  component={renderPasswordField}
-                />
-                <Field
-                  name="reEnterPassword"
-                  label="Re-enter Password"
-                  component={renderPasswordField}
-                />
                 <Grid container justify="center">
                   <Button
                     disabled={invalid || submitting}
@@ -108,11 +90,6 @@ const RegisterForm = ({
                     {error && <Typography color="error">{error}</Typography>}
                   </div>
                 </Grid>
-                <div style={{textAlign: "center"}}>
-                  <Divider className={classes.divider} />
-                  <SocialLogin socialLogin={socialLogin} />
-                </div>
-
                 {/* </Grid> */}
               </Paper>
             </Grid>
@@ -130,7 +107,7 @@ export default withStyles(styles)(
     actions
   )(
     reduxForm({ form: "registerForm", onSubmitSuccess: afterSubmit, validate })(
-      RegisterForm
+      ResetPasswordForm
     )
   )
 );

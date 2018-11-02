@@ -7956,6 +7956,27 @@
         "object-visit": "^1.0.0"
       }
     },
+    "material-ui-icons": {
+      "version": "1.0.0-beta.36",
+      "resolved": "https://registry.npmjs.org/material-ui-icons/-/material-ui-icons-1.0.0-beta.36.tgz",
+      "integrity": "sha512-7rS6b2EV5QXCB/gTi/Ac9Wbxd+h9EZv1Td3rLLJe4IER8mVHRgdqZccB3EsjW2DrJ7opdY1+8X3/vyrS7CQNpg==",
+      "requires": {
+        "recompose": "0.26.0"
+      },
+      "dependencies": {
+        "recompose": {
+          "version": "0.26.0",
+          "resolved": "https://registry.npmjs.org/recompose/-/recompose-0.26.0.tgz",
+          "integrity": "sha512-KwOu6ztO0mN5vy3+zDcc45lgnaUoaQse/a5yLVqtzTK13czSWnFGmXbQVmnoMgDkI5POd1EwIKSbjU1V7xdZog==",
+          "requires": {
+            "change-emitter": "0.1.6",
+            "fbjs": "0.8.16",
+            "hoist-non-react-statics": "2.5.5",
+            "symbol-observable": "1.2.0"
+          }
+        }
+      }
+    },
     "math-expression-evaluator": {
       "version": "1.2.17",
       "resolved": "https://registry.npmjs.org/math-expression-evaluator/-/math-expression-evaluator-1.2.17.tgz",
@@ -10536,6 +10557,14 @@
       "integrity": "sha512-4h7EuhDMTzQqZ+02KUUO+AVA7PqhbD88yXB740nFpNDyDS/bj9jiPyn2rwr9sa8oDyaE1ByFN9+t5XPyPTmN6g==",
       "requires": {
         "moment": ">=1.6.0"
+      }
+    },
+    "react-number-format": {
+      "version": "3.6.2",
+      "resolved": "https://registry.npmjs.org/react-number-format/-/react-number-format-3.6.2.tgz",
+      "integrity": "sha512-HsO11fH6WiugtJflrMQn3/Yhq2J4uEWLxrKCQbI1gSGAOwIhUsOGJJeP8Vci/U4A7xK5SjC95ngZU8//Nuz3Gg==",
+      "requires": {
+        "prop-types": "15.6.1"
       }
     },
     "react-onclickoutside": {

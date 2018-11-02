@@ -22,7 +22,7 @@ const styles = theme => ({
   //added styles for root and paper
   root: {
     flexGrow: 1,
-    margin: '12px'
+    margin: "12px"
   },
   paper: {
     paddingTop: 30,
@@ -34,10 +34,10 @@ const styles = theme => ({
     margin: theme.spacing.unit * 2
   },
   title: {
-    fontSize: '36px'
+    fontSize: "36px"
   },
   headerInfo: {
-    fontSize: '18px'
+    fontSize: "18px"
   }
 });
 
@@ -166,7 +166,7 @@ class UserProfile extends Component {
     // console.log("Render Phone Number:" + showPhone);
     // console.log(this.props.match.params.id);
     // only show when auth is loaded
-    if (isLoaded(auth) && this.state.showPhone) {
+    if (isLoaded(auth)) {
       // when user does not log in
       if (!auth.isEmpty) {
         if (auth.uid !== this.props.match.params.id) {
@@ -183,14 +183,15 @@ class UserProfile extends Component {
                   spacing={16}
                 >
                   <Grid item xs={4}>
-                    <h1>User Profile</h1>
-                    <Paper className={classes.paper}>
+                    <h1 style={{textAlign: "center",}}>User Profile</h1>
+                    <Paper className={classes.paper}style={{textAlign: "center",}}>
                       {auth.photoURL && (
                         <img
                           width="200"
                           height="200"
                           src={auth.photoURL}
                           alt=""
+                          style={{borderRadius: "100%"}}
                         />
                       )}
                       {!auth.photoURL && (
@@ -211,13 +212,10 @@ class UserProfile extends Component {
                         Phone: {this.state.showPhone}
                       </Typography>
                       <Typography className={classes.headerInfo}>
-                        Password: ********
-                      </Typography>
-                      <Typography className={classes.headerInfo}>
                         Reward: {this.state.showReward} points
                       </Typography>
                       <Button
-                      component={renderButton}
+                        component={renderButton}
                         onClick={() =>
                           this.setState({
                             updating: true
