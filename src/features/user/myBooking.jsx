@@ -185,9 +185,9 @@ class myBooking extends Component {
     });
   }
 
-  // sort reservations array by its check-in date
+  // sort reservations array by latest check-in date
   sortByCheckinDate = (r1, r2) => {
-    return r1.startDate < r2.endDate;
+    return r2.startDate.toDate().getTime() - r1.startDate.toDate().getTime();
   };
 
   _handleCheckinDate = e => {
@@ -459,6 +459,7 @@ class myBooking extends Component {
         // console.log(res);
         const bookDate = res.bookDate.toDate();
         const startDate = res.startDate.toDate();
+        console.log(startDate);
         const endDate = res.endDate.toDate();
         return (
           <div key={res.reservationId}>
@@ -783,35 +784,22 @@ class myBooking extends Component {
       });
 
     return (
+
       <div>
+        {resList && (<div>
         <h1>MyBooking</h1>
         {resList}
-        {/* <Button
-          onClick={() => {
-            this.handleOpen();
-          }}
-        >
-          Show Modal
-        </Button>
-        <Modal
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-          open={this.state.open}
-          onClose={this.handleClose}
-          style={{paddingTop: 50, zIndex: 1, overflow: "auto", }}
-        >
-          <div style={modalStyle}>
-            {console.log(classes)}
-            <Typography style={textStyle}>Text in a modal</Typography>
-          </div>
-        </Modal>
-        <hr /> */}
+        </div>)}
+        {!resList && (<div>
+        <CircularProgress/>
+        </div>)}
       </div>
+
     );
     // }
     // else
     // {
-    //   return <CircularIndeterminate/>
+    //   return <CircularProgress/>
     // }
   }
 }

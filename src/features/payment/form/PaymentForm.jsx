@@ -180,10 +180,18 @@ const paymentForm = props => {
     const db = firebase.firestore();
     let hID = match.params.hotel_id;
     let numOfNight = datediff(reservation.startDate, reservation.endDate);
-    let totalPrice = hotel.rate * datediff(reservation.startDate, reservation.endDate);
-    // console.log("Reservation Price: ", totalPrice);
+    
+    // subtotal will be rate per night times number of night
+    let subtotal = hotel.rate * datediff(reservation.startDate, reservation.endDate);
+    
+    // service fee and tax
+    const taxRate = .1;
+    const feesRate = .05;
+    const tax = subtotal * taxRate;
+    const fees = subtotal * feesRate;
+    let totalPrice = subtotal + tax + fees;
 
-    addRewards(totalPrice * 10);
+    addRewards(subtotal * 10);
 
     db.collection("reservations").add({
       HID: hID,
@@ -197,9 +205,10 @@ const paymentForm = props => {
       beds: reservation.roomType,
       isCanceled: false,
       refund: 0,
+      subtotal: subtotal,
       totalPrice: totalPrice,
       userId: auth.uid,
-      reward: totalPrice * 10,
+      reward: subtotal * 10,
     })
     // console.log(firebase.firestore());
   }

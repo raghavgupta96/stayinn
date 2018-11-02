@@ -336,6 +336,7 @@ export const socialLogin = (selectedProvider) =>
       // make a user profile data in firesotre if first logs in
       if(user.additionalUserInfo.isNewUser){
         await firestore.set(`users/${user.user.uid}`, {
+          email: user.profile.email,
           displayName: user.profile.displayName,
           photoURL: user.profile.avatarUrl,
           createdAt: firestore.FieldValue.serverTimestamp(),

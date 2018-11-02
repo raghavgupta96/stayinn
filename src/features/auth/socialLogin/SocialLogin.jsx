@@ -80,8 +80,7 @@ const SocialLogin = ({ socialLogin, history, firebase, classes }) => {
       </button>
       <button
         className={classes.googleButton}
-        // will be implemented.......
-        // onClick={() => socialLogin("google")}
+        onClick={() => socialLogin("google")}
       >
         Login with Google
       </button>

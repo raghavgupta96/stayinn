@@ -204,7 +204,7 @@ const LoginForm = ({
                       className={classes.linkHover}
                       style={{ margin: 0, float: "right" }}
                     >
-                      Don't have a account? Sign upex
+                      Don't have a account? Sign up
                     </Typography>
                   </Link>
                   <Grid container justify="center">
