@@ -105,7 +105,7 @@ class myBooking extends Component {
       checkin: null,
       checkout: null,
       noDateConflict: true,
-      disabled: false
+      isMultipleBooking: false
     };
   }
 
@@ -145,7 +145,7 @@ class myBooking extends Component {
 
             docRef.get().then(hotelDoc => {
               if (hotelDoc.exists) {
-                console.log("hotel data", hotelDoc.data());
+                // console.log("hotel data", hotelDoc.data());
                 reservations.push({
                   HID: doc.data().HID,
                   hotelAddress:
@@ -218,7 +218,7 @@ class myBooking extends Component {
     const checkOut = new Date(dateOut[0], dateOut[1], dateOut[2]);
 
     // compare the dates, will return true or false.
-    console.log(checkIn < checkOut);
+    // console.log(checkIn < checkOut);
     return checkIn < checkOut;
   };
 
@@ -226,26 +226,27 @@ class myBooking extends Component {
     return Math.round(Math.random() * 20) - 10;
   }
 
-  // multipleBooking = (startDate, endDate) => {
-  //   let disabled = false;
+  multipleBookingCheck = (startDate, endDate) => {
+    let isMultipleBooking = false;
 
-  //   const startDateObj = new Date(startDate);
-  //   const endDateObj = new Date(endDate);
-  //   for (let reservation in this.state.reservations) {
-  //     console.log("YOOO", this.state.reservations[reservation]);
-  //     if (startDateObj.getTime() <= this.state.reservations[reservation].endDate.getTime()
-  //         && endDateObj.getTime() >= this.state.reservations[reservation].startDate.getTime()
-  //     ) {
-  //       disabled = true;
-  //     }
-  //   }
+    const startDateObj = new Date(startDate);
+    const endDateObj = new Date(endDate);
 
-  //   if(disabled) {
-  //     window.alert('Conflicting reservation dates')
-  //   }
+    // Go through each reservation to check if there is any conflict 
+    for (let reservation in this.state.reservations) {
+      // console.log("YOOO", this.state.reservations[reservation]);
+      if (
+        startDateObj.getTime() <=
+          this.state.reservations[reservation].endDate.toDate().getTime() &&
+        endDateObj.getTime() >=
+          this.state.reservations[reservation].startDate.toDate().getTime()
+      ) {
+        isMultipleBooking = true;
+      }
+    }
 
-  //   this.setState({ disabled });
-  // }
+    this.setState({ isMultipleBooking });
+  };
 
   handleOpen = reservation => {
     this.setState({
@@ -272,10 +273,10 @@ class myBooking extends Component {
   };
 
   datediff = (date1, date2) => {
-    return Math.round((date2-date1)/(1000*60*60*24));
-  }
+    return Math.round((date2 - date1) / (1000 * 60 * 60 * 24));
+  };
 
-  handleEditRes(reservationId) {
+  async handleEditRes(reservationId) {
     const { firebase } = this.props;
     console.log("RESERVATION ID: " + reservationId);
     console.log("CHECKIN: " + this.state.checkin);
@@ -295,56 +296,68 @@ class myBooking extends Component {
       const startDate = new Date(dateIn[0], dateIn[1] - 1, dateIn[2]);
       const endDate = new Date(dateOut[0], dateOut[1] - 1, dateOut[2]);
 
-      //this.multipleBooking(startDate, endDate);
+      // If there is multiple bookings during the same period
+      // Return the function without making update
+      await this.multipleBookingCheck(startDate, endDate);
+      // console.log(this.state.isMultipleBooking);
+      if (this.state.isMultipleBooking) {
+        return;
+      }
 
       let numOfNights = this.datediff(startDate, endDate);
 
-      let adjustedPrice = this.state.currRes.rate * numOfNights ;
-
-
+      let adjustedPrice = this.state.currRes.rate * numOfNights;
 
       firebase.auth().onAuthStateChanged(function(user) {
         if (!user) {
           return;
         }
-        let userRef = firebase.firestore().collection("users").doc(user.uid);
+
+        let userRef = firebase
+          .firestore()
+          .collection("users")
+          .doc(user.uid);
         userRef.get().then(doc => {
-          if(doc.exists) {
+          if (doc.exists) {
             let userRewards = doc.data().reward;
-            let resRef = firebase.firestore().collection("reservations").doc(reservationId);
+            let resRef = firebase
+              .firestore()
+              .collection("reservations")
+              .doc(reservationId);
 
             resRef.get().then(doc2 => {
               let resRewards = doc2.data().reward;
               let finalReward = 0;
               if (userRewards >= resRewards) {
-                finalReward = userRewards - resRewards
+                finalReward = userRewards - resRewards;
               }
 
-              let editResReward = currentRes.rate * numOfNights / 100;
+              let editResReward = (currentRes.rate * numOfNights) / 100;
               finalReward = finalReward + editResReward;
 
               resRef
-              .update({
-                startDate: startDate,
-                endDate: endDate,
-                totalPrice: adjustedPrice,
-                reward: editResReward,
-                numOfNight: numOfNights
-              }).then(function() {
-                  userRef.update({
-                    reward: finalReward
-                  })
-                  .then(function() {
-                    window.location.reload();
-                  })
-                  .catch(function(error) {
-                    console.log(error);
-                  });
-              })
-            })
-            
+                .update({
+                  startDate: startDate,
+                  endDate: endDate,
+                  totalPrice: adjustedPrice,
+                  reward: editResReward,
+                  numOfNight: numOfNights
+                })
+                .then(function() {
+                  userRef
+                    .update({
+                      reward: finalReward
+                    })
+                    .then(function() {
+                      window.location.reload();
+                    })
+                    .catch(function(error) {
+                      console.log(error);
+                    });
+                });
+            });
           }
-        })
+        });
       });
     } else {
       this.setState({
@@ -372,27 +385,35 @@ class myBooking extends Component {
           refund: refund
         })
         .then(function() {
-          let userRef = firebase.firestore().collection("users").doc(user.uid);
+          let userRef = firebase
+            .firestore()
+            .collection("users")
+            .doc(user.uid);
           userRef.get().then(doc => {
-            if(doc.exists) {
+            if (doc.exists) {
               let userRewards = doc.data().reward;
-              
-              let resRef = firebase.firestore().collection("reservations").doc(reservationId);
+
+              let resRef = firebase
+                .firestore()
+                .collection("reservations")
+                .doc(reservationId);
               resRef.get().then(doc2 => {
                 let resRewards = doc2.data().reward;
 
                 let finalReward = 0;
                 if (userRewards >= resRewards) {
-                  finalReward = userRewards - resRewards
+                  finalReward = userRewards - resRewards;
                 }
-                userRef.update({
-                  reward: finalReward
-                }).then(function (){
-                  window.location.reload();
-                })
-              })
+                userRef
+                  .update({
+                    reward: finalReward
+                  })
+                  .then(function() {
+                    window.location.reload();
+                  });
+              });
             }
-          })
+          });
         })
         .catch(function(error) {
           console.log(error);
@@ -424,9 +445,10 @@ class myBooking extends Component {
     // make a list that contains all reservations user made
     const { auth, classes, error } = this.props;
     const noDateConflict = this.state.noDateConflict;
+    const isMultipleBooking = this.state.isMultipleBooking;
     // console.log(this.props);
     // var thisRes = null;
-    console.log(this.state.reservations);
+    // console.log(this.state.reservations);
     // if (this.state.reservations) {
     // sorting checkin date and map the reservations to show
     const resList =
@@ -434,7 +456,7 @@ class myBooking extends Component {
       this.state.reservations.sort(this.sortByCheckinDate) &&
       this.state.reservations.map(res => {
         // convert timestamps to date objects first
-        console.log(res);
+        // console.log(res);
         const bookDate = res.bookDate.toDate();
         const startDate = res.startDate.toDate();
         const endDate = res.endDate.toDate();
@@ -700,6 +722,11 @@ class myBooking extends Component {
                           {!noDateConflict && (
                             <Typography color="error">
                               The checkin date must be before the checkout date.
+                            </Typography>
+                          )}
+                          {isMultipleBooking && (
+                            <Typography color="error">
+                              You have conflicting reservation date
                             </Typography>
                           )}
                         </div>
