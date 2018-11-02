@@ -295,7 +295,7 @@ class myBooking extends Component {
     }
   }
 
-  handleCancel(reservationId) {
+  handleCancel(reservationId, refund) {
     // console.log(index);
     // console.log("You click:" + this.state.reservations[index].reservationId);
     const { firebase } = this.props;
@@ -310,10 +310,31 @@ class myBooking extends Component {
         .collection("reservations")
         .doc(reservationId)
         .update({
-          isCanceled: true
+          isCanceled: true,
+          refund: refund
         })
         .then(function() {
-          window.location.reload();
+          let userRef = firebase.firestore().collection("users").doc(user.uid);
+          userRef.get().then(doc => {
+            if(doc.exists) {
+              let userRewards = doc.data().reward;
+              
+              let resRef = firebase.firestore().collection("reservations").doc(reservationId);
+              resRef.get().then(doc2 => {
+                let resRewards = doc2.data().reward;
+
+                let finalReward = 0;
+                if (userRewards >= resRewards) {
+                  finalReward = userRewards - resRewards
+                }
+                userRef.update({
+                  reward: finalReward
+                }).then(function (){
+                  window.location.reload();
+                })
+              })
+            }
+          })
         })
         .catch(function(error) {
           console.log(error);
@@ -535,7 +556,8 @@ class myBooking extends Component {
                           onClick={() => {
                             this.state.currRes &&
                               this.handleCancel(
-                                this.state.currRes.reservationId
+                                this.state.currRes.reservationId,
+                                this.state.currRes.totalPrice * 0.9
                               );
                           }}
                         >
