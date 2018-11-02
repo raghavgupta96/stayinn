@@ -117,12 +117,30 @@ class filterBox extends Component {
   }
 
   _handleMinChange = e => {
-    this.setState({ minPrice: e.target.value });
-    this.props.setMinPrice(e.target.value);
+    const minPrice = e.target.value;
+    // Check if valid
+    if (minPrice > this.state.maxPrice) {
+      window.alert('MinPrice must be less than MaxPrice');
+      this.setState({ minPrice: 0, maxPrice: 0 });
+      this.props.setMinPrice(0);
+    }
+    else {
+      this.setState({ minPrice });
+      this.props.setMinPrice(minPrice);
+    }
   }
   _handleMaxChange = e => {
-    this.setState({ maxPrice: e.target.value });
-    this.props.setMaxPrice(e.target.value);
+    const maxPrice = e.target.value;
+    // Check if valid
+    if (maxPrice < this.state.minPrice) {
+      window.alert('MaxPrice must be greater than MinPrice');
+      this.setState({ minPrice: 0, maxPrice: 0 });
+      this.props.setMaxPrice(0);
+    }
+    else {
+      this.setState({ maxPrice });
+      this.props.setMaxPrice(maxPrice);
+    }
   }
 
 
@@ -188,8 +206,9 @@ class filterBox extends Component {
             <Grid xs={5}>
               <FormControl className={classes.budgetRange1}>
                 <Input
-                  value={this.state.amount}
+                  value={this.state.minPrice}
                   onChange= {this._handleMinChange}
+                  type="number"
                   startAdornment={
                     <InputAdornment position="start">$</InputAdornment>
                   }
@@ -202,8 +221,9 @@ class filterBox extends Component {
             <Grid xs={5}>
               <FormControl className={classes.budgetRange2}>
                 <Input
-                  value={this.state.amount}
+                  value={this.state.maxPrice}
                   onChange= {this._handleMaxChange}
+                  type="number"
                   startAdornment={
                     <InputAdornment position="start">$</InputAdornment>
                   }
