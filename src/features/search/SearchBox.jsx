@@ -11,7 +11,7 @@ import SearchResult from "./SearchResult";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import firebase from "../../app/config/firebase";
-import FilterBox from "./filterBox";
+import FilterBox from "./filter/filterBox";
 import { connect } from "react-redux";
 import Rewards from "./RewardsBox";
 import Info from "./Info";
