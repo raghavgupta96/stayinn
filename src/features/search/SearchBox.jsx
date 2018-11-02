@@ -7,11 +7,11 @@ import SearchIcon from "@material-ui/icons/Search";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
-import SearchResult from "./SearchResult";
+import SearchResult from "./result/SearchResult";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import firebase from "../../app/config/firebase";
-import FilterBox from "./filterBox";
+import FilterBox from "./filter/filterBox";
 import { connect } from "react-redux";
 import Rewards from "./RewardsBox";
 import Info from "./Info";
@@ -19,6 +19,7 @@ import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
 import { DateRangePicker } from "react-dates";
 import bg from "./bg.jpg";
+import moment from 'moment'
 import { toastr } from 'react-redux-toastr'
 
 
@@ -113,12 +114,12 @@ class SearchBox extends Component {
       place: null,
       NumOfRooms: 1,
       hotels: [],
-      startDate: null,
-      endDate: null,
       focusedInput: null,
       userReservations: [ ],
       disabled: false,
       reward: null,
+      startDate: moment(), // set your initial start date here
+      endDate: moment().add(1, 'days'), // set your initial end date here
     };
   }
 
@@ -126,6 +127,8 @@ class SearchBox extends Component {
   componentDidMount() {
     const startDateOj = new Date(this.state.startDate);
     const endDateOj = new Date(this.state.endDate);
+    this.props.setStartDate(startDateOj);
+    this.props.setEndDate(endDateOj);
 
     //convert the date object to string format yyyy-mm-dd
     //because hotels would not let me push a date object into to hotels array
@@ -179,7 +182,6 @@ class SearchBox extends Component {
             maxCap: doc.data().maxBeds,
             startDate: sDate,
             endDate: eDate,
-            roomType: this.props.reservation.roomType,
             rooms: this.props.reservation.rooms,
             gym: doc.data().gym,
             bar: doc.data().bar,
@@ -189,6 +191,8 @@ class SearchBox extends Component {
 
         this.setState({ hotels });
       });
+
+      // this._updateButtonDisable(this.state.startDate, this.state.endDate)====
 
       // Get users reservation dates if logged in
       if (this.props.auth.uid) {
@@ -234,22 +238,6 @@ class SearchBox extends Component {
     return d;
   };
 
-  //----these code for material ui calendar. app has shift to airbnb calendar on 10/25/2018
-  // _handleCheckinDate = e => {
-  //   //convert the iso data "2018-05-15" string to data object
-  //   const date = this.stringToDate(e.target.value);
-  //   //set the store state
-  //   this.props.setStartDate(date);
-  // };
-
-  // _handleCheckoutDate = e => {
-  //   // convert the checkout date string to date object
-  //   const date = this.stringToDate(e.target.value);
-  //   // console.log(this.state.checkoutDate);
-  //   //set the store state
-  //   this.props.setEndDate(date);
-  // };
-
   _handleRoomSizeChange = e => {
     this.props.setRoomType(e.target.value);
     this.setState({ roomSize: e.target.value });
@@ -282,11 +270,6 @@ class SearchBox extends Component {
     const eMonth = edate.getMonth() + 1;
     const eDay = edate.getDate();
     const eDate = eYear + "-" + eMonth + "-" + eDay;
-
-    console.log(
-      "Start date in redux store: " + this.props.reservation.startDate
-    );
-    console.log("End date in redux store: " + this.props.reservation.endDate);
 
     //---------------------Searching-----------------------------
     // filtering the hotel with "CityName_RoomCap"
@@ -449,13 +432,11 @@ class SearchBox extends Component {
             hotels.sort(this.down);
           }
 
-          console.log("the minPrice: -------" + this.props.filter.minPrice)
           //filter in the hotel by the roomsize and corresponding price, greater than Min price
           if(this.props.filter.minPrice !== "") {
             hotels = hotels.filter(v => v.price >= this.props.filter.minPrice);
           }
 
-          console.log("the maxPrice: -------" + this.props.filter.maxPrice)
           //filter in the hotel by the roomsize and corresponding price, greater than Max price
           if(this.props.filter.maxPrice !== "") {
               hotels = hotels.filter(v => v.price <= this.props.filter.maxPrice);
@@ -572,34 +553,6 @@ class SearchBox extends Component {
                     componentRestrictions={{ country: "us" }}
                   />
                 </Grid>
-                {/* <Grid item xs={6} md={2} lg={1}>
-                <form className={classes.dateContainer} noValidate>
-                  <TextField
-                    id="date"
-                    label="Checkin Date"
-                    type="date"
-                    value={this.state.checkinDate}
-                    InputLabelProps={{
-                      shrink: true
-                    }}
-                    onChange={this._handleCheckinDate}
-                  />
-                </form>
-              </Grid>
-              <Grid item xs={6} md={2} lg={1}>
-                <form className={classes.dateContainer} noValidate>
-                  <TextField
-                    id="date"
-                    label="Checkout Date"
-                    type="date"
-                    value={this.state.checkoutDate}
-                    InputLabelProps={{
-                      shrink: true
-                    }}
-                    onChange={this._handleCheckoutDate}
-                  />
-                </form>
-              </Grid> */}
                 <Grid item xs={12} md={12} lg={4}>
                   <DateRangePicker
                     startDateId="startDate"
