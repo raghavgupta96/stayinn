@@ -126,6 +126,8 @@ class SearchBox extends Component {
   componentDidMount() {
     const startDateOj = new Date(this.state.startDate);
     const endDateOj = new Date(this.state.endDate);
+    this.props.setStartDate(startDateOj);
+    this.props.setEndDate(endDateOj);
 
     //convert the date object to string format yyyy-mm-dd
     //because hotels would not let me push a date object into to hotels array
@@ -429,13 +431,11 @@ class SearchBox extends Component {
             hotels.sort(this.down);
           }
 
-          console.log("the minPrice: -------" + this.props.filter.minPrice)
           //filter in the hotel by the roomsize and corresponding price, greater than Min price
           if(this.props.filter.minPrice !== "") {
             hotels = hotels.filter(v => v.price >= this.props.filter.minPrice);
           }
 
-          console.log("the maxPrice: -------" + this.props.filter.maxPrice)
           //filter in the hotel by the roomsize and corresponding price, greater than Max price
           if(this.props.filter.maxPrice !== "") {
               hotels = hotels.filter(v => v.price <= this.props.filter.maxPrice);
