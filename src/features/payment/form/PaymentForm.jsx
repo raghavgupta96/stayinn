@@ -137,6 +137,25 @@ for (let i = expiryYearSelectStart; i <= expiryYearSelectEnd; i++) {
 //
 // End init MenuItems
 
+const addRewards = (rewardPoints) => {
+  const db = firebase.firestore();
+  const currentUser = firebase.auth().currentUser;
+  console.log("REWARDS: " , rewardPoints)
+  let docRef = firebase.firestore().collection("users").doc(currentUser.uid);
+
+  docRef.get().then(doc => {
+    let reward = doc.data().reward;
+    console.log("User REWARDS: ", reward)
+    console.log("New Rewards: ", reward + rewardPoints);
+    if (doc.exists) {
+      db.collection("users").doc(currentUser.uid).update({
+        reward: reward + rewardPoints
+      })
+    }
+  })
+
+}
+
 const paymentForm = props => {
   const {
     traveler,
@@ -163,6 +182,8 @@ const paymentForm = props => {
     let numOfNight = datediff(reservation.startDate, reservation.endDate);
     let totalPrice = hotel.rate * datediff(reservation.startDate, reservation.endDate);
     // console.log("Reservation Price: ", totalPrice);
+
+    addRewards(totalPrice * 10);
 
     db.collection("reservations").add({
       HID: hID,
