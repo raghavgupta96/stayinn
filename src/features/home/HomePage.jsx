@@ -30,6 +30,7 @@ const styles = theme => ({
     backgroundPosition: "top",
     position: "fix",
     top: "0",
+    marginTop: "-64px"
   },
   mainpaper: {
     padding: "10px",

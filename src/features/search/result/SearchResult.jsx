@@ -41,7 +41,7 @@ const styles = theme => ({
     marginLeft: "10px"
   },
   searchButton: {
-    backgroundColor: "#409BE6",
+    backgroundColor: "primary",
     height: "47px",
     color: "#ffffff",
     marginLeft: "15px",
