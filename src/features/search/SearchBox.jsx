@@ -14,14 +14,12 @@ import firebase from "../../app/config/firebase";
 import FilterBox from "./filter/filterBox";
 import { connect } from "react-redux";
 import Rewards from "./RewardsBox";
-import Info from "./Info";
 import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
 import { DateRangePicker } from "react-dates";
 import bg from "./bg.jpg";
-import moment from 'moment'
-import { toastr } from 'react-redux-toastr'
-
+import moment from "moment";
+import { toastr } from "react-redux-toastr";
 
 const styles = theme => ({
   root: {
@@ -35,8 +33,7 @@ const styles = theme => ({
     overflow: "hidden",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
-    width: "100%",
-    
+    width: "100%"
   },
   mainpaper: {
     padding: "10px",
@@ -89,6 +86,14 @@ const styles = theme => ({
     marginBottom: "15px",
     minWidth: "30px"
   },
+  applyButton: {
+    backgroundColor: "primary",
+    height: "40px",
+    color: "#ffffff",
+    marginRight: "10px",
+    width: "96%",
+    minWidth: "30px"
+  },
   searchButtonWrapper: {
     flexWrap: "wrap",
     display: "flex"
@@ -98,9 +103,7 @@ const styles = theme => ({
     paddingRight: "5px",
     paddingLeft: "15px"
   },
-  rewardsBox: {
-    marginTop: "15px"
-  }
+  rewardsBox: {}
 });
 
 class SearchBox extends Component {
@@ -113,11 +116,11 @@ class SearchBox extends Component {
       rooms: 1,
       hotels: [],
       focusedInput: null,
-      userReservations: [ ],
+      userReservations: [],
       disabled: false,
       reward: null,
       startDate: moment(), // set your initial start date here
-      endDate: moment().add(1, 'days'), // set your initial end date here
+      endDate: moment().add(1, "days") // set your initial end date here
     };
   }
 
@@ -329,44 +332,44 @@ class SearchBox extends Component {
                 doc.data().zip,
               gym: doc.data().gym,
               bar: doc.data().bar,
-              swimmingPool: doc.data().swimmingPool,
+              swimmingPool: doc.data().swimmingPool
             });
           });
 
           // filtering from the hotles object
           // var filteredResult = hotels;
-          if(this.props.filter.hotelType === 'hotel'){
-            hotels = hotels.filter(v => v.type === 'hotel');
+          if (this.props.filter.hotelType === "hotel") {
+            hotels = hotels.filter(v => v.type === "hotel");
           }
-          if(this.props.filter.hotelType === 'motel'){
-            hotels = hotels.filter(v => v.type === 'motel');
+          if (this.props.filter.hotelType === "motel") {
+            hotels = hotels.filter(v => v.type === "motel");
           }
-          if(this.props.filter.gymChecked === true) {
+          if (this.props.filter.gymChecked === true) {
             hotels = hotels.filter(v => v.gym === true);
           }
-          if(this.props.filter.barChecked === true) {
+          if (this.props.filter.barChecked === true) {
             hotels = hotels.filter(v => v.bar === true);
           }
-          if(this.props.filter.swimmingPoolChecked === true) {
+          if (this.props.filter.swimmingPoolChecked === true) {
             hotels = hotels.filter(v => v.swimmingPool === true);
           }
-          if(this.props.filter.sortOrder === "up") {
+          if (this.props.filter.sortOrder === "up") {
             hotels.sort(this.up);
           }
-          if(this.props.filter.sortOrder === "down") {
+          if (this.props.filter.sortOrder === "down") {
             hotels.sort(this.down);
           }
 
-          console.log("the minPrice: -------" + this.props.filter.minPrice)
+          console.log("the minPrice: -------" + this.props.filter.minPrice);
           //filter in the hotel by the roomsize and corresponding price, greater than Min price
-          if(this.props.filter.minPrice !== "") {
+          if (this.props.filter.minPrice !== "") {
             hotels = hotels.filter(v => v.price >= this.props.filter.minPrice);
           }
 
-          console.log("the maxPrice: -------" + this.props.filter.maxPrice)
+          console.log("the maxPrice: -------" + this.props.filter.maxPrice);
           //filter in the hotel by the roomsize and corresponding price, greater than Max price
-          if(this.props.filter.maxPrice !== "") {
-              hotels = hotels.filter(v => v.price <= this.props.filter.maxPrice);
+          if (this.props.filter.maxPrice !== "") {
+            hotels = hotels.filter(v => v.price <= this.props.filter.maxPrice);
           }
           this.setState({ hotels });
         });
@@ -403,42 +406,42 @@ class SearchBox extends Component {
                 doc.data().zip,
               gym: doc.data().gym,
               bar: doc.data().bar,
-              swimmingPool: doc.data().swimmingPool,
+              swimmingPool: doc.data().swimmingPool
             });
           });
 
           // filtering from the hotles object
           // var filteredResult = hotels;
-          if(this.props.filter.hotelType === 'hotel'){
-            hotels = hotels.filter(v => v.type === 'hotel');
+          if (this.props.filter.hotelType === "hotel") {
+            hotels = hotels.filter(v => v.type === "hotel");
           }
-          if(this.props.filter.hotelType === 'motel'){
-            hotels = hotels.filter(v => v.type === 'motel');
+          if (this.props.filter.hotelType === "motel") {
+            hotels = hotels.filter(v => v.type === "motel");
           }
-          if(this.props.filter.gymChecked === true) {
+          if (this.props.filter.gymChecked === true) {
             hotels = hotels.filter(v => v.gym === true);
           }
-          if(this.props.filter.barChecked === true) {
+          if (this.props.filter.barChecked === true) {
             hotels = hotels.filter(v => v.bar === true);
           }
-          if(this.props.filter.swimmingPoolChecked === true) {
+          if (this.props.filter.swimmingPoolChecked === true) {
             hotels = hotels.filter(v => v.swimmingPool === true);
           }
-          if(this.props.filter.sortOrder === "up") {
+          if (this.props.filter.sortOrder === "up") {
             hotels.sort(this.up);
           }
-          if(this.props.filter.sortOrder === "down") {
+          if (this.props.filter.sortOrder === "down") {
             hotels.sort(this.down);
           }
 
           //filter in the hotel by the roomsize and corresponding price, greater than Min price
-          if(this.props.filter.minPrice !== "") {
+          if (this.props.filter.minPrice !== "") {
             hotels = hotels.filter(v => v.price >= this.props.filter.minPrice);
           }
 
           //filter in the hotel by the roomsize and corresponding price, greater than Max price
-          if(this.props.filter.maxPrice !== "") {
-              hotels = hotels.filter(v => v.price <= this.props.filter.maxPrice);
+          if (this.props.filter.maxPrice !== "") {
+            hotels = hotels.filter(v => v.price <= this.props.filter.maxPrice);
           }
 
           this.setState({ hotels });
@@ -448,11 +451,11 @@ class SearchBox extends Component {
 
   up = (x, y) => {
     return x.price - y.price;
-  }
+  };
 
   down = (y, x) => {
     return x.price - y.price;
-  }
+  };
 
   _handleNumOfRoomsChange = e => {
     this.setState({ rooms: e.target.value });
@@ -467,8 +470,11 @@ class SearchBox extends Component {
 
     let disabled = false;
     for (let reservation in userReservations) {
-      if (startDateObj.getTime() <= userReservations[reservation].endDate.getTime()
-          && endDateObj.getTime() >= userReservations[reservation].startDate.getTime()
+      if (
+        startDateObj.getTime() <=
+          userReservations[reservation].endDate.getTime() &&
+        endDateObj.getTime() >=
+          userReservations[reservation].startDate.getTime()
       ) {
         disabled = true;
       }
@@ -477,11 +483,11 @@ class SearchBox extends Component {
     // toastr gets called
     if (disabled) {
       // toastr.warning('Conflicting Book Dates', 'Cannot book multiple hotels during the same time period.');
-      window.alert('Conflicting reservation dates');
+      window.alert("Conflicting reservation dates");
     }
 
     this.setState({ disabled });
-  }
+  };
 
   render() {
     const { classes } = this.props;
@@ -559,6 +565,9 @@ class SearchBox extends Component {
                     onFocusChange={focusedInput => {
                       this.setState({ focusedInput });
                     }}
+                    style={{
+                      zIndex: "999"
+                    }}
                   />
                 </Grid>
                 <Grid
@@ -582,34 +591,33 @@ class SearchBox extends Component {
           </Grid>
           <Grid item xs={2} md={2} lg={2} />
         </Grid>
-        <Grid container className={classes.root} xs={12} md={12} lg={12}>
-          <Grid item xs={1} md={1} lg={1} />
-          <Grid item xs={2} md={2} lg={2}>
-            <Grid xs={12} md={12} lg={12}>
-              <FilterBox />
-              <Button
-                    variant="contained"
-                    onClick={this.submit}
-                    className={classes.filterButton}
-                    color="primary"
-                  > apply
 
+        <Grid item xs={1} md={1} lg={1} />
+        <Grid item xs={2} md={2} lg={2}>
+          <Grid xs={12} md={12} lg={12}>
+            <FilterBox />
+            <Button
+              variant="contained"
+              onClick={this.submit}
+              className={classes.applyButton}
+              color="primary"
+            >
+              {" "}
+              apply
             </Button>
-            </Grid>
-            <Grid xs={12} md={12} lg={12} className={classes.rewardsBox}>
-              <Rewards reward={this.state.reward}/>
-            </Grid>
-            <Grid xs={12} md={12} lg={12} className={classes.rewardsBox}>
-              <Info />
-            </Grid>
           </Grid>
-          <Grid item xs={9} md={9} lg={8}>
-            <SearchResult disabled={this.state.disabled} hotels={this.state.hotels} style={{
-            zIndex: "0"
-            }}/>
+          <Grid xs={12} md={12} lg={12} className={classes.rewardsBox}>
+            <Rewards reward={this.state.reward} />
           </Grid>
-          <Grid item xs={1} md={1} lg={1} />
         </Grid>
+        <Grid item xs={9} md={9} lg={8}>
+          <SearchResult
+            disabled={this.state.disabled}
+            hotels={this.state.hotels}
+            x
+          />
+        </Grid>
+        <Grid item xs={1} md={1} lg={1} />
       </Grid>
     );
   }
