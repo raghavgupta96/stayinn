@@ -5,22 +5,33 @@ import Paper from "@material-ui/core/Paper";
 import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import Divider from "@material-ui/core/Divider";
 import StarRatings from 'react-star-ratings';
 
 const styles = theme => ({
   root: {
     flexGrow: 1
   },
+  divider: {
+    width: "90%",
+    marginTop: "10px",
+    marginLeft: "10px",
+  },
   mainpaper: {
     width: "100%",
-    marginBottom: "10px"
+    marginBottom: "10px",
   },
   stars: {
     paddingLeft: "10px"
   },
+  hotelDetails: {
+    marginTop: "10px",
+    marginBottom: "10px",
+    paddingLeft: "10px",
+  },
   hotelTitle: {
     fontFamily: "Times",
-    fontSize: "30px",
+    fontSize: "32px",
     display: "inline",
     marginLeft: "10px"
   },
@@ -40,10 +51,12 @@ const styles = theme => ({
     minWidth: "30px"
   },
   photo: {
-    width: "100%"
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
   },
   photoContainer: {
-    marginTop: "5px"
+    marginTop: "0px"
   },
   hotelInfo: {
     marginTop: "10px",
@@ -67,13 +80,14 @@ const SearchResult = ({ hotels, classes, disabled }) => {
           <Grid item xs={11} md={11} lg={11}>
             <Paper className={classes.mainpaper}>
               <Grid container key={hotel.id}>
-                <Grid container xs={7} md={7} lg={7}>
-                  <Grid item xs>
+                <Grid container xs={7} md={7} lg={7} className={classes.hotelDetails}>
+                  <Grid item xs >
                     <Grid xs={12} md={12} lg={12} container>
-                      <Grid
+                      <Grid item
                         xs={8}
                         md={8}
                         lg={8}
+                        
                         style={{
                           paddingTop: "10px"
                         }}
@@ -93,7 +107,7 @@ const SearchResult = ({ hotels, classes, disabled }) => {
                           </Typography>
                         </Link>
                       </Grid>
-                      <Grid xs={3} md={3} lg={3} item className={classes.price}>
+                      <Grid xs={2} md={2} lg={2} item className={classes.price}>
                         <Typography variant="subtitle1">
                           ${hotel.price}
                           <div style={{ fontSize: "15px", color:"gray" }}>
@@ -103,9 +117,9 @@ const SearchResult = ({ hotels, classes, disabled }) => {
                       </Grid>
                       <Grid
                         item
-                        xs={10}
-                        md={10}
-                        lg={10}
+                        xs={12}
+                        md={12}
+                        lg={12}
                         className={classes.stars}
                       >
                         <StarRatings
@@ -118,6 +132,7 @@ const SearchResult = ({ hotels, classes, disabled }) => {
                         />
                       </Grid>
                     </Grid>
+                    <Divider className={classes.divider}/>
                     <Grid
                       item
                       xs={8}
@@ -125,17 +140,27 @@ const SearchResult = ({ hotels, classes, disabled }) => {
                       lg={8}
                       className={classes.hotelInfo}
                     >
-                      <p>Available facility:</p>
-                      <span style={{ fontSize: "15px", color:"blue" }}>
+                      <p>Facilities:</p>
+                      <span style={{ fontSize: "15px", color:"gray" }}>
                         {hotel.gym && <span>Gym,  </span>}
                         {hotel.bar && <span>Bar,  </span>}
                         {hotel.swimmingPool && <span>Swimming Pool</span>}
-                        {!hotel.bar && !hotel.gym && !hotel.swimmingPool && <span>None.</span>}
+                        {!hotel.bar && !hotel.gym && !hotel.swimmingPool && <span>None</span>}
 
                       </span>
+                    </Grid>
+                    <Divider className={classes.divider}/>
+                    <Grid
+                      item
+                      xs={8}
+                      md={8}
+                      lg={8}
+                      className={classes.hotelInfo}
+                    >
                       <p>Address:</p>
                       <p style={{ fontSize: "15px", color:"gray" }}>{hotel.address}</p>
                     </Grid>
+                    
                   </Grid>
                   <Grid
                     item
