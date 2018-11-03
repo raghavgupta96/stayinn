@@ -151,12 +151,12 @@ const SearchResult = ({ hotels, classes, disabled }) => {
                         <Link
                           to={{
                             pathname: "/payment/" + hotel.hID,
-                            state: {
-                              startDate: hotel.startDate,
-                              endDate: hotel.endDate,
-                              roomType: hotel.roomType,
-                              rooms: hotel.rooms
-                            }
+                            // state: {
+                            //   startDate: hotel.startDate,
+                            //   endDate: hotel.endDate,
+                            //   roomType: hotel.roomType,
+                            //   rooms: hotel.rooms
+                            // }
                           }}
                           style={{
                             color: "#ffffff",

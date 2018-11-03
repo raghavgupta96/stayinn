@@ -29,7 +29,7 @@ const styles = theme => ({
   },
   secondaryContainer: {
     // Make into 100%
-    height: "200px",
+    height: "500px",
     backgroundImage: `url(${bg})`,
     backgroundSize: "cover",
     overflow: "hidden",
@@ -129,65 +129,104 @@ class SearchBox extends Component {
 
   //initially mount all the hotels info into the hotel list into state
   componentDidMount() {
-    const startDateOj = new Date(this.state.startDate);
-    const endDateOj = new Date(this.state.endDate);
-    this.props.setStartDate(startDateOj);
-    this.props.setEndDate(endDateOj);
 
     //convert the date object to string format yyyy-mm-dd
     //because hotels would not let me push a date object into to hotels array
     //startDate string
-    const sDate = this.dateToString(startDateOj);
-    //endDate string
-    // const edate = endDateOj;
-    // const eYear = edate.getFullYear();
-    // const eMonth = edate.getMonth() + 1;
-    // const eDay = edate.getDate();
-    const eDate = this.dateToString(endDateOj);
+    if(this.props.reservation.startDate !==null){
+      //update the local state
+      const sDateMonmet = moment(this.props.reservation.startDate);
+      this.setState({startDate: sDateMonmet});
+    }
+    if(this.props.reservation.endDate !==null){
+      const eDateMoment = moment(this.props.reservation.endDate);
+      this.setState({endDate: eDateMoment});
+    }
+    this.setState({ rooms : this.props.reservation.rooms });
+
 
     const db = firebase.firestore();
 
-    //uery the hotel data from firestore
-    const numrooms = this.state.rooms;
-    db.collection("testingHotels")
-      .get()
-      .then(collection => {
-        var hotels = [];
-        // console.log("hotels -----" + hotels);
+    // if the home page pass the place to search page
+    if (this.props.reservation.place !== null){
+      this.setState({place: this.props.reservation.place});
 
-        //map all the needed hotel information to the state
-        collection.forEach(doc => {
-          // doc.data() is never undefined for query doc snapshots
-          //-----testing-----
-          // console.log(doc.id, " => ", doc.data());
-          hotels.push({
-            name: doc.data().name,
-            hID: doc.id,
-            room_cap: doc.data().maxBeds,
-            photoUrl: doc.data().photoURL,
-            type: doc.data().type,
-            price: doc.data().price,
-            rating: doc.data().rating,
-            address:
-              doc.data().street +
-              ", " +
-              doc.data().city +
-              ", " +
-              doc.data().state +
-              ", " +
-              doc.data().zip,
-            maxCap: doc.data().maxBeds,
-            startDate: sDate,
-            endDate: eDate,
-            rooms: numrooms,
-            gym: doc.data().gym,
-            bar: doc.data().bar,
-            swimmingPool: doc.data().swimmingPool,
+      const searchKey = this.props.reservation.place.name;
+
+      db.collection("testingHotels")
+        .where("city", "==", searchKey)
+        .get()
+        .then(collection => {
+          var hotels = [];
+          // console.log("hotels ----->" + hotels);
+          //map all the needed hotel information to the state
+          collection.forEach(doc => {
+            // doc.data() is never undefined for query doc snapshots
+            //-----testing-----
+            // console.log(doc.id, " => ", doc.data());
+
+            hotels.push({
+              name: doc.data().name,
+              hID: doc.id,
+              room_cap: doc.data().maxBeds,
+              photoUrl: doc.data().photoURL,
+              type: doc.data().type,
+              price: doc.data().price,
+              rating: doc.data().rating,
+              address:
+                doc.data().street +
+                ", " +
+                doc.data().city +
+                ", " +
+                doc.data().state +
+                ", " +
+                doc.data().zip,
+              gym: doc.data().gym,
+              bar: doc.data().bar,
+              swimmingPool: doc.data().swimmingPool,
+            });
           });
-        });
 
-        this.setState({ hotels });
-      });
+          this.setState({ hotels });
+        });
+      }else{
+        //uery the hotel data from firestore
+        db.collection("testingHotels")
+          .get()
+          .then(collection => {
+            var hotels = [];
+            // console.log("hotels -----" + hotels);
+
+            //map all the needed hotel information to the state
+            collection.forEach(doc => {
+              // doc.data() is never undefined for query doc snapshots
+              //-----testing-----
+              // console.log(doc.id, " => ", doc.data());
+              hotels.push({
+                name: doc.data().name,
+                hID: doc.id,
+                room_cap: doc.data().maxBeds,
+                photoUrl: doc.data().photoURL,
+                type: doc.data().type,
+                price: doc.data().price,
+                rating: doc.data().rating,
+                address:
+                  doc.data().street +
+                  ", " +
+                  doc.data().city +
+                  ", " +
+                  doc.data().state +
+                  ", " +
+                  doc.data().zip,
+                gym: doc.data().gym,
+                bar: doc.data().bar,
+                swimmingPool: doc.data().swimmingPool,
+              });
+            });
+
+            this.setState({ hotels });
+          });
+        }
 
       this.checkReservationConflicts();
   }
@@ -196,9 +235,7 @@ class SearchBox extends Component {
     const db = firebase.firestore();
 
       // Get users reservation dates if logged in
-      console.log(this.props.auth.uid);
       if (this.props.auth.uid) {
-        console.log('[190]');
         const reservationsQuery = db.collection("reservations")
           .where('userId', '==', this.props.auth.uid)
           .where('isCanceled', '==', false);
@@ -206,7 +243,6 @@ class SearchBox extends Component {
         reservationsQuery.get()
           .then(collection => {
             //get all reservation for booking conflict check
-            console.log('[198]');
             const userReservations = [];
 
             collection.forEach(doc => {
@@ -214,8 +250,6 @@ class SearchBox extends Component {
               userReservations.push({ startDate: startDate.toDate(), endDate: endDate.toDate() });
             })
             this.setState({ userReservations });
-            console.log("____>>>>>>>" + userReservations)
-            //Jun is working on it
             this._updateButtonDisable({ startDate: this.state.startDate, endDate: this.state.endDate})
           })
 
@@ -237,7 +271,7 @@ class SearchBox extends Component {
     }
 
   //convert the ISO format data "2018-10-15" string to data object
-  stringToDate = date => {
+  stringToDate = (date) => {
     var year = date.substring(0, 4);
     var month = date.substring(5, 7);
     var day = date.substring(8, 10);
@@ -245,7 +279,7 @@ class SearchBox extends Component {
     return d;
   };
 
-  dateToString = date => {
+  dateToString = (date) => {
     const temp = date;
     const year = temp.getFullYear();
     const month = temp.getMonth() + 1;
@@ -253,49 +287,22 @@ class SearchBox extends Component {
     return year + "-" + month + "-" + day;
   }
 
-  _handleNumOfRoomsChange = e => {
-    this.setState({ rooms: e.target.value });
-    this.props.setRooms(e.target.value);
-    console.log('_________>' + e.target.value);
-  };
-
     //--------------------- Search button -----------------------------
   submit = () => {
     //do functional here
-    const startDateOj = new Date(this.state.startDate);
-    const endDateOj = new Date(this.state.endDate);
-    this.props.setStartDate(startDateOj);
-    this.props.setEndDate(endDateOj);
-
-    //convert the date object to string format yyyy-mm-dd
-    //because hotels would not let me push a date object into to hotels array
-    //startDate string
-    const date = startDateOj;
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const sDate = year + "-" + month + "-" + day;
-    //endDate string
-    const edate = endDateOj;
-    const eYear = edate.getFullYear();
-    const eMonth = edate.getMonth() + 1;
-    const eDay = edate.getDate();
-    const eDate = eYear + "-" + eMonth + "-" + eDay;
+    const startDateObj = new Date(this.state.startDate);
+    const endDateObj = new Date(this.state.endDate);
+    this.props.setStartDate(startDateObj);
+    this.props.setEndDate(endDateObj);
 
     //---------------------Searching-----------------------------
     // filtering the hotel with "CityName_RoomCap"
     const db = firebase.firestore();
 
-    const numrooms = this.state.rooms;
     //uery the hotel data from firestore
     //if user does not enter city
     if (this.state.place === null) {
-      const searchKey = this.state.roomSize;
-      console.log("searchKey ------->" + searchKey);
-      const upperBoundOfSearchKey = 4;
       db.collection("testingHotels")
-        .where("maxBeds", ">=", searchKey)
-        .where("maxBeds", "<=", upperBoundOfSearchKey)
         .get()
         .then(collection => {
           var hotels = [];
@@ -311,10 +318,6 @@ class SearchBox extends Component {
               photoUrl: doc.data().photoURL,
               type: doc.data().type,
               price: doc.data().price,
-              rate1: doc.data().room1,
-              rate2: doc.data().room2,
-              rate3: doc.data().room3,
-              rate4: doc.data().room4,
               rating: doc.data().rating,
               address:
                 doc.data().street +
@@ -324,17 +327,13 @@ class SearchBox extends Component {
                 doc.data().state +
                 ", " +
                 doc.data().zip,
-              maxCap: doc.data().maxBeds,
-              startDate: sDate,
-              endDate: eDate,
-              rooms: numrooms,
               gym: doc.data().gym,
               bar: doc.data().bar,
               swimmingPool: doc.data().swimmingPool,
             });
           });
 
-                    // filtering from the hotles object
+          // filtering from the hotles object
           // var filteredResult = hotels;
           if(this.props.filter.hotelType === 'hotel'){
             hotels = hotels.filter(v => v.type === 'hotel');
@@ -372,14 +371,10 @@ class SearchBox extends Component {
           this.setState({ hotels });
         });
     } else {
-      const searchKey = this.state.place.name + "_" + this.state.roomSize;
-      const upperBoundOfSearchKey = this.state.place.name + "_4";
-      console.log("searchKey ------->" + searchKey);
+      const searchKey = this.state.place.name;
 
-      const numrooms = this.state.rooms;
       db.collection("testingHotels")
-        .where("searchKey", ">=", searchKey)
-        .where("searchKey", "<=", upperBoundOfSearchKey)
+        .where("city", "==", searchKey)
         .get()
         .then(collection => {
           var hotels = [];
@@ -397,10 +392,6 @@ class SearchBox extends Component {
               photoUrl: doc.data().photoURL,
               type: doc.data().type,
               price: doc.data().price,
-              rate1: doc.data().room1,
-              rate2: doc.data().room2,
-              rate3: doc.data().room3,
-              rate4: doc.data().room4,
               rating: doc.data().rating,
               address:
                 doc.data().street +
@@ -410,10 +401,6 @@ class SearchBox extends Component {
                 doc.data().state +
                 ", " +
                 doc.data().zip,
-              maxCap: doc.data().maxBeds,
-              startDate: sDate,
-              endDate: eDate,
-              rooms: numrooms,
               gym: doc.data().gym,
               bar: doc.data().bar,
               swimmingPool: doc.data().swimmingPool,
@@ -467,6 +454,11 @@ class SearchBox extends Component {
     return x.price - y.price;
   }
 
+  _handleNumOfRoomsChange = e => {
+    this.setState({ rooms: e.target.value });
+    this.props.setRooms(e.target.value);
+  };
+
   _updateButtonDisable = ({ startDate, endDate }) => {
     const { userReservations } = this.state;
 
@@ -496,19 +488,6 @@ class SearchBox extends Component {
 
     return (
       <Grid container className={classes.root} xs={12} md={12} lg={12}>
-        <Grid>
-          {/* <img
-            src={bg}
-            alt="logo"
-            style={{
-              backgroundSize: "cover",
-              overflow: "hidden",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center",
-              width: "100%"
-            }}
-          /> */}
-        </Grid>
         <Grid
           container
           xs={12}

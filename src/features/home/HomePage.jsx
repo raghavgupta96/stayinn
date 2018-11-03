@@ -9,7 +9,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import firebase from "../../app/config/firebase";
 import { connect } from "react-redux";
 import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
@@ -43,13 +42,6 @@ const styles = theme => ({
     minWidth: "50px",
     marginTop: "15px"
   },
-  dateContainer: {
-    display: "flex",
-    flexWrap: "wrap",
-    marginLeft: "15px",
-    marginRight: "15px",
-    marginBottom: "15px"
-  },
   googleSearch: {
     width: "100%",
     height: "45px",
@@ -68,15 +60,6 @@ const styles = theme => ({
     marginLeft: "15px",
     marginRight: "15px",
     width: "100%",
-    marginBottom: "15px",
-    minWidth: "30px"
-  },
-  filterButton: {
-    backgroundColor: "#409BE6",
-    height: "40px",
-    color: "#ffffff",
-    marginRight: "15px",
-    width: "96%",
     marginBottom: "15px",
     minWidth: "30px"
   },
@@ -108,75 +91,20 @@ class HomePage extends Component {
     };
   }
 
-  //initially mount all the hotels info into the hotel list into state
-  componentDidMount() {
-    const db = firebase.firestore();
-
-    // this._updateButtonDisable(this.state.startDate, this.state.endDate)====
-
-    // Get users reservation dates if logged in
-    if (this.props.auth.uid) {
-      const reservationsQuery = db
-        .collection("reservations")
-        .where("userId", "==", this.props.auth.uid);
-
-      reservationsQuery.get().then(collection => {
-        //get all reservation for booking conflict check
-        const userReservations = [];
-
-        collection.forEach(doc => {
-          const { startDate, endDate } = doc.data();
-          userReservations.push({
-            startDate: startDate.toDate(),
-            endDate: endDate.toDate()
-          });
-        });
-        this.setState({ userReservations });
-      });
-
-      //get the user rewards info
-      var docRef = firebase
-        .firestore()
-        .collection("users")
-        .doc(this.props.auth.uid);
-      docRef.get().then(doc => {
-        if (doc.exists) {
-          this.setState({
-            reward: doc.data().reward
-          });
-        } else {
-          console.log("No such document!");
-        }
-      });
+  componentDidMount () {
+    if(this.props.reservation.startDate !== null){
+      //update the local state
+      const sDateMonmet = moment(this.props.reservation.startDate);
+      this.setState({startDate: sDateMonmet});
+    }
+    if(this.props.reservation.endDate !==  null){
+      const eDateMoment = moment(this.props.reservation.endDate);
+      this.setState({endDate: eDateMoment});
+    }
+    if(this.props.reservation.rooms !== null ){
+      this.setState({ rooms : this.props.reservation.rooms });
     }
   }
-
-  _updateButtonDisable = ({ startDate, endDate }) => {
-    const { userReservations } = this.state;
-
-    const startDateObj = new Date(startDate);
-    const endDateObj = new Date(endDate);
-
-    let disabled = false;
-    for (let reservation in userReservations) {
-      if (
-        startDateObj.getTime() <=
-          userReservations[reservation].endDate.getTime() &&
-        endDateObj.getTime() >=
-          userReservations[reservation].startDate.getTime()
-      ) {
-        disabled = true;
-      }
-    }
-
-    // toastr gets called
-    if (disabled) {
-      // toastr.warning('Conflicting Book Dates', 'Cannot book multiple hotels during the same time period.');
-      window.alert("Conflicting reservation dates");
-    }
-
-    this.setState({ disabled });
-  };
 
   //convert the ISO format data "2018-10-15" string to data object
   stringToDate = date => {
@@ -187,10 +115,30 @@ class HomePage extends Component {
     return d;
   };
 
+  dateToString = (date) => {
+    const temp = date;
+    const year = temp.getFullYear();
+    const month = temp.getMonth() + 1;
+    const day = temp.getDate();
+    return (year + "-" + month + "-" + day);
+  }
+
   _handleNumOfRoomsChange = e => {
     this.props.setRooms(e.target.value);
     this.setState({ NumOfRooms: e.target.value });
   };
+
+  _handleDateChange = (sDate, eDate) => {
+    if(sDate !== null){
+      const sDateObj = sDate.toDate();
+      this.props.setStartDate(sDateObj);
+    }
+    
+    if(eDate !== null) {
+      const eDateObj = eDate.toDate();
+      this.props.setEndDate(eDateObj);
+    }
+  }
 
   render() {
     const { classes } = this.props;
@@ -239,6 +187,7 @@ class HomePage extends Component {
                   onPlaceSelected={place => {
                     // console.log(place);
                     this.setState({ place: place });
+                    this.props.setPlace(place);
                     //testing
                     console.log(this.state.place.name);
                   }}
@@ -253,8 +202,8 @@ class HomePage extends Component {
                   startDate={this.state.startDate}
                   endDate={this.state.endDate}
                   onDatesChange={({ startDate, endDate }) => {
+                    this._handleDateChange(startDate, endDate);
                     this.setState({ startDate, endDate });
-                    this._updateButtonDisable({ startDate, endDate });
                   }}
                   focusedInput={this.state.focusedInput}
                   onFocusChange={focusedInput => {
@@ -272,13 +221,7 @@ class HomePage extends Component {
               >
                 <Link
                   to={{
-                    pathname: "/search",
-                    state: {
-                      startDate: this.startDate,
-                      endDate: this.endDate,
-                      place: this.place,
-                      rooms: this.rooms
-                    }
+                    pathname: "/search"
                   }}
                   className={classes.searchButton}
                 >
@@ -302,7 +245,7 @@ class HomePage extends Component {
 
 const mapStateToProps = state => {
   return {
-    auth: state.firebase.auth // auth.uid
+    reservation: state.reservation,
   };
 };
 
@@ -324,6 +267,12 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: "SET_ROOMS",
         payload: num
+      });
+    },
+    setPlace: place => {
+      dispatch({
+        type: "SET_PLACE",
+        payload: place
       });
     },
     setRoomType: date => {
