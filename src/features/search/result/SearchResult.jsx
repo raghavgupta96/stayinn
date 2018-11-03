@@ -173,7 +173,7 @@ const SearchResult = ({ hotels, classes, disabled }) => {
                           </Button>
                         </Link> )
                         : (
-                          <div>
+                          <span>
                             <Button
                               variant="contained"
                               className={classes.searchButton}
@@ -183,7 +183,7 @@ const SearchResult = ({ hotels, classes, disabled }) => {
                             >
                                 Book
                             </Button>
-                          </div>)
+                          </span>)
                       }
                       <Button
                         variant="contained"
