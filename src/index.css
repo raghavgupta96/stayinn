@@ -4,4 +4,8 @@ body {
   font-family: 'Roboto';
 }
 
+.DateInput_input {
+  background-color: transparent !important;
+}
+
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500')
