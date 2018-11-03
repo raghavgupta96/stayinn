@@ -21,39 +21,19 @@ import { Link } from "react-router-dom";
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    width: "100%",
-    minWidth: "1024px",
     minHeight: "100%",
-    height: "auto",
+    height: "1000px",
     backgroundImage: `url(${bg})`,
     backgroundSize: "100%",
     backgroundRepeat: "no-repeat",
-    backgroundPosition: "center",
+    backgroundPosition: "top",
     position: "fix",
     top: "0",
-    left: "0"
-  },
-  secondaryContainer: {
-    // Make into 100%
-    width: "100%",
-    minWidth: "1024px",
-    minHeight: "100%",
-    height: "auto",
-    backgroundImage: `url(${bg})`,
-    backgroundSize: "100%",
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center",
-    position: "fix",
-    top: "0",
-    left: "0",
-    marginTop : "500px"
-    // marginBottom: "15px",
-    // marginTop: "-75px"
   },
   mainpaper: {
     padding: "10px",
     opacity: "0.95",
-    marginTop: "50%"
+    marginTop : "350px"
   },
   googleSearchContainer: {
     paddingLeft: "15px",
@@ -215,116 +195,106 @@ class HomePage extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <Grid container className={classes.root} xs={12} md={12} lg={12}>
-        <Grid item
-          container
-          xs={12}
-          md={12}
-          lg={12}
-          className={classes.secondaryContainer}
-        >
-          <Grid item xs={2} md={2} lg={2} />
-          <Grid item xs={8} md={8} lg={8}>
-            <Paper >
+      <Grid container className={classes.root}>
+        <Grid item xs={2} md={2} lg={2} />
+        <Grid item xs={8} md={8} lg={8}>
+          <Paper className={classes.mainpaper}>
+            <Grid container>
               <Grid container>
-                <Grid container>
-                  <Grid item>
-                    <Typography
-                      gutterBottom
-                      variant="title"
-                      className={classes.typography}
-                    >
-                      Number of Rooms:
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <FormControl className={classes.droppedDownNumber}>
-                      <Select
-                        value={this.state.NumOfRooms}
-                        onChange={this._handleNumOfRoomsChange}
-                        displayEmpty
-                        name="NumOfRooms"
-                        className={classes.selectEmpty}
-                      >
-                        <MenuItem value={1}>1</MenuItem>
-                        <MenuItem value={2}>2</MenuItem>
-                        <MenuItem value={3}>3</MenuItem>
-                        <MenuItem value={4}>4</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  md={7}
-                  lg={7}
-                  className={classes.googleSearchContainer}
-                >
-                  <Autocomplete
-                    className={classes.googleSearch}
-                    onPlaceSelected={place => {
-                      // console.log(place);
-                      this.setState({ place: place });
-                      //testing
-                      console.log(this.state.place.name);
-                    }}
-                    types={["(regions)"]}
-                    componentRestrictions={{ country: "us" }}
-                  />
-                </Grid>
-                <Grid item xs={12} md={12} lg={4}>
-                  <DateRangePicker
-                    startDateId="startDate"
-                    endDateId="endDate"
-                    startDate={this.state.startDate}
-                    endDate={this.state.endDate}
-                    onDatesChange={({ startDate, endDate }) => {
-                      this.setState({ startDate, endDate });
-                      this._updateButtonDisable({ startDate, endDate });
-                    }}
-                    focusedInput={this.state.focusedInput}
-                    onFocusChange={focusedInput => {
-                      this.setState({ focusedInput });
-                    }}
-                  />
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  md={1}
-                  lg={1}
-                  className={classes.searchButtonWrapper}
-                >
-                  <Link
-                    to={{
-                      pathname: "/search",
-                      state: {
-                        startDate: this.startDate,
-                        endDate: this.endDate,
-                        place: this.place,
-                        rooms: this.rooms
-                      }
-                    }}
-                    style={{
-                      color: "#ffffff",
-                      textDecoration: "none"
-                    }}
+                <Grid item>
+                  <Typography
+                    gutterBottom
+                    variant="title"
+                    className={classes.typography}
                   >
-                    <Button
-                      variant="contained"
-                      className={classes.searchButton}
-                      color="primary"
+                    Number of Rooms:
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <FormControl className={classes.droppedDownNumber}>
+                    <Select
+                      value={this.state.NumOfRooms}
+                      onChange={this._handleNumOfRoomsChange}
+                      displayEmpty
+                      name="NumOfRooms"
+                      className={classes.selectEmpty}
                     >
-                      <SearchIcon />
-                    </Button>
-                  </Link>
+                      <MenuItem value={1}>1</MenuItem>
+                      <MenuItem value={2}>2</MenuItem>
+                      <MenuItem value={3}>3</MenuItem>
+                      <MenuItem value={4}>4</MenuItem>
+                    </Select>
+                  </FormControl>
                 </Grid>
               </Grid>
-            </Paper>
-          </Grid>
-          <Grid item xs={2} md={2} lg={2} />
+              <Grid
+                item
+                xs={12}
+                md={7}
+                lg={7}
+                className={classes.googleSearchContainer}
+              >
+                <Autocomplete
+                  className={classes.googleSearch}
+                  onPlaceSelected={place => {
+                    // console.log(place);
+                    this.setState({ place: place });
+                    //testing
+                    console.log(this.state.place.name);
+                  }}
+                  types={["(regions)"]}
+                  componentRestrictions={{ country: "us" }}
+                />
+              </Grid>
+              <Grid item xs={12} md={12} lg={4}>
+                <DateRangePicker
+                  startDateId="startDate"
+                  endDateId="endDate"
+                  startDate={this.state.startDate}
+                  endDate={this.state.endDate}
+                  onDatesChange={({ startDate, endDate }) => {
+                    this.setState({ startDate, endDate });
+                    this._updateButtonDisable({ startDate, endDate });
+                  }}
+                  focusedInput={this.state.focusedInput}
+                  onFocusChange={focusedInput => {
+                    this.setState({ focusedInput });
+                  }}
+                  position="absolute"
+                />
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                md={1}
+                lg={1}
+                className={classes.searchButtonWrapper}
+              >
+                <Link
+                  to={{
+                    pathname: "/search",
+                    state: {
+                      startDate: this.startDate,
+                      endDate: this.endDate,
+                      place: this.place,
+                      rooms: this.rooms
+                    }
+                  }}
+                  className={classes.searchButton}
+                >
+                  <Button
+                    variant="contained"
+                    className={classes.searchButton}
+                    color="primary"
+                  >
+                    <SearchIcon />
+                  </Button>
+                </Link>
+              </Grid>
+            </Grid>
+          </Paper>
         </Grid>
+        <Grid item xs={2} md={2} lg={2} />
       </Grid>
     );
   }

@@ -29,22 +29,20 @@ const styles = theme => ({
   },
   secondaryContainer: {
     // Make into 100%
-    height: "1000px",
+    height: "200px",
     backgroundImage: `url(${bg})`,
     backgroundSize: "cover",
     overflow: "hidden",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
     width: "100%",
-    marginBottom: "15px",
-    marginTop: "-75px"
+    
   },
   mainpaper: {
-    position: "",
-    top: "35%",
     padding: "10px",
     opacity: "0.95",
-    marginTop: "400px"
+    marginTop: "40px",
+    zIndex: "1"
   },
   googleSearchContainer: {
     paddingLeft: "15px",
@@ -612,7 +610,9 @@ class SearchBox extends Component {
             </Grid>
           </Grid>
           <Grid item xs={9} md={9} lg={8}>
-            <SearchResult disabled={this.state.disabled} hotels={this.state.hotels} />
+            <SearchResult disabled={this.state.disabled} hotels={this.state.hotels} style={{
+            zIndex: "0"
+            }}/>
           </Grid>
           <Grid item xs={1} md={1} lg={1} />
         </Grid>
