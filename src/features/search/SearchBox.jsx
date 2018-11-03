@@ -29,7 +29,7 @@ const styles = theme => ({
   },
   secondaryContainer: {
     // Make into 100%
-    height: "850px",
+    height: "1000px",
     backgroundImage: `url(${bg})`,
     backgroundSize: "cover",
     overflow: "hidden",
