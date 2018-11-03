@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
+import rewards from "./rewards.png";
+import Avatar from "@material-ui/core/Avatar";
 
 const styles = theme => ({
   root: {
@@ -9,8 +11,9 @@ const styles = theme => ({
   },
   mainpaper: {
     width: "100%",
-    marginRight: "10px",
-    padding: "15px"
+    padding: "15px",
+    marginTop: "10px",
+    marginRight: "10px"
   },
   label: {
     fontFamily: "Times",
@@ -21,7 +24,6 @@ const styles = theme => ({
     color: "#ffffff",
     fontFamily: "Times",
     fontSize: "25px",
-    paddingLeft: "10px"
   }
 });
 
@@ -29,9 +31,6 @@ class Rewards extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      checked: [0],
-      amount: null,
-      roomSize: "Hotel"
     };
   }
   render() {
@@ -41,16 +40,20 @@ class Rewards extends Component {
         <Paper className={classes.mainpaper}>
           <Grid container spacing={16}>
             <Grid
-              item
+              container
               className={classes.label}
               xs={12}
               md={12}
               lg={12}
               style={{
-                color: "#409BE6"
+                color: "#409BE6",
+                display: "flex"
               }}
             >
-              Rewards : {this.props.reward}
+              <Avatar alt="Billiards" src={rewards} />
+              <div style={{
+                paddingTop: "5px"
+              }}>Rewards :{this.props.reward} </div>
             </Grid>
           </Grid>
         </Paper>

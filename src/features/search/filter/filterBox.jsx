@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -87,62 +86,59 @@ class filterBox extends Component {
       sortOrder: "nonspecific",
       gymChecked: "",
       barChecked: "",
-      swimmingPoolChecked: "",
+      swimmingPoolChecked: ""
     };
   }
 
   _handleGymCheckedChange(ev) {
-    this.setState({gymChecked: ev.target.checked});
+    this.setState({ gymChecked: ev.target.checked });
     this.props.setGymChecked(ev.target.checked);
   }
 
   _handleBarCheckedChange = ev => {
-    this.setState({barChecked: ev.target.checked});
+    this.setState({ barChecked: ev.target.checked });
     this.props.setBarChecked(ev.target.checked);
-  }
+  };
 
   _handleSwimmingPoolCheckedChange = ev => {
-    this.setState({swimmingPoolChecked: ev.target.checked});
+    this.setState({ swimmingPoolChecked: ev.target.checked });
     this.props.setSwimmingPoolChecked(ev.target.checked);
-  }
+  };
 
-  _handleHotelTypeChange = ev =>  {
+  _handleHotelTypeChange = ev => {
     this.setState({ hotelType: ev.target.value });
     this.props.setHotelType(ev.target.value);
-  }
+  };
 
   _handleSortOrder = ev => {
     this.setState({ sortOrder: ev.target.value });
     this.props.setSortOrder(ev.target.value);
-  }
+  };
 
   _handleMinChange = e => {
     const minPrice = e.target.value;
     // Check if valid
     if (minPrice > this.state.maxPrice) {
-      window.alert('MinPrice must be less than MaxPrice');
+      window.alert("MinPrice must be less than MaxPrice");
       this.setState({ minPrice: 0, maxPrice: 0 });
       this.props.setMinPrice(0);
-    }
-    else {
+    } else {
       this.setState({ minPrice });
       this.props.setMinPrice(minPrice);
     }
-  }
+  };
   _handleMaxChange = e => {
     const maxPrice = e.target.value;
     // Check if valid
     if (maxPrice < this.state.minPrice) {
-      window.alert('MaxPrice must be greater than MinPrice');
+      window.alert("MaxPrice must be greater than MinPrice");
       this.setState({ minPrice: 0, maxPrice: 0 });
       this.props.setMaxPrice(0);
-    }
-    else {
+    } else {
       this.setState({ maxPrice });
       this.props.setMaxPrice(maxPrice);
     }
-  }
-
+  };
 
   render() {
     const { classes } = this.props;
@@ -207,7 +203,7 @@ class filterBox extends Component {
               <FormControl className={classes.budgetRange1}>
                 <Input
                   value={this.state.minPrice}
-                  onChange= {this._handleMinChange}
+                  onChange={this._handleMinChange}
                   type="number"
                   startAdornment={
                     <InputAdornment position="start">$</InputAdornment>
@@ -222,7 +218,7 @@ class filterBox extends Component {
               <FormControl className={classes.budgetRange2}>
                 <Input
                   value={this.state.maxPrice}
-                  onChange= {this._handleMaxChange}
+                  onChange={this._handleMaxChange}
                   type="number"
                   startAdornment={
                     <InputAdornment position="start">$</InputAdornment>
@@ -364,7 +360,7 @@ const mapDispatchToProps = dispatch => {
         type: "SET_SORTORDER",
         payload: order
       });
-    },
+    }
   };
 };
 
