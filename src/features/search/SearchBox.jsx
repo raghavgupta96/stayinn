@@ -112,7 +112,7 @@ class SearchBox extends Component {
       roomSize: 1,
       searchKey: "",
       place: null,
-      NumOfRooms: 1,
+      rooms: 1,
       hotels: [],
       focusedInput: null,
       userReservations: [ ],
@@ -121,6 +121,12 @@ class SearchBox extends Component {
       startDate: moment(), // set your initial start date here
       endDate: moment().add(1, 'days'), // set your initial end date here
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.auth.uid !== prevProps.auth.uid) {
+      this.checkReservationConflicts();
+    }
   }
 
   //initially mount all the hotels info into the hotel list into state
@@ -133,21 +139,18 @@ class SearchBox extends Component {
     //convert the date object to string format yyyy-mm-dd
     //because hotels would not let me push a date object into to hotels array
     //startDate string
-    const date = startDateOj;
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const sDate = year + "-" + month + "-" + day;
+    const sDate = this.dateToString(startDateOj);
     //endDate string
-    const edate = endDateOj;
-    const eYear = edate.getFullYear();
-    const eMonth = edate.getMonth() + 1;
-    const eDay = edate.getDate();
-    const eDate = eYear + "-" + eMonth + "-" + eDay;
+    // const edate = endDateOj;
+    // const eYear = edate.getFullYear();
+    // const eMonth = edate.getMonth() + 1;
+    // const eDay = edate.getDate();
+    const eDate = this.dateToString(endDateOj);
 
     const db = firebase.firestore();
 
     //uery the hotel data from firestore
+    const numrooms = this.state.rooms;
     db.collection("testingHotels")
       .get()
       .then(collection => {
@@ -166,10 +169,6 @@ class SearchBox extends Component {
             photoUrl: doc.data().photoURL,
             type: doc.data().type,
             price: doc.data().price,
-            rate1: doc.data().room1,
-            rate2: doc.data().room2,
-            rate3: doc.data().room3,
-            rate4: doc.data().room4,
             rating: doc.data().rating,
             address:
               doc.data().street +
@@ -182,7 +181,7 @@ class SearchBox extends Component {
             maxCap: doc.data().maxBeds,
             startDate: sDate,
             endDate: eDate,
-            rooms: this.props.reservation.rooms,
+            rooms: numrooms,
             gym: doc.data().gym,
             bar: doc.data().bar,
             swimmingPool: doc.data().swimmingPool,
@@ -192,16 +191,24 @@ class SearchBox extends Component {
         this.setState({ hotels });
       });
 
-      // this._updateButtonDisable(this.state.startDate, this.state.endDate)====
+      this.checkReservationConflicts();
+  }
+
+  checkReservationConflicts = () => {
+    const db = firebase.firestore();
 
       // Get users reservation dates if logged in
+      console.log(this.props.auth.uid);
       if (this.props.auth.uid) {
+        console.log('[190]');
         const reservationsQuery = db.collection("reservations")
-          .where('userId', '==', this.props.auth.uid);
+          .where('userId', '==', this.props.auth.uid)
+          .where('isCanceled', '==', false);
 
         reservationsQuery.get()
           .then(collection => {
             //get all reservation for booking conflict check
+            console.log('[198]');
             const userReservations = [];
   
             collection.forEach(doc => {
@@ -209,6 +216,9 @@ class SearchBox extends Component {
               userReservations.push({ startDate: startDate.toDate(), endDate: endDate.toDate() });
             })
             this.setState({ userReservations });
+            console.log("____>>>>>>>" + userReservations)
+            //Jun is working on it
+            this._updateButtonDisable({ startDate: this.state.startDate, endDate: this.state.endDate})
           })
 
           //get the user rewards info
@@ -226,8 +236,7 @@ class SearchBox extends Component {
             }
           });
       }
-
-  }
+    }
 
   //convert the ISO format data "2018-10-15" string to data object
   stringToDate = date => {
@@ -238,14 +247,18 @@ class SearchBox extends Component {
     return d;
   };
 
-  _handleRoomSizeChange = e => {
-    this.props.setRoomType(e.target.value);
-    this.setState({ roomSize: e.target.value });
-  };
+  dateToString = date => {
+    const temp = date;
+    const year = temp.getFullYear();
+    const month = temp.getMonth() + 1;
+    const day = temp.getDate();
+    return year + "-" + month + "-" + day;
+  }
 
   _handleNumOfRoomsChange = e => {
+    this.setState({ rooms: e.target.value });
     this.props.setRooms(e.target.value);
-    this.setState({ NumOfRooms: e.target.value });
+    console.log('_________>' + e.target.value);
   };
 
     //--------------------- Search button -----------------------------
@@ -274,6 +287,8 @@ class SearchBox extends Component {
     //---------------------Searching-----------------------------
     // filtering the hotel with "CityName_RoomCap"
     const db = firebase.firestore();
+
+    const numrooms = this.state.rooms;
     //uery the hotel data from firestore
     //if user does not enter city
     if (this.state.place === null) {
@@ -314,8 +329,7 @@ class SearchBox extends Component {
               maxCap: doc.data().maxBeds,
               startDate: sDate,
               endDate: eDate,
-              roomType: this.props.reservation.roomType,
-              rooms: this.props.reservation.rooms,
+              rooms: numrooms,
               gym: doc.data().gym,
               bar: doc.data().bar,
               swimmingPool: doc.data().swimmingPool,
@@ -363,6 +377,8 @@ class SearchBox extends Component {
       const searchKey = this.state.place.name + "_" + this.state.roomSize;
       const upperBoundOfSearchKey = this.state.place.name + "_4";
       console.log("searchKey ------->" + searchKey);
+
+      const numrooms = this.state.rooms;
       db.collection("testingHotels")
         .where("searchKey", ">=", searchKey)
         .where("searchKey", "<=", upperBoundOfSearchKey)
@@ -399,14 +415,12 @@ class SearchBox extends Component {
               maxCap: doc.data().maxBeds,
               startDate: sDate,
               endDate: eDate,
-              roomType: this.props.reservation.roomType,
-              rooms: this.props.reservation.rooms,
+              rooms: numrooms,
               gym: doc.data().gym,
               bar: doc.data().bar,
               swimmingPool: doc.data().swimmingPool,
             });
           });
-          console.log("-- ---this.props.filter.type" + this.props.filter.hotelType)
 
           // filtering from the hotles object
           // var filteredResult = hotels;
@@ -481,6 +495,7 @@ class SearchBox extends Component {
 
   render() {
     const { classes } = this.props;
+
     return (
       <Grid container className={classes.root} xs={12} md={12} lg={12}>
         <Grid>
@@ -520,7 +535,7 @@ class SearchBox extends Component {
                   <Grid item>
                     <FormControl className={classes.droppedDownNumber}>
                       <Select
-                        value={this.state.NumOfRooms}
+                        value={this.state.rooms}
                         onChange={this._handleNumOfRoomsChange}
                         displayEmpty
                         name="NumOfRooms"
