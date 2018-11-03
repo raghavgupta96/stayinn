@@ -216,7 +216,7 @@ class HomePage extends Component {
     const { classes } = this.props;
     return (
       <Grid container className={classes.root} xs={12} md={12} lg={12}>
-        <Grid
+        <Grid item
           container
           xs={12}
           md={12}
