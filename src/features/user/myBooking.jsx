@@ -11,6 +11,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Paper from "@material-ui/core/Paper";
 import { Link } from "react-router-dom";
 import CloseIcon from "@material-ui/icons/Close";
+import Divider from "@material-ui/core/Divider";
 
 const styles = theme => ({
   dateContainer: {
@@ -105,8 +106,13 @@ class myBooking extends Component {
       checkin: null,
       checkout: null,
       noDateConflict: true,
-      isMultipleBooking: false
+      isMultipleBooking: false,
+      userCard: null,
+      editRefund: null,
+      editCharge: null,
+      saveEdit: false
     };
+    this.state = this.state;
   }
 
   // convertDate = date => {;
@@ -119,6 +125,7 @@ class myBooking extends Component {
   // };
 
   async componentDidMount() {
+
     const { firebase } = this.props;
     const obj = this;
 
@@ -129,6 +136,18 @@ class myBooking extends Component {
         return;
       }
       const db = firebase.firestore();
+
+      db.collection("users")
+        .doc(user.uid)
+        .get()
+        .then(doc => {
+          let userRef = doc.data();
+
+
+          obj.setState({
+            userCard: userRef.card
+          });
+        });
 
       //populate population in reservation
       db.collection("reservations")
@@ -181,7 +200,6 @@ class myBooking extends Component {
           // console.log("Final Reservations", reservations);
           obj.setState({ reservations: reservations });
         });
-      console.log("Reservations to sort: " + obj);
     });
   }
 
@@ -193,7 +211,7 @@ class myBooking extends Component {
   _handleCheckinDate = e => {
     console.log("CHECKIN");
     const date = e.target.value;
-    console.log(date);
+    // console.log(date);
     this.setState({
       checkin: date
     });
@@ -202,7 +220,7 @@ class myBooking extends Component {
   _handleCheckoutDate = e => {
     console.log("CHECKOUT");
     const date = e.target.value;
-    console.log(date);
+    // console.log(date);
     this.setState({
       checkout: e.target.value
     });
@@ -232,7 +250,7 @@ class myBooking extends Component {
     const startDateObj = new Date(startDate);
     const endDateObj = new Date(endDate);
 
-    // Go through each reservation to check if there is any conflict 
+    // Go through each reservation to check if there is any conflict
     for (let reservation in this.state.reservations) {
       // console.log("YOOO", this.state.reservations[reservation]);
       if (
@@ -242,6 +260,8 @@ class myBooking extends Component {
           this.state.reservations[reservation].startDate.toDate().getTime()
       ) {
         isMultipleBooking = true;
+      } else {
+        isMultipleBooking = false;
       }
     }
 
@@ -256,7 +276,11 @@ class myBooking extends Component {
   };
 
   handleClose = () => {
-    this.setState({ open: false });
+    this.setState({
+      open: false,
+      editRefund: null,
+      editCharge: null,
+    });
   };
 
   handleEditOpen = reservation => {
@@ -268,7 +292,9 @@ class myBooking extends Component {
 
   handleEditClose = () => {
     this.setState({
-      editOpen: false
+      editOpen: false,
+      editRefund: null,
+      editCharge: null,
     });
   };
 
@@ -278,9 +304,10 @@ class myBooking extends Component {
 
   async handleEditRes(reservationId) {
     const { firebase } = this.props;
-    console.log("RESERVATION ID: " + reservationId);
-    console.log("CHECKIN: " + this.state.checkin);
-    console.log("CHECKOUT: " + this.state.checkout);
+    const obj = this;
+    // console.log("RESERVATION ID: " + reservationId);
+    // console.log("CHECKIN: " + this.state.checkin);
+    // console.log("CHECKOUT: " + this.state.checkout);
     const checkin = this.state.checkin;
     const checkout = this.state.checkout;
     const currentRes = this.state.currRes;
@@ -308,7 +335,7 @@ class myBooking extends Component {
 
       let adjustedPrice = this.state.currRes.rate * numOfNights;
 
-      firebase.auth().onAuthStateChanged(function(user) {
+      await firebase.auth().onAuthStateChanged(async function(user) {
         if (!user) {
           return;
         }
@@ -317,7 +344,7 @@ class myBooking extends Component {
           .firestore()
           .collection("users")
           .doc(user.uid);
-        userRef.get().then(doc => {
+        await userRef.get().then(async doc => {
           if (doc.exists) {
             let userRewards = doc.data().reward;
             let resRef = firebase
@@ -325,8 +352,9 @@ class myBooking extends Component {
               .collection("reservations")
               .doc(reservationId);
 
-            resRef.get().then(doc2 => {
+            await resRef.get().then(doc2 => {
               let resRewards = doc2.data().reward;
+              let resOldPrice = doc2.data().totalPrice;
               let finalReward = 0;
               if (userRewards >= resRewards) {
                 finalReward = userRewards - resRewards;
@@ -335,26 +363,51 @@ class myBooking extends Component {
               let editResReward = (currentRes.rate * numOfNights) / 100;
               finalReward = finalReward + editResReward;
 
-              resRef
-                .update({
-                  startDate: startDate,
-                  endDate: endDate,
-                  totalPrice: adjustedPrice,
-                  reward: editResReward,
-                  numOfNight: numOfNights
-                })
-                .then(function() {
-                  userRef
-                    .update({
-                      reward: finalReward
-                    })
-                    .then(function() {
-                      window.location.reload();
-                    })
-                    .catch(function(error) {
-                      console.log(error);
-                    });
+              if (adjustedPrice < resOldPrice) {
+                // obj.state.editRefund = resOldPrice - adjustedPrice;
+                // console.log(
+                //   "You will be charged more: " + obj.state.editCharge
+                // );
+                obj.setState({
+                  editRefund: resOldPrice - adjustedPrice
                 });
+              } else if (adjustedPrice > resOldPrice) {
+                // obj.state.editCharge = adjustedPrice - resOldPrice;
+                // console.log(
+                //   "You will be charged more: " + obj.state.editCharge
+                // );
+                obj.setState({
+                  editCharge: adjustedPrice - resOldPrice
+                });
+              } else {
+                obj.setState({
+                  editRefund: 0,
+                  editCharge: 0
+                });
+              }
+              // console.log("Ready to Save? ", obj.state.saveEdit);
+              if (obj.state.saveEdit) {
+                resRef
+                  .update({
+                    startDate: startDate,
+                    endDate: endDate,
+                    totalPrice: adjustedPrice,
+                    reward: editResReward,
+                    numOfNight: numOfNights
+                  })
+                  .then(function() {
+                    userRef
+                      .update({
+                        reward: finalReward
+                      })
+                      .then(function() {
+                        window.location.reload();
+                      })
+                      .catch(function(error) {
+                        console.log(error);
+                      });
+                  });
+              }
             });
           }
         });
@@ -443,9 +496,11 @@ class myBooking extends Component {
 
   render() {
     // make a list that contains all reservations user made
-    const { auth, classes, error } = this.props;
+    const { auth, classes, firebase, error } = this.props;
     const noDateConflict = this.state.noDateConflict;
     const isMultipleBooking = this.state.isMultipleBooking;
+    const editCharge = this.state.editCharge;
+    const editRefund = this.state.editRefund;
     // console.log(this.props);
     // var thisRes = null;
     // console.log(this.state.reservations);
@@ -459,7 +514,7 @@ class myBooking extends Component {
         // console.log(res);
         const bookDate = res.bookDate.toDate();
         const startDate = res.startDate.toDate();
-        console.log(startDate);
+        // console.log(startDate);
         const endDate = res.endDate.toDate();
         return (
           <div key={res.reservationId}>
@@ -607,7 +662,7 @@ class myBooking extends Component {
                         </button>
                       </div>
                       {/* cancel description */}
-                      <div>
+                      <div style={{ marginBottom: 10 }}>
                         <Typography style={regTextStyle}>
                           Do you want to cancel this reservation? <br />
                           Cancelling this reservation will be charged 10%
@@ -620,16 +675,32 @@ class myBooking extends Component {
                         <Typography style={highlightTextStyle}>
                           Cancellation Fee: -$
                           {this.state.currRes &&
-                            this.state.currRes.totalPrice * 0.1}
+                            (this.state.currRes.totalPrice * 0.1).toFixed(2)}
                           <br />
                         </Typography>
                         <Typography style={regTextStyle}>
                           Refund: $
                           {this.state.currRes &&
-                            this.state.currRes.totalPrice * 0.9}
+                            (this.state.currRes.totalPrice * 0.9).toFixed(2)}
                           <br />
                         </Typography>
                       </div>
+
+                      {/* card that the refund will go to */}
+
+                      {this.state.userCard && (
+                        <Grid>
+                          <Divider />
+                          <Typography style={regTextStyle}>
+                            The refund will be returned to the following card:
+                          </Typography>
+                          <Typography style={regTextStyle}>
+                            Card Number: ****{" "}
+                            {this.state.userCard.cardNumber.substring(12, 16)}
+                          </Typography>
+                        </Grid>
+                      )}
+
                       {/* cancel choice */}
                       <div style={{ padding: 15 }}>
                         <Button
@@ -730,28 +801,104 @@ class myBooking extends Component {
                               You have conflicting reservation date
                             </Typography>
                           )}
+
+                          {/* The user will be charged more */}
+                          {editCharge && (
+                            <div>
+                              <Typography style={regTextStyle}>
+                                do you want to make the change?
+                              </Typography>
+                              <Typography style={regTextStyle}>
+                                ${editCharge} more will be charged on the
+                                following card :
+                              </Typography>
+                              <Typography style={regTextStyle}>
+                                Card Number: ****{" "}
+                                {this.state.userCard.cardNumber.substring(
+                                  12,
+                                  16
+                                )}
+                              </Typography>
+                            </div>
+                          )}
+
+                          {/* The user selects the same date period */}
+                          {editCharge === 0 &&
+                            editRefund === 0 && (
+                              <Typography color="error">
+                                The price will stay the same
+                              </Typography>
+                            )}
+
+                          {/* the user will be refunded */}
+                          {editRefund && (
+                            <div>
+                              <Typography style={regTextStyle}>
+                                do you want to make the change?
+                              </Typography>
+                              <Typography style={regTextStyle}>
+                                ${editRefund} will be refunded to the following
+                                card:
+                              </Typography>
+                              <Typography style={regTextStyle}>
+                                Card Number: ****{" "}
+                                {this.state.userCard.cardNumber.substring(
+                                  12,
+                                  16
+                                )}
+                              </Typography>
+                            </div>
+                          )}
                         </div>
-                        <div style={{ padding: 15 }}>
-                          <Button
-                            component={renderButton}
-                            onClick={() => {
-                              this.state.currRes &&
+                        {!editRefund &&
+                          !editCharge && (
+                            <div style={{ padding: 15 }}>
+                              <Button
+                                component={renderButton}
+                                onClick={() => {
+                                  this.state.currRes &&
+                                    this.handleEditRes(
+                                      this.state.currRes.reservationId
+                                    );
+                                }}
+                              >
+                                Confirm
+                              </Button>
+                              <Button
+                                component={warningButton}
+                                onClick={() => {
+                                  this.handleEditClose();
+                                }}
+                              >
+                                Cancel
+                              </Button>
+                            </div>
+                          )}
+                        {(editRefund || editCharge) && (
+                          <div style={{ padding: 15 }}>
+                            <Button
+                              component={renderButton}
+                              onClick={() => {
+                                this.setState({
+                                  saveEdit: true
+                                });
                                 this.handleEditRes(
                                   this.state.currRes.reservationId
                                 );
-                            }}
-                          >
-                            Confirm
-                          </Button>
-                          <Button
-                            component={warningButton}
-                            onClick={() => {
-                              this.handleEditClose();
-                            }}
-                          >
-                            Cancel
-                          </Button>
-                        </div>
+                              }}
+                            >
+                              Yes
+                            </Button>
+                            <Button
+                              component={warningButton}
+                              onClick={() => {
+                                this.handleEditClose();
+                              }}
+                            >
+                              No
+                            </Button>
+                          </div>
+                        )}
                       </Grid>
                     </div>
                   </Modal>
@@ -784,17 +931,19 @@ class myBooking extends Component {
       });
 
     return (
-
       <div>
-        {resList && (<div>
-        <h1>MyBooking</h1>
-        {resList}
-        </div>)}
-        {!resList && (<div>
-        <CircularProgress/>
-        </div>)}
+        {resList && (
+          <div>
+            <h1>MyBooking</h1>
+            {resList}
+          </div>
+        )}
+        {!resList && (
+          <div>
+            <CircularProgress />
+          </div>
+        )}
       </div>
-
     );
     // }
     // else
