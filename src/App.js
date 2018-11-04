@@ -13,9 +13,10 @@ import FilterUi from "./features/filter/Filter.ui";
 import PaymentLayout from "./features/payment/PaymentLayout";
 import HotelDetail from "./features/hotel/HotelDetail";
 import Hotel from "./features/hotel/Hotel";
-import ResetPasswordForm from "./features/auth/resetPassword/ResetPasswordForm"
+import ResetPasswordForm from "./features/auth/resetPassword/ResetPasswordForm";
 import ReduxToastr from "react-redux-toastr";
 import PopulateHotels from "./features/hotel/PopulateHotels";
+import searchBox from "./features/search/SearchBox";
 
 class App extends Component {
   render() {
@@ -50,9 +51,10 @@ class App extends Component {
                 <Route path="/searchResult" component={FilterUi} />
                 <Route path="/payment/:hotel_id" component={PaymentLayout} />
                 <Route path="/hotelDetail" component={HotelDetail} />
+                <Route path="/search" component={searchBox} />
                 {/* an individual hotel page  */}
                 <Route path="/hotel/:hotel_id" component={Hotel} />
-                <Route path="/populate" component={PopulateHotels} /> 
+                <Route path="/populate" component={PopulateHotels} />
               </Switch>
             </div>
           )}
