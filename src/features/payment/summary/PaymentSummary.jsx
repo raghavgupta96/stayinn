@@ -1,8 +1,6 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 
-// Styles
-//
 const styles = theme => ({
   paymentSummary: {
     display: 'flex',
@@ -31,7 +29,7 @@ const styles = theme => ({
       justifyContent: 'space-between'
     }
   },
-  subtotal: { // TODO: Set color to correct palette color
+  subtotal: {
     '& h2': {
       color: theme.palette.tertiary_orange.main
     }
@@ -46,85 +44,60 @@ const styles = theme => ({
   }
 });
 
-// paymentSummary Component
-//
+// _dateToString(Date) : string
+// Convenience method to convert dates to format
+// specified in wireframe
+const _dateToString = (date) => {
+  const days = {
+    0: 'Sun',
+    1: 'Mon',
+    2: 'Tue',
+    3: 'Wed',
+    4: 'Thu',
+    5: 'Fri',
+    6: 'Sat'
+  };
+  const months = {
+    0: 'Jan',
+    1: 'Feb',
+    2: 'Mar',
+    3: 'Apr',
+    4: 'May',
+    5: 'Jun',
+    6: 'Jul',
+    7: 'Aug',
+    8: 'Sep',
+    9: 'Oct',
+    10: 'Nov',
+    11: 'Dec'
+  }
+  const wd = date.getDay();
+  const m = date.getMonth();
+  const d = date.getDate();
+  const y = date.getFullYear();
+  return `${days[wd]}, ${months[m]} ${d}, ${y}`;
+}
+
 const paymentSummary = props => {
+  const { classes } = props;
   const {
     hotelName,
     location,
+    checkIn,
+    checkOut,
+    nights,
     rate,
-    total // Not a prop
-  } = props.hotel;
+    rooms,
+  } = props.summary;
 
   const {
-    startDate,
-    endDate,
-    rooms
-  } = props.reservation;
+    subtotal,
+    tax,
+    fees,
+    total
+  } = props.transaction().summary;
 
-  const { classes } = props;
 
-
-  // datediff(Date1, Date2) : int
-  // Take the difference between the dates and divide by milliseconds per day.
-  // Round to nearest whole number to deal with DST.
-  const datediff = (Date1, Date2) => {
-    return Math.round((Date2-Date1)/(1000*60*60*24));
-  }
-
-  const sum = (...args) => {
-    let total = 0;
-    for (let arg in args) {
-      total += args[arg];
-    }
-    return total;
-  } 
-
-  //nights = datediff(startDate,endDate);
-
-  // _dateToString(Date) : string
-  // Convenience method to convert dates to format
-  // specified in wireframe
-  //
-  const _dateToString = (date) => {
-    const days = {
-      0: 'Sun',
-      1: 'Mon',
-      2: 'Tue',
-      3: 'Wed',
-      4: 'Thu',
-      5: 'Fri',
-      6: 'Sat'
-    };
-    const months = {
-      0: 'Jan',
-      1: 'Feb',
-      2: 'Mar',
-      3: 'Apr',
-      4: 'May',
-      5: 'Jun',
-      6: 'Jul',
-      7: 'Aug',
-      8: 'Sep',
-      9: 'Oct',
-      10: 'Nov',
-      11: 'Dec'
-    }
-    const wd = date.getDay();
-    const m = date.getMonth();
-    const d = date.getDate();
-    const y = date.getFullYear();
-    return `${days[wd]}, ${months[m]} ${d}, ${y}`;
-  }
-
-  const subtotal = rate * datediff(startDate, endDate);
-  const taxRate = .1;
-  const feesRate = .05;
-  const tax = subtotal * taxRate;
-  const fees = subtotal * feesRate;
-
-  // Render
-  //
   return (
     <div className={classes.paymentSummary}>
       <div className={classes.content}>
@@ -135,8 +108,8 @@ const paymentSummary = props => {
         </section>
         <section>
           <h2>Travel Dates</h2>
-          <p>Check-in: {_dateToString(startDate)}</p>
-          <p>Check-out: {_dateToString(endDate)}</p>
+          <p>Check-in: {_dateToString(checkIn)}</p>
+          <p>Check-out: {_dateToString(checkOut)}</p>
         </section>
         <section className={classes.calculation}>
           <div>
@@ -145,7 +118,7 @@ const paymentSummary = props => {
           </div>
           <div>
             <h2>Nights:</h2>
-            <h2>{datediff(startDate,endDate)}</h2>
+            <h2>{nights}</h2>
           </div>
           <div>
             <h2>Rooms:</h2>
@@ -163,7 +136,7 @@ const paymentSummary = props => {
       </div>
       <div className={classes.total}>
         <h2>StayInn total</h2>
-        <h2>USD {sum(subtotal, tax, fees)}</h2>
+        <h2>USD {total}</h2>
       </div>
     </div>
   )
