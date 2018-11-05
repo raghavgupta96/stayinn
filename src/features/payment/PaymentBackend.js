@@ -1,6 +1,5 @@
 import { connect } from "react-redux";
 
-
 export const inputCard = (card) => {
   return async (dispatch, getState, {getFirebase, getFirestore}) => {
     const firestore = getFirestore()

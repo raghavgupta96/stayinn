@@ -143,7 +143,6 @@ class myBooking extends Component {
         .then(doc => {
           let userRef = doc.data();
 
-
           obj.setState({
             userCard: userRef.card
           });

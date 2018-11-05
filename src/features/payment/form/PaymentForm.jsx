@@ -247,7 +247,8 @@ const PaymentForm = (props) => {
         <Button
           variant="contained"
           color="primary"
-          onClick={checkout}> Submit
+          onClick={checkout}
+        > Submit
         </Button>
         <Button
           variant="contained"

@@ -70,7 +70,7 @@ class PaymentLayout extends Component {
         ...form
       }
     })),
-    checkout: this.checkout,
+    checkout: () => this.checkout(),
     cancel: () => this.props.history.goBack(),
     toggleRewards: () => this.setState(prevState => ({
       ...prevState,
@@ -178,8 +178,10 @@ class PaymentLayout extends Component {
   
     // Calc earned points
     const earnedPoints = points.usePoints
-      ? subtotal * 10
-      : 0;
+      ? 0
+      : subtotal * 10;
+
+    console.log(earnedPoints);
 
     return ({
       summary: {
@@ -191,22 +193,21 @@ class PaymentLayout extends Component {
         fees
       },
       points: {
-        usedPoints,
-        earnedPoints
+        usedPoints
       }
     })
   }
 
   checkout = () => {
-    const { transaction } = this.calculateTransaction();
-    const { summary, points } = this.state;
+    const transaction = this.calculateTransaction();
+    const { form, points } = this.state;
 
     const card = {
-      cardName: summary.cardName,
-      cardNumber: summary.cardNumber,
-      cvc: summary.cvc,
-      expiryMonth: summary.expiryMonth,
-      expiryYear: summary.expriyYear
+      cardName: form.cardName,
+      cardNumber: form.cardNumber,
+      cvc: form.cvc,
+      expiryMonth: form.expiryMonth,
+      expiryYear: form.expiryYear
     };
     this.props.inputCard(card);
 
@@ -216,7 +217,7 @@ class PaymentLayout extends Component {
           this.addRewardsToCurrentUser(-transaction.points.usedPoints);
         }
         else {
-          this.addRewardsToCurrentUser(transaction.points.earnedPoints);
+          this.addRewardsToCurrentUser(transaction.summary.earnedPoints);
         }
       })
       .finally(() => {
@@ -224,7 +225,7 @@ class PaymentLayout extends Component {
       });
   }
 
-  // Helpers
+ // Helpers
  // Updates users reward points
   addRewardsToCurrentUser = (rewardPoints) => {
     const db = firebase.firestore();
@@ -248,7 +249,7 @@ class PaymentLayout extends Component {
     const { uid } = firebase.auth().currentUser;
     const hID = this.props.match.params.hotel_id;
 
-    const { transaction } = this.calculateTransaction();
+    const transaction = this.calculateTransaction();
     const { summary } = this.state;
 
     // Update firestore with new reservation
