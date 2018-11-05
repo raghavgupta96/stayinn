@@ -268,7 +268,7 @@ class PaymentLayout extends Component {
         endDate: summary.checkOut,
         numOfNight: summary.nights,
         subtotal: transaction.summary.subtotal,
-        totalPrice: transaction.summary.subtotal + transaction.summary.tax + transaction.summary.fees,
+        totalPrice: transaction.summary.total,
         redeemedPoints: transaction.points.usedPoints,
         isCanceled: false,
         refund: 0
