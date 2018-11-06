@@ -352,15 +352,22 @@ class myBooking extends Component {
               .doc(reservationId);
 
             await resRef.get().then(doc2 => {
-              let resRewards = doc2.data().reward;
+              let resOldRewards = doc2.data().reward;
               let resOldPrice = doc2.data().totalPrice;
               let finalReward = 0;
-              if (userRewards >= resRewards) {
-                finalReward = userRewards - resRewards;
+
+              // console.log("User Rewards: ", userRewards)
+              // console.log("Res Old Rewards: ", resOldRewards);
+
+              if (userRewards >= resOldRewards) {
+                finalReward = userRewards - resOldRewards;
               }
 
-              let editResReward = (currentRes.rate * numOfNights) / 100;
-              finalReward = finalReward + editResReward;
+              let resNewReward = (currentRes.rate * numOfNights) * 10;
+              //console.log("Final Reward: ", finalReward);
+              //console.log("NEW Total: ", finalReward + resNewReward);
+              finalReward = finalReward + resNewReward;
+              //console.log("Final: ", finalReward)
 
               if (adjustedPrice < resOldPrice) {
                 // obj.state.editRefund = resOldPrice - adjustedPrice;
@@ -391,7 +398,7 @@ class myBooking extends Component {
                     startDate: startDate,
                     endDate: endDate,
                     totalPrice: adjustedPrice,
-                    reward: editResReward,
+                    reward: resNewReward,
                     numOfNight: numOfNights
                   })
                   .then(function() {
