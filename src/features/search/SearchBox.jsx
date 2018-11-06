@@ -19,7 +19,8 @@ import "react-dates/lib/css/_datepicker.css";
 import { DateRangePicker } from "react-dates";
 import bg from "./bg.jpg";
 import moment from "moment";
-import { toastr } from "react-redux-toastr";
+import Modal from "@material-ui/core/Modal";
+import CloseIcon from "@material-ui/icons/Close";
 
 const styles = theme => ({
   root: {
@@ -40,6 +41,13 @@ const styles = theme => ({
     opacity: "0.95",
     marginTop: "40px",
     zIndex: "1"
+  },
+  paper: {
+    position: 'absolute',
+    width: theme.spacing.unit * 50,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing.unit * 4,
   },
   googleSearchContainer: {
     paddingLeft: "15px",
@@ -103,6 +111,10 @@ const styles = theme => ({
     paddingRight: "5px",
     paddingLeft: "15px"
   },
+  modal_title: {
+    paddingBottom: "17px",
+    fontSize: "24px"
+  },
   rewardsBox: {}
 });
 
@@ -120,7 +132,9 @@ class SearchBox extends Component {
       disabled: false,
       reward: null,
       startDate: moment(), // set your initial start date here
-      endDate: moment().add(1, "days") // set your initial end date here
+      endDate: moment().add(1, "days"), // set your initial end date here
+      // modal
+      open: false,
     };
   }
 
@@ -288,6 +302,29 @@ class SearchBox extends Component {
     const month = temp.getMonth() + 1;
     const day = temp.getDate();
     return year + "-" + month + "-" + day;
+  }
+
+  // Close the modal 
+  handleClose = () => {
+    this.setState({
+      open: false,
+    });
+  };
+
+  rand() {
+    return Math.round(Math.random() * 20) - 10;
+  }
+
+  getModalStyle = () => {
+    const top = 50 
+    const left = 50 
+  
+    return {
+      top: `${top}%`,
+      left: `${left}%`,
+      transform: `translate(-${top}%, -${left}%)`,
+      borderRadius: 15,
+    };
   }
 
     //--------------------- Search button -----------------------------
@@ -477,14 +514,15 @@ class SearchBox extends Component {
           userReservations[reservation].startDate.getTime()
       ) {
         disabled = true;
+        this.setState( {open: true})
       }
     }
 
     // toastr gets called
-    if (disabled) {
-      // toastr.warning('Conflicting Book Dates', 'Cannot book multiple hotels during the same time period.');
-      window.alert("Conflicting reservation dates");
-    }
+    // if (disabled) {
+    //   // toastr.warning('Conflicting Book Dates', 'Cannot book multiple hotels during the same time period.');
+    //   window.alert("Conflicting reservation dates");
+    // }
 
     this.setState({ disabled });
   };
@@ -617,6 +655,39 @@ class SearchBox extends Component {
             x
           />
         </Grid>
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          open={this.state.open}
+          onClose={this.handleClose}
+        >
+          <div style={this.getModalStyle()} className={classes.paper}>
+            <Typography variant="h6" className={classes.modal_title}>
+              Alert: conflict reservation dates
+            </Typography>
+            <div></div>
+            <Typography variant="subtitle1" id="simple-modal-description">
+              Please pick a different Checkin date or Chenkout date
+            </Typography>
+            <Typography variant="subtitle1" id="simple-modal-description">
+              to enable the book button.
+            </Typography>
+            <div style={{ textAlign: "right" }}>
+                <button
+                  style={{
+                    border: "none",
+                    background: "transparent",
+                    cursor: "pointer",
+                    outline: "none"
+                  }}
+                  onClick={this.handleClose}
+                >
+                  <CloseIcon className={classes.iconHover} />
+                </button>
+            </div>
+          </div>
+        </Modal>
+
         <Grid item xs={1} md={1} lg={1} />
       </Grid>
     );
