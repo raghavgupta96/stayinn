@@ -1,6 +1,6 @@
 const reservationReducer = (state = {
-    startDate: null,
-    endDate: null,
+    startDate: new Date(),
+    endDate: new Date((new Date()).setTime( (new Date()).getTime() + 86400000 )),
     rooms: 1,
     roomType: 1,
     place: null,
