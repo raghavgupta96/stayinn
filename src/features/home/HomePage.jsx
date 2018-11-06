@@ -98,6 +98,9 @@ class HomePage extends Component {
       //update the local state
       const sDateMonmet = moment(this.props.reservation.startDate);
       this.setState({startDate: sDateMonmet});
+    }else{
+      this.props.setStartDate(new Date());
+      console.log(">>>>>>>_______new data here" + (new Date()))
     }
     if(this.props.reservation.endDate !==  null){
       const eDateMoment = moment(this.props.reservation.endDate);
@@ -106,23 +109,6 @@ class HomePage extends Component {
     if(this.props.reservation.rooms !== null ){
       this.setState({ rooms : this.props.reservation.rooms });
     }
-  }
-
-  //convert the ISO format data "2018-10-15" string to data object
-  stringToDate = date => {
-    var year = date.substring(0, 4);
-    var month = date.substring(5, 7);
-    var day = date.substring(8, 10);
-    var d = new Date(year, month - 1, day);
-    return d;
-  };
-
-  dateToString = (date) => {
-    const temp = date;
-    const year = temp.getFullYear();
-    const month = temp.getMonth() + 1;
-    const day = temp.getDate();
-    return (year + "-" + month + "-" + day);
   }
 
   _handleNumOfRoomsChange = e => {
