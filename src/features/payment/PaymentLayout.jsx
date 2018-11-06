@@ -168,7 +168,7 @@ class PaymentLayout extends Component {
         ? summary.subtotal
         : rewardsSavings;
     }
-    usedPoints = rewardsSavings * 100;
+    usedPoints = Math.floor(rewardsSavings * 100);
 
     // Calc service fee and tax
     let subtotal = summary.nights * summary.rate;
@@ -179,9 +179,7 @@ class PaymentLayout extends Component {
     // Calc earned points
     const earnedPoints = points.usePoints
       ? 0
-      : subtotal * 10;
-
-    console.log(earnedPoints);
+      : Math.floor(subtotal) * 10;
 
     return ({
       summary: {
