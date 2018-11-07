@@ -239,55 +239,57 @@ class PaymentLayout extends Component {
     this.addReservation()
       .then(() => {
         // checking if it is a guest user
-        if (!this.state.guestUser) {
+        //if (!this.state.guestUser) {
           if (points.usePoints) {
             this.addRewardsToCurrentUser(-transaction.points.usedPoints);
           } else {
             this.addRewardsToCurrentUser(transaction.summary.earnedPoints);
           }
-        }
+        //}
       })
       .finally(() => {
-        // this.props.history.push(`/profile/${firebase.auth().currentUser.uid}`);
+        this.props.history.push(`/profile/${firebase.auth().currentUser.uid}`);
         // Richard
-        if (this.state.guestUser) {
-          this.props.history.push("/");
-          toastr.success(
-            "Reservation Book!",
-            "Your booking has been reserved."
-          );
-        } else {
-          window.location.href = `/profile/${firebase.auth().currentUser.uid}`;
-        }
+        // if (this.state.guestUser) {
+        //   this.props.history.push("/");
+        //   toastr.success(
+        //     "Reservation Book!",
+        //     "Your booking has been reserved."
+        //   );
+        // } else {
+        //   window.location.href = `/profile/${firebase.auth().currentUser.uid}`;
+        // }
       });
   };
 
   // Helpers
   // Updates users reward points
-  // addRewardsToCurrentUser = rewardPoints => {
-  //   const db = firebase.firestore();
-  //   const { uid } = firebase.auth().currentUser;
-  //   if (uid) {
-  //     let docRef = firebase
-  //       .firestore()
-  //       .collection("users")
-  //       .doc(uid);
-  //     docRef.get().then(doc => {
-  //       let { reward } = doc.data();
-  //       if (doc.exists) {
-  //         db.collection("users")
-  //           .doc(uid)
-  //           .update({
-  //             reward: reward + rewardPoints
-  //           });
-  //       }
-  //     });
-  //   } else {
-  //     this.setState({
-  //       guestUser: true
-  //     });
-  //   }
-  // };
+  addRewardsToCurrentUser = rewardPoints => {
+    const db = firebase.firestore();
+    const { uid } = firebase.auth().currentUser;
+    console.log(uid);
+    if (uid) {
+      console.log("WE ARE IN")
+      let docRef = firebase
+        .firestore()
+        .collection("users")
+        .doc(uid);
+      docRef.get().then(doc => {
+        let { reward }  = doc.data();
+        if (doc.exists) {
+          db.collection("users")
+            .doc(uid)
+            .update({
+              reward: reward + rewardPoints
+            });
+        }
+      });
+    } else {
+      this.setState({
+        guestUser: true
+      });
+    }
+  };
   // Adds a reservation doc to the reservations collection and optionally updates users rewards points
   // returns a promise
   addReservation = () => {

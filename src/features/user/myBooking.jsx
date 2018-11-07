@@ -352,7 +352,8 @@ class myBooking extends Component {
 
       let numOfNights = this.datediff(startDate, endDate);
 
-      let adjustedPrice = this.state.currRes.rate * numOfNights;
+      let adjustedSubtotal = this.state.currRes.rate * numOfNights;
+      let adjustedPrice = adjustedSubtotal * 1.15;
 
       await firebase.auth().onAuthStateChanged(async function(user) {
         if (!user) {
@@ -417,6 +418,7 @@ class myBooking extends Component {
                   .update({
                     startDate: startDate,
                     endDate: endDate,
+                    subtotal: adjustedSubtotal, 
                     totalPrice: adjustedPrice,
                     reward: resNewReward,
                     numOfNight: numOfNights
@@ -527,6 +529,7 @@ class myBooking extends Component {
     const isMultipleBooking = this.state.isMultipleBooking;
     const editCharge = this.state.editCharge;
     const editRefund = this.state.editRefund;
+    const today = new Date();
     // console.log(this.props);
     // var thisRes = null;
     // console.log(this.state.reservations);
@@ -793,6 +796,7 @@ class myBooking extends Component {
                                 label="Checkin Date"
                                 type="date"
                                 value={this.state.checkinDate}
+                                minDate = {today}
                                 InputLabelProps={{
                                   shrink: true
                                 }}
