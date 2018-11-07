@@ -131,7 +131,7 @@ for (let i = expiryYearSelectStart; i <= expiryYearSelectEnd; i++) {
 }
 
 const PaymentForm = (props) => {
-  const { classes, form, points } = props;
+  const { classes, form, points, guestUser } = props;
   const { setForm, toggleRewards, checkout, cancel } = props.handlers;
 
   return (
@@ -179,7 +179,7 @@ const PaymentForm = (props) => {
       </section>
       <section className={classes.payment}>
         <h1>Payment Information</h1>
-        <div className={classes.points}>
+        {!guestUser && (<div className={classes.points}>
           <h2>Redeem Points</h2>
           <div className={classes.redeemPoints}>
             <h2>Rewards Points: {`${points.userPoints}`}</h2>
@@ -189,7 +189,7 @@ const PaymentForm = (props) => {
               onClick={toggleRewards}
             >Apply Points</Button>
           </div>
-        </div>
+        </div>)}
         <div className={classes.cardDetails}>
           <h2>Card Information</h2>
           <TextField

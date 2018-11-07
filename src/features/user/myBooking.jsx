@@ -78,7 +78,7 @@ const warningButton = ({ ...custom }) => (
 
 const modalStyle = {
   backgroundColor: "white",
-  padding: 10,
+  padding: 30,
   textAlign: "center",
   borderRadius: 10,
   marginLeft: 450,
@@ -125,7 +125,6 @@ class myBooking extends Component {
   // };
 
   async componentDidMount() {
-
     const { firebase } = this.props;
     const obj = this;
 
@@ -243,6 +242,27 @@ class myBooking extends Component {
     return Math.round(Math.random() * 20) - 10;
   }
 
+  convertDate(date) {
+    let months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ];
+    let month = months[date.getUTCMonth()];
+    let year = date.getUTCFullYear();
+    let day = date.getUTCDate();
+    return month + " " + day + ", " + year;
+  }
+
   multipleBookingCheck = (startDate, endDate) => {
     let isMultipleBooking = false;
 
@@ -278,7 +298,7 @@ class myBooking extends Component {
     this.setState({
       open: false,
       editRefund: null,
-      editCharge: null,
+      editCharge: null
     });
   };
 
@@ -293,7 +313,7 @@ class myBooking extends Component {
     this.setState({
       editOpen: false,
       editRefund: null,
-      editCharge: null,
+      editCharge: null
     });
   };
 
@@ -363,7 +383,7 @@ class myBooking extends Component {
                 finalReward = userRewards - resOldRewards;
               }
 
-              let resNewReward = (currentRes.rate * numOfNights) * 10;
+              let resNewReward = currentRes.rate * numOfNights * 10;
               //console.log("Final Reward: ", finalReward);
               //console.log("NEW Total: ", finalReward + resNewReward);
               finalReward = finalReward + resNewReward;
@@ -518,10 +538,11 @@ class myBooking extends Component {
       this.state.reservations.map(res => {
         // convert timestamps to date objects first
         // console.log(res);
-        const bookDate = res.bookDate.toDate();
-        const startDate = res.startDate.toDate();
+        // const bookDate = res.bookDate.toDate();
+        const bookDate = this.convertDate(res.bookDate.toDate());
+        const startDate = this.convertDate(res.startDate.toDate());
         // console.log(startDate);
-        const endDate = res.endDate.toDate();
+        const endDate = this.convertDate(res.endDate.toDate());
         return (
           <div key={res.reservationId}>
             {/* Only show reservation that the user has instead of all*/}
@@ -620,6 +641,18 @@ class myBooking extends Component {
                               alt="hotel pic"
                             />
                           </Grid>
+                        </Grid>
+                        <Grid
+                          xs={5}
+                          md={5}
+                          lg={5}
+                          className={classes.photoContainer}
+                        >
+                          <img
+                            src={res.photoURL}
+                            className={classes.photo}
+                            alt="hotel pic"
+                          />
                         </Grid>
                       </Paper>
                     </Grid>
@@ -915,20 +948,82 @@ class myBooking extends Component {
             {auth.uid === res.userId &&
               res.isCanceled && (
                 <div>
-                  <Grid item xs={11}>
-                    <Paper className={classes.mainpaper}>
-                      <h2>This Reservation has been Cancelled</h2>
-                      <s>
-                        {/* <h3>Reservation ID: {res.reservationId}</h3>
-                        <h3>Hotel ID: {res.HID}</h3> */}
-                        <h3>Hotel Name: {res.hotelName}</h3>
-                        <h3>Book Date: {bookDate.toString()}</h3>
-                        <h3>Check-in Date: {startDate.toString()}</h3>
-                        <h3>Check-out Date: {endDate.toString()}</h3>
-                        <h3>Total Price: ${res.totalPrice}</h3>
-                        {/* <h3>isCanceled: {String(res.isCanceled)}</h3> */}
-                      </s>
-                    </Paper>
+                  <Grid
+                    container
+                    className={classes.root}
+                    xs={12}
+                    md={12}
+                    lg={12}
+                  >
+                    <Grid item xs={11} md={11} lg={11}>
+                      <Paper style={{opacity: 0.6,}} className={classes.mainpaper}>
+                        <Grid container key={res.HID}>
+                          <Grid container xs={7} md={7} lg={7}>
+                            <Grid item xs>
+                              <Grid xs={12} md={12} lg={12}>
+                                <Typography
+                                  gutterBottom
+                                  variant="title"
+                                  className={classes.hotelTitle}
+                                >
+                                  Reservation @
+                                </Typography>
+                                <Link to={"/hotel/" + res.HID}>
+                                  <Typography
+                                    gutterBottom
+                                    variant="title"
+                                    className={classes.hotelTitle}
+                                  >
+                                    {res.hotelName}
+                                  </Typography>
+                                </Link>
+                              </Grid>
+                              <Grid
+                                item
+                                xs={12}
+                                md={12}
+                                lg={12}
+                                className={classes.hotelInfo}
+                              >
+                                <h3>Hotel Name: {res.hotelName}</h3>
+                                <h3>Book Date: {bookDate.toString()}</h3>
+                                <h3>Check-in Date: {startDate.toString()}</h3>
+                                <h3>Check-out Date: {endDate.toString()}</h3>
+                                <h3>Total Price: ${res.totalPrice}</h3>
+                                <h3>Address: {res.hotelAddress}</h3>
+                              </Grid>
+                            </Grid>
+                          </Grid>
+                          <Grid
+                            xs={5}
+                            md={5}
+                            lg={5}
+                            className={classes.photoContainer}
+                          >
+                            <img
+                              src={res.photoURL}
+                              className={classes.photo}
+                              alt="hotel pic"
+                            />
+                            <div
+                              style={{
+                                float: "right",
+                                color: "#F69A33",
+                                border: "#F69A33 solid 2px",
+                                fontSize: 40,
+                                fontWeight: 600,
+                                padding: 10,
+                                position: "absolute",
+                                top: "35%",
+                                right: "5%",
+                              }}
+                            >
+                              CANCEL
+                            </div>
+                          </Grid>
+                        </Grid>
+                      </Paper>
+                    </Grid>
                   </Grid>
                 </div>
               )}

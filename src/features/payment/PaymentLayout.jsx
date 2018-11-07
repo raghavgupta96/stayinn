@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import firebase from "../../app/config/firebase";
+import { toastr } from "react-redux-toastr";
 
 const styles = {
   paymentLayout: {
@@ -28,21 +29,24 @@ const defaults = {
 
 // returns the number of days between dates
 const dateDifference = (Date1, Date2) => {
-  return Math.round((Date2-Date1)/(1000*60*60*24));
-}
+  return Math.round((Date2 - Date1) / (1000 * 60 * 60 * 24));
+};
 
 class PaymentLayout extends Component {
   state = {
     summary: {
-      hotelName: '',
-      location: '',
+      hotelName: "",
+      location: "",
       checkIn: this.props.reservation.startDate,
       checkOut: this.props.reservation.endDate,
-      nights: dateDifference(this.props.reservation.startDate, this.props.reservation.endDate),
+      nights: dateDifference(
+        this.props.reservation.startDate,
+        this.props.reservation.endDate
+      ),
       rate: 0,
       rooms: this.props.reservation.rooms,
-      taxRate: .1, // Just keep these constants here for now in case they're fetched elsewhere
-      feesRate: .05
+      taxRate: 0.1, // Just keep these constants here for now in case they're fetched elsewhere
+      feesRate: 0.05
     },
     form: {
       firstName: "",
@@ -54,31 +58,34 @@ class PaymentLayout extends Component {
       cardNumber: "",
       cvc: "",
       expiryMonth: "",
-      expiryYear: "",
+      expiryYear: ""
     },
     points: {
       usePoints: false,
       userPoints: 0
-    }
+    },
+    guestUser: false
   };
 
   handlers = {
-    setForm: form => this.setState(prevState => ({
-      ...prevState,
-      form: {
-        ...prevState.form,
-        ...form
-      }
-    })),
+    setForm: form =>
+      this.setState(prevState => ({
+        ...prevState,
+        form: {
+          ...prevState.form,
+          ...form
+        }
+      })),
     checkout: () => this.checkout(),
     cancel: () => this.props.history.goBack(),
-    toggleRewards: () => this.setState(prevState => ({
-      ...prevState,
-      points: {
-        ...prevState.points,
-        usePoints: !prevState.points.usePoints
-      }
-    })),
+    toggleRewards: () =>
+      this.setState(prevState => ({
+        ...prevState,
+        points: {
+          ...prevState.points,
+          usePoints: !prevState.points.usePoints
+        }
+      }))
   };
 
   componentDidMount() {
@@ -86,48 +93,51 @@ class PaymentLayout extends Component {
     const id = this.props.match.params.hotel_id;
     const db = firebase.firestore();
     const hotelRef = db.collection("testingHotels").doc(id);
-    hotelRef
-      .get()
-      .then((snapShot) => {
-        const hotel = snapShot.data();
-        const summary = {
-          hotelName: hotel.name,
-          location: `${hotel.street}, ${hotel.city}, ${hotel.state} ${hotel.zip}`,
-          rate: hotel.price,
-        };
-        this.setState(prevState => ({
-          ...prevState,
-          summary: {
-            ...prevState.summary,
-            ...summary
-          }
-        }));
-      });
+    hotelRef.get().then(snapShot => {
+      const hotel = snapShot.data();
+      const summary = {
+        hotelName: hotel.name,
+        location: `${hotel.street}, ${hotel.city}, ${hotel.state} ${hotel.zip}`,
+        rate: hotel.price
+      };
+      this.setState(prevState => ({
+        ...prevState,
+        summary: {
+          ...prevState.summary,
+          ...summary
+        }
+      }));
+    });
 
     // Get rewards
-    const userRef = firebase
-      .firestore()
-      .collection("users")
-      .doc(this.props.auth.uid);
-    userRef.get().then(doc => {
-      if (doc.exists) {
-        let userPoints = doc.data().reward;
-        this.setState(prevState => ({
-          ...prevState,
-          points: {
-            ...prevState.points,
-           userPoints 
+    if (this.props.auth.uid) {
+      const userRef = firebase
+        .firestore()
+        .collection("users")
+        .doc(this.props.auth.uid);
+      userRef.get().then(doc => {
+        if (doc.exists) {
+          let userPoints = doc.data().reward;
+          this.setState(prevState => ({
+            ...prevState,
+            points: {
+              ...prevState.points,
+              userPoints
             }
-          })
-        );
-      }
-    });
+          }));
+        }
+      });
+    } else {
+      this.setState({
+        guestUser: true
+      });
+    }
   }
 
   render() {
     // PaymentSummary
     const { calculateTransaction } = this;
-    const { summary, form, points } = this.state;
+    const { summary, form, points, guestUser } = this.state;
     const { reservation } = this.props.reservation ? this.props : defaults;
 
     // PaymentForm handlers
@@ -146,10 +156,11 @@ class PaymentLayout extends Component {
           points={points} // This needs to be passed so that it re renders
           transaction={calculateTransaction}
           reservation={reservation}
-          />
+        />
         <PaymentForm
           form={form}
           points={points}
+          guestUser={guestUser}
           handlers={paymentFormHandlers}
         />
       </div>
@@ -163,25 +174,24 @@ class PaymentLayout extends Component {
     let rewardsSavings = 0;
     let usedPoints = 0;
     if (points.usePoints) {
-      rewardsSavings = points.userPoints * .01;
-      rewardsSavings = (rewardsSavings > summary.subtotal)
-        ? summary.subtotal
-        : rewardsSavings;
+      rewardsSavings = points.userPoints * 0.01;
+      rewardsSavings =
+        rewardsSavings > summary.subtotal ? summary.subtotal : rewardsSavings;
     }
     usedPoints = Math.floor(rewardsSavings * 100);
 
     // Calc service fee and tax
-    let subtotal = summary.nights * summary.rate;
+    // Make some change to subtract rewards savings
+    let subtotal = summary.nights * summary.rate - rewardsSavings;
     const tax = subtotal * summary.taxRate;
     const fees = subtotal * summary.feesRate;
-    let total = subtotal + tax + fees - rewardsSavings;
-  
-    // Calc earned points
-    const earnedPoints = points.usePoints
-      ? 0
-      : Math.floor(subtotal) * 10;
+    // let total = subtotal + tax + fees - rewardsSavings;
+    let total = subtotal + tax + fees;
 
-    return ({
+    // Calc earned points
+    const earnedPoints = points.usePoints ? 0 : Math.floor(subtotal) * 10;
+
+    return {
       summary: {
         rewardsSavings,
         earnedPoints,
@@ -193,8 +203,8 @@ class PaymentLayout extends Component {
       points: {
         usedPoints
       }
-    })
-  }
+    };
+  };
 
   checkout = () => {
     const transaction = this.calculateTransaction();
@@ -209,69 +219,112 @@ class PaymentLayout extends Component {
     };
     this.props.inputCard(card);
 
+    // await this.addReservation();
+
+    // if (!this.state.guestUser) {
+    //   if (points.usePoints) {
+    //     this.addRewardsToCurrentUser(-transaction.points.usedPoints);
+    //   } else {
+    //     this.addRewardsToCurrentUser(transaction.summary.earnedPoints);
+    //   }
+    // }
+
+    // if (!this.state.guestUser) {
+    //   window.location.href = `/profile/${firebase.auth().currentUser.uid}`;
+    // } else {
+    //   this.props.history.push("/");
+    //   toastr.success("Reservation Book!", "Your booking has been reserved.");
+    // }
+
     this.addReservation()
       .then(() => {
-        if (points.usePoints) {
-          this.addRewardsToCurrentUser(-transaction.points.usedPoints);
-        }
-        else {
-          this.addRewardsToCurrentUser(transaction.summary.earnedPoints);
+        // checking if it is a guest user
+        if (!this.state.guestUser) {
+          if (points.usePoints) {
+            this.addRewardsToCurrentUser(-transaction.points.usedPoints);
+          } else {
+            this.addRewardsToCurrentUser(transaction.summary.earnedPoints);
+          }
         }
       })
       .finally(() => {
-        this.props.history.push(`/profile/${firebase.auth().currentUser.uid}`);
-      });
-  }
-
- // Helpers
- // Updates users reward points
-  addRewardsToCurrentUser = (rewardPoints) => {
-    const db = firebase.firestore();
-    const { uid } = firebase.auth().currentUser;
-
-    let docRef = firebase.firestore().collection("users").doc(uid);
-    docRef.get()
-      .then(doc => {
-        let { reward } = doc.data();
-        if (doc.exists) {
-          db.collection("users").doc(uid).update({
-            reward: reward + rewardPoints
-          })
+        // this.props.history.push(`/profile/${firebase.auth().currentUser.uid}`);
+        // Richard
+        if (this.state.guestUser) {
+          this.props.history.push("/");
+          toastr.success(
+            "Reservation Book!",
+            "Your booking has been reserved."
+          );
+        } else {
+          window.location.href = `/profile/${firebase.auth().currentUser.uid}`;
         }
-      })
-  }
+      });
+  };
+
+  // Helpers
+  // Updates users reward points
+  // addRewardsToCurrentUser = rewardPoints => {
+  //   const db = firebase.firestore();
+  //   const { uid } = firebase.auth().currentUser;
+  //   if (uid) {
+  //     let docRef = firebase
+  //       .firestore()
+  //       .collection("users")
+  //       .doc(uid);
+  //     docRef.get().then(doc => {
+  //       let { reward } = doc.data();
+  //       if (doc.exists) {
+  //         db.collection("users")
+  //           .doc(uid)
+  //           .update({
+  //             reward: reward + rewardPoints
+  //           });
+  //       }
+  //     });
+  //   } else {
+  //     this.setState({
+  //       guestUser: true
+  //     });
+  //   }
+  // };
   // Adds a reservation doc to the reservations collection and optionally updates users rewards points
   // returns a promise
   addReservation = () => {
     const db = firebase.firestore();
-    const { uid } = firebase.auth().currentUser;
+    let uid = "";
+
+    if (firebase.auth().currentUser) {
+      uid = firebase.auth().currentUser.uid;
+    }
+
     const hID = this.props.match.params.hotel_id;
 
     const transaction = this.calculateTransaction();
     const { summary } = this.state;
 
+    console.log("uid before saved: ", uid);
     // Update firestore with new reservation
-    return db.collection("reservations")
-      .add({
-        // user
-        userId: uid,
-        // hotel
-        HID: hID,
-        hotelName: summary.hotelName,
-        location: summary.location,
-        rate: summary.rate,
-        // reservation
-        bookDate: new Date(),
-        startDate: summary.checkIn,
-        endDate: summary.checkOut,
-        numOfNight: summary.nights,
-        subtotal: transaction.summary.subtotal,
-        totalPrice: transaction.summary.total,
-        redeemedPoints: transaction.points.usedPoints,
-        isCanceled: false,
-        refund: 0
-      })
-  }
+    return db.collection("reservations").add({
+      // user
+      userId: uid,
+      // hotel
+      HID: hID,
+      hotelName: summary.hotelName,
+      location: summary.location,
+      rate: summary.rate,
+      // reservation
+      bookDate: new Date(),
+      startDate: summary.checkIn,
+      endDate: summary.checkOut,
+      numOfNight: summary.nights,
+      subtotal: transaction.summary.subtotal,
+      totalPrice: transaction.summary.total,
+      redeemedPoints: transaction.points.usedPoints,
+      isCanceled: false,
+      refund: 0
+    });
+  };
 }
 
 const mapStateToProps = state => ({
@@ -280,7 +333,7 @@ const mapStateToProps = state => ({
   auth: state.firebase.auth
 });
 const mapDispatchToProps = dispatch => ({
-  inputCard: card => dispatch(inputCard(card)),
+  inputCard: card => dispatch(inputCard(card))
 });
 
 export default connect(

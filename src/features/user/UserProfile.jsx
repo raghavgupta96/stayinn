@@ -101,7 +101,7 @@ class UserProfile extends Component {
       docRef.get().then(doc => {
         if (doc.exists) {
           console.log("user data", doc.data());
-          let fixedReward = doc.data().reward.toFixed(2);
+          let fixedReward = doc.data().reward;
           obj.setState({
             showPhone: doc.data().phoneNumber,
             showReward: fixedReward
