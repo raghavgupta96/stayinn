@@ -642,18 +642,6 @@ class myBooking extends Component {
                             />
                           </Grid>
                         </Grid>
-                        <Grid
-                          xs={5}
-                          md={5}
-                          lg={5}
-                          className={classes.photoContainer}
-                        >
-                          <img
-                            src={res.photoURL}
-                            className={classes.photo}
-                            alt="hotel pic"
-                          />
-                        </Grid>
                       </Paper>
                     </Grid>
                     <Grid item xs={1} md={1} lg={1} />
@@ -948,82 +936,20 @@ class myBooking extends Component {
             {auth.uid === res.userId &&
               res.isCanceled && (
                 <div>
-                  <Grid
-                    container
-                    className={classes.root}
-                    xs={12}
-                    md={12}
-                    lg={12}
-                  >
-                    <Grid item xs={11} md={11} lg={11}>
-                      <Paper style={{opacity: 0.6,}} className={classes.mainpaper}>
-                        <Grid container key={res.HID}>
-                          <Grid container xs={7} md={7} lg={7}>
-                            <Grid item xs>
-                              <Grid xs={12} md={12} lg={12}>
-                                <Typography
-                                  gutterBottom
-                                  variant="title"
-                                  className={classes.hotelTitle}
-                                >
-                                  Reservation @
-                                </Typography>
-                                <Link to={"/hotel/" + res.HID}>
-                                  <Typography
-                                    gutterBottom
-                                    variant="title"
-                                    className={classes.hotelTitle}
-                                  >
-                                    {res.hotelName}
-                                  </Typography>
-                                </Link>
-                              </Grid>
-                              <Grid
-                                item
-                                xs={12}
-                                md={12}
-                                lg={12}
-                                className={classes.hotelInfo}
-                              >
-                                <h3>Hotel Name: {res.hotelName}</h3>
-                                <h3>Book Date: {bookDate.toString()}</h3>
-                                <h3>Check-in Date: {startDate.toString()}</h3>
-                                <h3>Check-out Date: {endDate.toString()}</h3>
-                                <h3>Total Price: ${res.totalPrice}</h3>
-                                <h3>Address: {res.hotelAddress}</h3>
-                              </Grid>
-                            </Grid>
-                          </Grid>
-                          <Grid
-                            xs={5}
-                            md={5}
-                            lg={5}
-                            className={classes.photoContainer}
-                          >
-                            <img
-                              src={res.photoURL}
-                              className={classes.photo}
-                              alt="hotel pic"
-                            />
-                            <div
-                              style={{
-                                float: "right",
-                                color: "#F69A33",
-                                border: "#F69A33 solid 2px",
-                                fontSize: 40,
-                                fontWeight: 600,
-                                padding: 10,
-                                position: "absolute",
-                                top: "35%",
-                                right: "5%",
-                              }}
-                            >
-                              CANCEL
-                            </div>
-                          </Grid>
-                        </Grid>
-                      </Paper>
-                    </Grid>
+                  <Grid item xs={11}>
+                    <Paper className={classes.mainpaper}>
+                      <h2>This Reservation has been Cancelled</h2>
+                      <s>
+                        {/* <h3>Reservation ID: {res.reservationId}</h3>
+                        <h3>Hotel ID: {res.HID}</h3> */}
+                        <h3>Hotel Name: {res.hotelName}</h3>
+                        <h3>Book Date: {bookDate.toString()}</h3>
+                        <h3>Check-in Date: {startDate.toString()}</h3>
+                        <h3>Check-out Date: {endDate.toString()}</h3>
+                        <h3>Total Price: ${res.totalPrice}</h3>
+                        {/* <h3>isCanceled: {String(res.isCanceled)}</h3> */}
+                      </s>
+                    </Paper>
                   </Grid>
                 </div>
               )}
