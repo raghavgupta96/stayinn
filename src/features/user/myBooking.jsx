@@ -78,7 +78,7 @@ const warningButton = ({ ...custom }) => (
 
 const modalStyle = {
   backgroundColor: "white",
-  padding: 10,
+  padding: 30,
   textAlign: "center",
   borderRadius: 10,
   marginLeft: 450,
@@ -125,7 +125,6 @@ class myBooking extends Component {
   // };
 
   async componentDidMount() {
-
     const { firebase } = this.props;
     const obj = this;
 
@@ -243,6 +242,27 @@ class myBooking extends Component {
     return Math.round(Math.random() * 20) - 10;
   }
 
+  convertDate(date) {
+    let months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ];
+    let month = months[date.getUTCMonth()];
+    let year = date.getUTCFullYear();
+    let day = date.getUTCDate();
+    return month + " " + day + ", " + year;
+  }
+
   multipleBookingCheck = (startDate, endDate) => {
     let isMultipleBooking = false;
 
@@ -278,7 +298,7 @@ class myBooking extends Component {
     this.setState({
       open: false,
       editRefund: null,
-      editCharge: null,
+      editCharge: null
     });
   };
 
@@ -293,7 +313,7 @@ class myBooking extends Component {
     this.setState({
       editOpen: false,
       editRefund: null,
-      editCharge: null,
+      editCharge: null
     });
   };
 
@@ -332,7 +352,8 @@ class myBooking extends Component {
 
       let numOfNights = this.datediff(startDate, endDate);
 
-      let adjustedPrice = this.state.currRes.rate * numOfNights;
+      let adjustedSubtotal = this.state.currRes.rate * numOfNights;
+      let adjustedPrice = adjustedSubtotal * 1.15;
 
       await firebase.auth().onAuthStateChanged(async function(user) {
         if (!user) {
@@ -363,7 +384,7 @@ class myBooking extends Component {
                 finalReward = userRewards - resOldRewards;
               }
 
-              let resNewReward = (currentRes.rate * numOfNights) * 10;
+              let resNewReward = currentRes.rate * numOfNights * 10;
               //console.log("Final Reward: ", finalReward);
               //console.log("NEW Total: ", finalReward + resNewReward);
               finalReward = finalReward + resNewReward;
@@ -397,6 +418,7 @@ class myBooking extends Component {
                   .update({
                     startDate: startDate,
                     endDate: endDate,
+                    subtotal: adjustedSubtotal, 
                     totalPrice: adjustedPrice,
                     reward: resNewReward,
                     numOfNight: numOfNights
@@ -451,14 +473,12 @@ class myBooking extends Component {
           userRef.get().then(doc => {
             if (doc.exists) {
               let userRewards = doc.data().reward;
-
               let resRef = firebase
                 .firestore()
                 .collection("reservations")
                 .doc(reservationId);
               resRef.get().then(doc2 => {
                 let resRewards = doc2.data().reward;
-
                 let finalReward = 0;
                 if (userRewards >= resRewards) {
                   finalReward = userRewards - resRewards;
@@ -507,6 +527,7 @@ class myBooking extends Component {
     const isMultipleBooking = this.state.isMultipleBooking;
     const editCharge = this.state.editCharge;
     const editRefund = this.state.editRefund;
+    const today = new Date();
     // console.log(this.props);
     // var thisRes = null;
     // console.log(this.state.reservations);
@@ -518,10 +539,11 @@ class myBooking extends Component {
       this.state.reservations.map(res => {
         // convert timestamps to date objects first
         // console.log(res);
-        const bookDate = res.bookDate.toDate();
-        const startDate = res.startDate.toDate();
+        // const bookDate = res.bookDate.toDate();
+        const bookDate = this.convertDate(res.bookDate.toDate());
+        const startDate = this.convertDate(res.startDate.toDate());
         // console.log(startDate);
-        const endDate = res.endDate.toDate();
+        const endDate = this.convertDate(res.endDate.toDate());
         return (
           <div key={res.reservationId}>
             {/* Only show reservation that the user has instead of all*/}
@@ -772,6 +794,7 @@ class myBooking extends Component {
                                 label="Checkin Date"
                                 type="date"
                                 value={this.state.checkinDate}
+                                minDate = {today}
                                 InputLabelProps={{
                                   shrink: true
                                 }}

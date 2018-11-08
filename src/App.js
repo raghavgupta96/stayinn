@@ -24,12 +24,12 @@ class App extends Component {
       <MuiThemeProvider theme={theme}>
         <NavBar theme={theme} />
         {/* notification */}
-        <ReduxToastr
+        {/* <ReduxToastr
           sleep={7000}
           position="top-center"
           transitionIn="fadeIn"
           transitionOut="fadeOut"
-        />
+        /> */}
         <Switch>
           {/* Adding exact to prevent home page showing when there is '/' in web address */}
           <Route exact path="/" component={HomePage} />
@@ -54,7 +54,8 @@ class App extends Component {
                 <Route path="/search" component={searchBox} />
                 {/* an individual hotel page  */}
                 <Route path="/hotel/:hotel_id" component={Hotel} />
-                <Route path="/populate" component={PopulateHotels} />
+                <Route path="/populate" component={PopulateHotels} /> 
+
               </Switch>
             </div>
           )}

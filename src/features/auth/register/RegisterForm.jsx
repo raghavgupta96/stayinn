@@ -2,6 +2,7 @@ import React from "react";
 import { Field, reduxForm, reset } from "redux-form";
 import { connect } from "react-redux";
 import { registerUser, socialLogin } from "../authActions";
+import { Link } from "react-router-dom";
 
 //Material UI components
 import renderTextField from "../../../app/common/form/TextInput";
@@ -51,7 +52,15 @@ const styles = theme => ({
   },
   divider: {
     width: "100%",
-    margin: "15px 0px",
+    margin: "15px 0px"
+  },
+  linkHover: {
+    margin: theme.spacing.unit * 2,
+    color: "lightGray",
+    "&:hover": {
+      color: "Gray",
+      transition: "color 300ms"
+    }
   }
 });
 
@@ -98,6 +107,23 @@ const RegisterForm = ({
                   component={renderPasswordField}
                 />
                 <Grid container justify="center">
+                <Link
+                    to="/login"
+                    style={{
+                      flex: 1,
+                      textDecoration: "none"
+                    }}
+                  >
+                <Typography
+                  variant="body2"
+                  className={classes.linkHover}
+                  style={{ margin: 0, float: "right" }}
+                >
+                  Already have an account? Log in
+                </Typography>
+                </Link>
+                </Grid>
+                <Grid container justify="center">
                   <Button
                     disabled={invalid || submitting}
                     component={SubmitButton}
@@ -108,7 +134,7 @@ const RegisterForm = ({
                     {error && <Typography color="error">{error}</Typography>}
                   </div>
                 </Grid>
-                <div style={{textAlign: "center"}}>
+                <div style={{ textAlign: "center" }}>
                   <Divider className={classes.divider} />
                   <SocialLogin socialLogin={socialLogin} />
                 </div>
