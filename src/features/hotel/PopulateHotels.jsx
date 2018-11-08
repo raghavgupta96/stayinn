@@ -26,6 +26,9 @@ const styles = theme => ({
       paddingRight: 20,
       paddingBottom: 30,
       margin: 30
+    },
+    pad: {
+        padding: 25
     }
 });
 
@@ -117,7 +120,7 @@ class PopulateHotels extends Component  {
                 <Grid item xs="6">
                     <h1>Populate Hotels</h1>
                     <Paper className={classes.paper}>
-                        <div>
+                        <div className={classes.pad}>  
                             <TextField
                                 id="city"
                                 label="city"
@@ -125,18 +128,17 @@ class PopulateHotels extends Component  {
                                 onChange={this.handleChange.bind(this)}
                             />
                         </div>
-                        <div>
+                        <div className={classes.pad}>
                             <TextField
                                 id="description"
                                 label="description of hotel"
                                 multiline={true}
-                                rows={2}
                                 rowsMax={4}
                                 fullWidth
                                 onChange={this.handleChange.bind(this)}
                             />
                         </div>
-                        <div>
+                        <div className={classes.pad}>
                             <TextField
                                 id="name"
                                 label="hotel name"
@@ -144,7 +146,7 @@ class PopulateHotels extends Component  {
                                 onChange={this.handleChange.bind(this)}
                             />
                         </div>
-                        <div>
+                        <div className={classes.pad}>
                             <TextField
                                 id="photoURL"
                                 label="photoURL"
@@ -152,7 +154,7 @@ class PopulateHotels extends Component  {
                                 onChange={this.handleChange.bind(this)}
                             /> 
                         </div>
-                        <div>
+                        <div className={classes.pad}>
                             <TextField
                                 id="photoURL2"
                                 label="photoURL2"
@@ -160,7 +162,7 @@ class PopulateHotels extends Component  {
                                 onChange={this.handleChange.bind(this)}
                             />
                         </div>
-                        <div>
+                        <div className={classes.pad}>
                             <TextField
                                 id="rating"
                                 label="rating (out of 5)"
@@ -168,7 +170,7 @@ class PopulateHotels extends Component  {
                                 onChange={this.handleIntChange.bind(this)}
                             />
                         </div>
-                        <div>
+                        <div className={classes.pad}>
                             <TextField
                                 id="price"
                                 label="room price"
@@ -176,7 +178,7 @@ class PopulateHotels extends Component  {
                                 onChange={this.handleIntChange.bind(this)}
                             />
                         </div>
-                        <div>
+                        <div className={classes.pad}>
                             <TextField
                                 id="state"
                                 label="state (spell out and capitalize first letter)"
@@ -184,7 +186,7 @@ class PopulateHotels extends Component  {
                                 onChange={this.handleChange.bind(this)}
                             />
                         </div>
-                        <div>
+                        <div className={classes.pad}>
                             <TextField
                                 id="street"    
                                 label="street"
@@ -192,7 +194,7 @@ class PopulateHotels extends Component  {
                                 onChange={this.handleChange.bind(this)}
                             />
                         </div>
-                        <div>
+                        <div className={classes.pad}>
                             <TextField
                                 id="type"
                                 label="type (only motel or hotel....lowercase)"
@@ -200,7 +202,7 @@ class PopulateHotels extends Component  {
                                 onChange={this.handleChange.bind(this)}
                             />
                         </div>
-                        <div>
+                        <div className={classes.pad}>
                             <TextField
                                 id="zip"                           
                                 label="zip"
@@ -208,7 +210,7 @@ class PopulateHotels extends Component  {
                                 onChange={this.handleChange.bind(this)}
                             />
                         </div>
-                        <div style={{padding: 10}}>
+                        <div className={classes.pad}>
                             <Typography>Bar</Typography>
                             <Select
                                 value={this.state.bar}
@@ -219,7 +221,7 @@ class PopulateHotels extends Component  {
                                 <MenuItem value={false}>false</MenuItem>
                             </Select>
                         </div>
-                        <div style={{padding: 10}}>
+                        <div className={classes.pad}>
                             <Typography>Gym</Typography>
                             <Select
                                 value={this.state.gym}
@@ -230,7 +232,7 @@ class PopulateHotels extends Component  {
                                 <MenuItem value={false}>false</MenuItem>
                             </Select>                          
                         </div>                     
-                        <div style={{padding: 10}}>
+                        <div className={classes.pad}>
                             <Typography>Swimming Pool</Typography>
                             <Select
                                 value={this.state.swimmingPool}
@@ -241,7 +243,7 @@ class PopulateHotels extends Component  {
                                 <MenuItem value={false}>false</MenuItem>
                             </Select>                       
                         </div>
-                        <div style={{padding: 10}}>
+                        <div className={classes.pad}>
                             <Button 
                                 variant="contained" 
                                 color="primary" 
