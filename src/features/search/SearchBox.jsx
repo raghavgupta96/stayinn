@@ -185,7 +185,6 @@ class SearchBox extends Component {
             hotels.push({
               name: doc.data().name,
               hID: doc.id,
-              room_cap: doc.data().maxBeds,
               photoUrl: doc.data().photoURL,
               type: doc.data().type,
               price: doc.data().price,
@@ -222,7 +221,6 @@ class SearchBox extends Component {
               hotels.push({
                 name: doc.data().name,
                 hID: doc.id,
-                room_cap: doc.data().maxBeds,
                 photoUrl: doc.data().photoURL,
                 type: doc.data().type,
                 price: doc.data().price,
@@ -311,10 +309,6 @@ class SearchBox extends Component {
     });
   };
 
-  rand() {
-    return Math.round(Math.random() * 20) - 10;
-  }
-
   getModalStyle = () => {
     const top = 50 
     const left = 50 
@@ -354,7 +348,6 @@ class SearchBox extends Component {
             hotels.push({
               name: doc.data().name,
               hID: doc.id,
-              room_cap: doc.data().maxBeds,
               photoUrl: doc.data().photoURL,
               type: doc.data().type,
               price: doc.data().price,
@@ -428,7 +421,6 @@ class SearchBox extends Component {
             hotels.push({
               name: doc.data().name,
               hID: doc.id,
-              room_cap: doc.data().maxBeds,
               photoUrl: doc.data().photoURL,
               type: doc.data().type,
               price: doc.data().price,
