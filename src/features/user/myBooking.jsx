@@ -473,14 +473,12 @@ class myBooking extends Component {
           userRef.get().then(doc => {
             if (doc.exists) {
               let userRewards = doc.data().reward;
-
               let resRef = firebase
                 .firestore()
                 .collection("reservations")
                 .doc(reservationId);
               resRef.get().then(doc2 => {
                 let resRewards = doc2.data().reward;
-
                 let finalReward = 0;
                 if (userRewards >= resRewards) {
                   finalReward = userRewards - resRewards;

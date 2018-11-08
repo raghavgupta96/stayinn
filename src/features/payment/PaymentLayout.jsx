@@ -236,6 +236,7 @@ class PaymentLayout extends Component {
     //   toastr.success("Reservation Book!", "Your booking has been reserved.");
     // }
 
+    // Re-format this part to make reward point display after the redirection in reservation
     this.addReservation().then(async () => {
       // checking if it is a guest user
       if (!this.state.guestUser) {
@@ -267,6 +268,8 @@ class PaymentLayout extends Component {
 
   // Helpers
   // Updates users reward points
+  // Re-format it to make sure correct user reward points after redirection
+  // after the login
   async addRewardsToCurrentUser(rewardPoints) {
     const db = firebase.firestore();
     const { uid } = firebase.auth().currentUser;
@@ -325,6 +328,8 @@ class PaymentLayout extends Component {
       numOfNight: summary.nights,
       subtotal: transaction.summary.subtotal,
       totalPrice: transaction.summary.total,
+      // store reward points for calculation in editting and cancelling the hotel
+      reward: transaction.summary.subtotal * 10,
       redeemedPoints: transaction.points.usedPoints,
       isCanceled: false,
       refund: 0
