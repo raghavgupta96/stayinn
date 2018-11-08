@@ -74,7 +74,7 @@ const SearchResult = ({ hotels, classes, disabled }) => {
   const hotelList = hotels.length ? (
     hotels.map(hotel => {
       //filter goes here
-      return hotel.room_cap >= 2 ? (
+      return  (
         // this is for for an individual hotel card below
         <Grid container className={classes.root} xs={12} md={12} lg={12}>
           <Grid item xs={11} md={11} lg={11}>
@@ -236,17 +236,7 @@ const SearchResult = ({ hotels, classes, disabled }) => {
           </Grid>
           <Grid item xs={1} md={1} lg={1} />
         </Grid>
-      ) : // <div key={hotel.id}>
-      //     <img src={hotel.photoUrl} alt="hotel phote" height="50" width="80"/>
-      //     <Link to={'/hotel/' + hotel.hID}>
-      //       <div>Hotel name: {hotel.name}</div>
-      //     </Link>
-      //     <div>Hotel ID: {hotel.hID}</div>
-      //     <div>Hotel room max capacity: {hotel.room_cap}</div>
-      //     <div>________________</div>
-
-      // </div>
-      null;
+      ) 
     })
   ) : (
     // <p> There is no hotel match your searching.</p>
