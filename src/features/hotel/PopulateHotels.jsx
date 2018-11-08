@@ -123,7 +123,7 @@ class PopulateHotels extends Component  {
                         <div className={classes.pad}>  
                             <TextField
                                 id="city"
-                                label="city"
+                                label="city (Capitalize first letter of each word)"
                                 fullWidth
                                 onChange={this.handleChange.bind(this)}
                             />
@@ -149,7 +149,7 @@ class PopulateHotels extends Component  {
                         <div className={classes.pad}>
                             <TextField
                                 id="photoURL"
-                                label="photoURL"
+                                label="photoURL (cozy indoor pic)"
                                 fullWidth
                                 onChange={this.handleChange.bind(this)}
                             /> 
@@ -157,7 +157,7 @@ class PopulateHotels extends Component  {
                         <div className={classes.pad}>
                             <TextField
                                 id="photoURL2"
-                                label="photoURL2"
+                                label="photoURL2 (cozy outdoor pic)"
                                 fullWidth
                                 onChange={this.handleChange.bind(this)}
                             />
@@ -165,7 +165,7 @@ class PopulateHotels extends Component  {
                         <div className={classes.pad}>
                             <TextField
                                 id="rating"
-                                label="rating (out of 5)"
+                                label="rating (number out of 5)"
                                 fullWidth
                                 onChange={this.handleIntChange.bind(this)}
                             />
@@ -173,7 +173,7 @@ class PopulateHotels extends Component  {
                         <div className={classes.pad}>
                             <TextField
                                 id="price"
-                                label="room price"
+                                label="room price (number)"
                                 fullWidth
                                 onChange={this.handleIntChange.bind(this)}
                             />
