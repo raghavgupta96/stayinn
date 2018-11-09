@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PaymentSummary from "./summary/PaymentSummary";
 import PaymentForm from "./form/PaymentForm";
+import Grid from "@material-ui/core/Grid";
 import { inputCard } from "./PaymentBackend";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -150,20 +151,24 @@ class PaymentLayout extends Component {
     };
 
     return (
-      <div className={this.props.classes.paymentLayout}>
+      <Grid container className={this.props.classes.paymentLayout} xs={12} md={12} lg={12}>
+        <Grid container className={this.props.classes.paymentLayout} xs={12} md={5} lg={5}>
         <PaymentSummary
           summary={summary}
           points={points} // This needs to be passed so that it re renders
           transaction={calculateTransaction}
           reservation={reservation}
         />
+        </Grid>
+        <Grid container className={this.props.classes.paymentLayout} xs={12} md={5} lg={5}>
         <PaymentForm
           form={form}
           points={points}
           guestUser={guestUser}
           handlers={paymentFormHandlers}
         />
-      </div>
+        </Grid>
+      </Grid>
     );
   }
 

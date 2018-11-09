@@ -1,11 +1,12 @@
 import React from 'react';
+import Grid from "@material-ui/core/Grid";
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
   paymentSummary: {
     display: 'flex',
     flexFlow: 'column nowrap',
-    minWidth: '560px',
+    minWidth: '150px',
     margin: '16px',
     boxShadow: '0 2px 10px -3px black',
     '& h2': {
@@ -99,7 +100,7 @@ const paymentSummary = props => {
 
 
   return (
-    <div className={classes.paymentSummary}>
+    <Grid container className={classes.paymentSummary} xs={12} md={12} lg={12}>
       <div className={classes.content}>
         <h1>Trip Summary</h1>
         <section>
@@ -138,7 +139,7 @@ const paymentSummary = props => {
         <h2>StayInn total</h2>
         <h2>USD {total}</h2>
       </div>
-    </div>
+    </Grid>
   )
 };
 
