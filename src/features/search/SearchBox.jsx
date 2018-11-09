@@ -596,7 +596,7 @@ class SearchBox extends Component {
                       this.setState({ focusedInput });
                     }}
                     style={{
-                      zIndex: "999"
+                      zIndex: "0"
                     }}
                   />
                 </Grid>
@@ -659,7 +659,7 @@ class SearchBox extends Component {
             </Typography>
             <div></div>
             <Typography variant="subtitle1" id="simple-modal-description">
-              Please pick a different Checkin date or Chenkout date
+              Please pick a different Checkin date or Checkout date
             </Typography>
             <Typography variant="subtitle1" id="simple-modal-description">
               to enable the book button.

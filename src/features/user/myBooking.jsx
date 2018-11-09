@@ -12,6 +12,8 @@ import Paper from "@material-ui/core/Paper";
 import { Link } from "react-router-dom";
 import CloseIcon from "@material-ui/icons/Close";
 import Divider from "@material-ui/core/Divider";
+import { DateRangePicker } from "react-dates";
+import moment from "moment";
 
 const styles = theme => ({
   dateContainer: {
@@ -110,7 +112,9 @@ class myBooking extends Component {
       userCard: null,
       editRefund: null,
       editCharge: null,
-      saveEdit: false
+      saveEdit: false,
+      startDate: moment(), // set your initial start date here
+      endDate: moment().add(1, "days"), // set your initial end date here
     };
     this.state = this.state;
   }
@@ -125,6 +129,19 @@ class myBooking extends Component {
   // };
 
   async componentDidMount() {
+
+    // initialize the calendar dates for edit dates of reservation
+    const startDateObj = new Date(this.state.startDate);
+    const startDateStr = this.dateToString(startDateObj);
+
+    const endDateObj = new Date(this.state.endDate);
+    const endDateStr = this.dateToString(endDateObj);
+
+    this.setState({
+      checkin: startDateStr,
+      checkout: endDateStr,
+    });
+
     const { firebase } = this.props;
     const obj = this;
 
@@ -223,6 +240,29 @@ class myBooking extends Component {
       checkout: e.target.value
     });
   };
+
+  // for airbnb calendar
+  handleDatesChange = ({ startDate, endDate }) => {
+
+    const startDateObj = new Date(startDate);
+    const startDateStr = this.dateToString(startDateObj);
+
+    const endDateObj = new Date(endDate);
+    const endDateStr = this.dateToString(endDateObj);
+
+    this.setState({
+      checkin: startDateStr,
+      checkout: endDateStr,
+    });
+  }
+
+  dateToString = (date) => {
+    const temp = date;
+    const year = temp.getFullYear();
+    const month = temp.getMonth() + 1;
+    const day = temp.getDate();
+    return year + "-" + month + "-" + day;
+  }
 
   dateCheck = (date1, date2) => {
     // Split checkin and checkout dates to separate year, month, day
@@ -780,43 +820,31 @@ class myBooking extends Component {
                           <CloseIcon className={classes.iconHover} />
                         </button>
                       </div>
-                      <div>
+                      <div sytle={{display: "inline-block"}}>
                         <Typography style={regTextStyle}>
                           Select a new checkin and checkout date for your
                           reservation.
                         </Typography>
                         <br />
-                        <Grid container spacing={24}>
-                          <Grid item xs={6}>
-                            <form className={classes.dateContainer} noValidate>
-                              <TextField
-                                id="date"
-                                label="Checkin Date"
-                                type="date"
-                                value={this.state.checkinDate}
-                                minDate = {today}
-                                InputLabelProps={{
-                                  shrink: true
-                                }}
-                                onChange={this._handleCheckinDate}
-                              />
-                            </form>
-                          </Grid>
-                          <Grid item xs={6}>
-                            <form className={classes.dateContainer} noValidate>
-                              <TextField
-                                id="date"
-                                label="Checkout Date"
-                                type="date"
-                                value={this.state.checkoutDate}
-                                InputLabelProps={{
-                                  shrink: true
-                                }}
-                                onChange={this._handleCheckoutDate}
-                              />
-                            </form>
-                          </Grid>
-                        </Grid>
+ 
+                     
+                            <DateRangePicker
+                              startDateId="startDate"
+                              endDateId="endDate"
+                              startDate={this.state.startDate}
+                              endDate={this.state.endDate}
+                              onDatesChange={({ startDate, endDate }) => {
+                                this.setState({ startDate, endDate });
+                                this.handleDatesChange({ startDate, endDate });
+                              }}
+                              focusedInput={this.state.focusedInput}
+                              onFocusChange={focusedInput => {
+                                this.setState({ focusedInput });
+                              }}
+                              style={{
+                                zIndex: "0"
+                              }}
+                            />
                       </div>
                       <Grid padding={20} spacing={24}>
                         <div>
@@ -915,6 +943,7 @@ class myBooking extends Component {
                                   this.state.currRes.reservationId
                                 );
                               }}
+                              sytle={{padding:"20px"}}
                             >
                               Yes
                             </Button>
