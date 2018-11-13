@@ -182,16 +182,19 @@ class UserProfile extends Component {
                   justify="center"
                   spacing={16}
                 >
-                  <Grid item xs={4}>
-                    <h1 style={{textAlign: "center",}}>User Profile</h1>
-                    <Paper className={classes.paper}style={{textAlign: "center",}}>
+                  <Grid item xs={12} md={12} lg={4}>
+                    <h1 style={{ textAlign: "center" }}>User Profile</h1>
+                    <Paper
+                      className={classes.paper}
+                      style={{ textAlign: "center" }}
+                    >
                       {auth.photoURL && (
                         <img
                           width="200"
                           height="200"
                           src={auth.photoURL}
                           alt=""
-                          style={{borderRadius: "100%"}}
+                          style={{ borderRadius: "100%" }}
                         />
                       )}
                       {!auth.photoURL && (
@@ -226,7 +229,7 @@ class UserProfile extends Component {
                       </Button>
                     </Paper>
                   </Grid>
-                  <Grid item xs={8}>
+                  <Grid item xs={12} md={12} lg={8}>
                     <MyBooking />
                   </Grid>
                 </Grid>
@@ -241,11 +244,11 @@ class UserProfile extends Component {
                   justify="center"
                   spacing={16}
                 >
-                  <Grid item xs={4}>
+                  <Grid item xs={12} md={12} lg={4}>
                     <h1>Update Profile</h1>
                     <EditInfoForm userProfile={this} />
                   </Grid>
-                  <Grid item xs={8}>
+                  <Grid item xs={12} md={12} lg={8}>
                     <MyBooking />
                   </Grid>
                 </Grid>
