@@ -9,9 +9,9 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Paper from "@material-ui/core/Paper";
+import Divider from "@material-ui/core/Divider";
 import { Link } from "react-router-dom";
 import CloseIcon from "@material-ui/icons/Close";
-import Divider from "@material-ui/core/Divider";
 import { DateRangePicker } from "react-dates";
 import moment from "moment";
 
@@ -27,17 +27,22 @@ const styles = theme => ({
     margin: theme.spacing.unit * 2
   },
   photo: {
-    width: "100%"
+    width: "100%",
+    height: "100%",
+    objectFit: "cover"
   },
   photoContainer: {
-    marginTop: "5px"
+    marginTop: "0px"
   },
   mainpaper: {
-    paddingTop: 30,
+    marginBottom: 20,
+  },
+  reservationDetails: {
+    width: "100%",
+    marginTop: "15px",
     paddingLeft: 20,
     paddingRight: 20,
-    paddingBottom: 30,
-    marginBottom: 20
+    paddingBottom: 20,
   },
   customButton: {
     marginRight: 10
@@ -53,7 +58,12 @@ const styles = theme => ({
       color: "Gray",
       transition: "color 300ms"
     }
-  }
+  },
+  divider: {
+    width: "90%",
+    marginTop: "10px",
+    marginLeft: "10px",
+  },
 });
 
 const actions = {};
@@ -195,7 +205,7 @@ class myBooking extends Component {
                   startDate: doc.data().startDate,
                   endDate: doc.data().endDate,
                   bookDate: doc.data().bookDate,
-                  totalPrice: doc.data().totalPrice,
+                  totalPrice: doc.data().totalPrice.toFixed(2), // added precision to the price (;
                   userId: doc.data().userId,
                   isCanceled: doc.data().isCanceled,
                   photoURL: hotelDoc.data().photoURL,
@@ -600,7 +610,8 @@ class myBooking extends Component {
                     <Grid item xs={11} md={11} lg={11}>
                       <Paper className={classes.mainpaper}>
                         <Grid container key={res.HID}>
-                          <Grid container xs={7} md={7} lg={7}>
+                          <Grid container xs={7} md={7} lg={7}
+                            className={classes.reservationDetails}>
                             <Grid item xs>
                               <Grid xs={12} md={12} lg={12}>
                                 <Typography
@@ -618,6 +629,7 @@ class myBooking extends Component {
                                   >
                                     {res.hotelName}
                                   </Typography>
+                                  <Divider className={classes.divider}/>
                                 </Link>
                               </Grid>
                               <Grid
@@ -629,8 +641,10 @@ class myBooking extends Component {
                               >
                                 <h3>Hotel Name: {res.hotelName}</h3>
                                 <h3>Book Date: {bookDate.toString()}</h3>
+                                <Divider className={classes.divider}/>
                                 <h3>Check-in Date: {startDate.toString()}</h3>
                                 <h3>Check-out Date: {endDate.toString()}</h3>
+                                <Divider className={classes.divider}/>
                                 <h3>Total Price: ${res.totalPrice}</h3>
                                 <h3>Address: {res.hotelAddress}</h3>
                               </Grid>
