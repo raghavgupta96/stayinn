@@ -49,13 +49,7 @@ const styles = theme => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing.unit * 4
   },
-  googleSearchContainer: {
-    // paddingLeft: "15px",
-    // paddingRight: "15px"
-  },
   droppedDownNumber: {
-    // minWidth: "50px",
-    // marginTop: "15px"
     paddingBottom: "15px"
   },
   googleSearch: {
@@ -88,12 +82,14 @@ const styles = theme => ({
   },
   typography: {
     paddingTop: "2px"
-    // paddingRight: "5px",
-    // paddingLeft: "15px"
   },
   modal_title: {
     paddingBottom: "17px",
     fontSize: "24px"
+  },
+  datePicker: {
+    paddingLeft: "20px",
+    paddingRight: "20px"
   }
 });
 
@@ -514,8 +510,8 @@ class SearchBox extends Component {
           lg={12}
           className={classes.secondaryContainer}
         >
-          <Grid item xs={2} md={2} lg={2} />
-          <Grid item xs={8} md={8} lg={8}>
+          <Grid item xs={0} md={2} lg={2} />
+          <Grid item xs={12} md={8} lg={8}>
             <Paper className={classes.mainpaper}>
               <Grid container>
                 <Grid item xs={12} md={12} lg={12} container>
@@ -569,10 +565,7 @@ class SearchBox extends Component {
                   xs={12}
                   md={12}
                   lg={4}
-                  style={{
-                    paddingLeft: "10px",
-                    paddingRight: "10px"
-                  }}
+                  className={classes.datePicker}
                 >
                   <DateRangePicker
                     startDateId="startDate"
@@ -608,12 +601,12 @@ class SearchBox extends Component {
               </Grid>
             </Paper>
           </Grid>
-          <Grid item xs={2} md={2} lg={2} />
+          <Grid item xs={0} md={2} lg={2} />
         </Grid>
 
         <Grid item xs={1} md={1} lg={1} />
         <Grid item xs={12} md={2} lg={2}>
-          <Grid xs={12} md={12} lg={12} style={{}}>
+          <Grid xs={12} md={12} lg={12}>
             <FilterBox />
             <Button
               variant="contained"

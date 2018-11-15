@@ -19,29 +19,34 @@ import { Link } from "react-router-dom";
 
 const styles = theme => ({
   root: {
-    flexGrow: 1,
-    minHeight: "100%",
-    height: "1000px",
+    flexGrow: 1
+  },
+  secondaryContainer: {
+    // Make into 100%
+    height: "1024px",
     backgroundImage: `url(${bg})`,
-    backgroundSize: "100%",
+    backgroundSize: "cover",
+    overflow: "hidden",
     backgroundRepeat: "no-repeat",
-    backgroundPosition: "top",
-    position: "fix",
-    top: "0",
+    backgroundPosition: "center",
+    width: "100%",
     marginTop: "-100px"
   },
   mainpaper: {
-    padding: "10px",
+    padding: "20px",
     opacity: "0.95",
-    marginTop: "350px"
+    marginTop: "250px",
+    zIndex: "1"
   },
-  googleSearchContainer: {
-    paddingLeft: "15px",
-    paddingRight: "15px"
+  paper: {
+    position: "absolute",
+    width: theme.spacing.unit * 50,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing.unit * 4
   },
   droppedDownNumber: {
-    minWidth: "50px",
-    marginTop: "15px"
+    paddingBottom: "15px"
   },
   googleSearch: {
     width: "100%",
@@ -51,17 +56,20 @@ const styles = theme => ({
     border: "none",
     borderBottomStyle: "solid",
     borderBottomWidth: "1px",
-    outline: "0",
-    marginBottom: "15px"
+    outline: "0"
   },
   searchButton: {
     backgroundColor: "primary",
     height: "47px",
     color: "#ffffff",
-    marginLeft: "15px",
-    marginRight: "15px",
     width: "100%",
-    marginBottom: "15px",
+    minWidth: "30px"
+  },
+  applyButton: {
+    backgroundColor: "primary",
+    height: "40px",
+    color: "#ffffff",
+    width: "100%",
     minWidth: "30px"
   },
   searchButtonWrapper: {
@@ -69,12 +77,15 @@ const styles = theme => ({
     display: "flex"
   },
   typography: {
-    paddingTop: "17px",
-    paddingRight: "5px",
-    paddingLeft: "15px"
+    paddingTop: "2px"
   },
-  rewardsBox: {
-    marginTop: "15px"
+  modal_title: {
+    paddingBottom: "17px",
+    fontSize: "24px"
+  },
+  datePicker: {
+    paddingLeft: "20px",
+    paddingRight: "20px"
   }
 });
 
@@ -131,100 +142,108 @@ class HomePage extends Component {
     const { classes } = this.props;
     return (
       <Grid container className={classes.root}>
-        <Grid item xs={2} md={2} lg={2} />
-        <Grid item xs={8} md={8} lg={8}>
-          <Paper className={classes.mainpaper}>
-            <Grid container>
+        <Grid
+          container
+          xs={12}
+          md={12}
+          lg={12}
+          className={classes.secondaryContainer}
+        >
+          <Grid item xs={0} md={2} lg={2} />
+          <Grid item xs={12} md={8} lg={8}>
+            <Paper className={classes.mainpaper}>
               <Grid container>
-                <Grid item>
-                  <Typography
-                    gutterBottom
-                    variant="title"
-                    className={classes.typography}
-                  >
-                    Number of Rooms:
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <FormControl className={classes.droppedDownNumber}>
-                    <Select
-                      value={this.state.NumOfRooms}
-                      onChange={this._handleNumOfRoomsChange}
-                      displayEmpty
-                      name="NumOfRooms"
-                      className={classes.selectEmpty}
+                <Grid container>
+                  <Grid item>
+                    <Typography
+                      gutterBottom
+                      variant="title"
+                      className={classes.typography}
                     >
-                      <MenuItem value={1}>1</MenuItem>
-                      <MenuItem value={2}>2</MenuItem>
-                      <MenuItem value={3}>3</MenuItem>
-                      <MenuItem value={4}>4</MenuItem>
-                    </Select>
-                  </FormControl>
+                      Number of Rooms:
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <FormControl className={classes.droppedDownNumber}>
+                      <Select
+                        value={this.state.NumOfRooms}
+                        onChange={this._handleNumOfRoomsChange}
+                        displayEmpty
+                        name="NumOfRooms"
+                        className={classes.selectEmpty}
+                      >
+                        <MenuItem value={1}>1</MenuItem>
+                        <MenuItem value={2}>2</MenuItem>
+                        <MenuItem value={3}>3</MenuItem>
+                        <MenuItem value={4}>4</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  md={7}
+                  lg={7}
+                  className={classes.googleSearchContainer}
+                >
+                  <Autocomplete
+                    className={classes.googleSearch}
+                    onPlaceSelected={place => {
+                      // console.log(place);
+                      this.setState({ place: place });
+                      this.props.setPlace(place);
+                      //testing
+                      console.log(this.state.place.name);
+                    }}
+                    types={["(regions)"]}
+                    componentRestrictions={{ country: "us" }}
+                  />
+                </Grid>
+                <Grid item xs={12} md={12} lg={4}>
+                  <DateRangePicker
+                    startDateId="startDate"
+                    endDateId="endDate"
+                    startDate={this.state.startDate}
+                    endDate={this.state.endDate}
+                    onDatesChange={({ startDate, endDate }) => {
+                      this._handleDateChange(startDate, endDate);
+                      this.setState({ startDate, endDate });
+                    }}
+                    focusedInput={this.state.focusedInput}
+                    onFocusChange={focusedInput => {
+                      this.setState({ focusedInput });
+                    }}
+                    position="absolute"
+                  />
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  md={1}
+                  lg={1}
+                  className={classes.searchButtonWrapper}
+                >
+                  <Link
+                    to={{
+                      pathname: "/search"
+                    }}
+                    className={classes.searchButton}
+                  >
+                    <Button
+                      variant="contained"
+                      className={classes.searchButton}
+                      color="primary"
+                    >
+                      <SearchIcon />
+                    </Button>
+                  </Link>
                 </Grid>
               </Grid>
-              <Grid
-                item
-                xs={12}
-                md={7}
-                lg={7}
-                className={classes.googleSearchContainer}
-              >
-                <Autocomplete
-                  className={classes.googleSearch}
-                  onPlaceSelected={place => {
-                    // console.log(place);
-                    this.setState({ place: place });
-                    this.props.setPlace(place);
-                    //testing
-                    console.log(this.state.place.name);
-                  }}
-                  types={["(regions)"]}
-                  componentRestrictions={{ country: "us" }}
-                />
-              </Grid>
-              <Grid item xs={12} md={12} lg={4}>
-                <DateRangePicker
-                  startDateId="startDate"
-                  endDateId="endDate"
-                  startDate={this.state.startDate}
-                  endDate={this.state.endDate}
-                  onDatesChange={({ startDate, endDate }) => {
-                    this._handleDateChange(startDate, endDate);
-                    this.setState({ startDate, endDate });
-                  }}
-                  focusedInput={this.state.focusedInput}
-                  onFocusChange={focusedInput => {
-                    this.setState({ focusedInput });
-                  }}
-                  position="absolute"
-                />
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                md={1}
-                lg={1}
-                className={classes.searchButtonWrapper}
-              >
-                <Link
-                  to={{
-                    pathname: "/search"
-                  }}
-                  className={classes.searchButton}
-                >
-                  <Button
-                    variant="contained"
-                    className={classes.searchButton}
-                    color="primary"
-                  >
-                    <SearchIcon />
-                  </Button>
-                </Link>
-              </Grid>
-            </Grid>
-          </Paper>
+            </Paper>
+          </Grid>
+          <Grid item xs={0} md={2} lg={2} />
         </Grid>
-        <Grid item xs={2} md={2} lg={2} />
       </Grid>
     );
   }
