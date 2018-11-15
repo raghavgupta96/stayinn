@@ -202,8 +202,8 @@ const PaymentForm = (props) => {
             onChange={event => setForm({ cardName: event.target.value })}
             onInput = {(e) =>{
               var letters = /^[A-Za-z]+$/;
-              var backspace = '/b'
-              if(!(e.target.value).match(letters) || !e.target.value == backspace)
+              var space = '&nbsp;'
+              if(!(e.target.value).match(letters) && !e.target.value == space)
               {
                 e.target.value = e.target.value.substring(0,e.target.value.length-1)
               }
