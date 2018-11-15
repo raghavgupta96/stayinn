@@ -200,7 +200,13 @@ class HomePage extends Component {
                     componentRestrictions={{ country: "us" }}
                   />
                 </Grid>
-                <Grid item xs={12} md={12} lg={4}>
+                <Grid
+                  item
+                  xs={12}
+                  md={12}
+                  lg={4}
+                  className={classes.datePicker}
+                >
                   <DateRangePicker
                     startDateId="startDate"
                     endDateId="endDate"
