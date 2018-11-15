@@ -911,6 +911,7 @@ class myBooking extends Component {
                       {!editRefund && !editCharge && (
                         <div style={{ padding: 15 }}>
                           <Button
+                            className={classes.customButton}
                             component={renderButton}
                             onClick={() => {
                               this.state.currRes &&
@@ -922,6 +923,7 @@ class myBooking extends Component {
                             Confirm
                           </Button>
                           <Button
+                            className={classes.customButton}
                             component={warningButton}
                             onClick={() => {
                               this.handleEditClose();
