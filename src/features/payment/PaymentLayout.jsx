@@ -210,7 +210,28 @@ class PaymentLayout extends Component {
       }
     };
   };
-
+  // validateName = () =>{
+  //   const{form} = this.state;
+  //   const card = {
+  //     cardName: form.cardName,
+  //     cardNumber: form.cardNumber,
+  //     cvc: form.cvc,
+  //     expiryMonth: form.expiryMonth,
+  //     expiryYear: form.expiryYear
+  //   };
+  //   return (!/[^a-zA-Z]/.test(card.cardName))
+  // }
+  // validateNumber = () =>{
+  //   const{form} = this.state;
+  //   const card = {
+  //     cardName: form.cardName,
+  //     cardNumber: form.cardNumber,
+  //     cvc: form.cvc,
+  //     expiryMonth: form.expiryMonth,
+  //     expiryYear: form.expiryYear
+  //   };
+  //   return ((/[^a-zA-Z]/.test(card.cardNumber)))
+  // }
   checkout = () => {
     const transaction = this.calculateTransaction();
     const { form, points } = this.state;
