@@ -19,7 +19,7 @@ const styles = theme => ({
   },
   mainpaper: {
     width: "100%",
-    marginBottom: "10px"
+    marginTop: "10px"
   },
   stars: {
     paddingLeft: "10px"
@@ -69,15 +69,26 @@ const styles = theme => ({
   }
 });
 
+
+
 const SearchResult = ({ hotels, classes, disabled }) => {
   //check if the search result is empty
   const hotelList = hotels.length ? (
     hotels.map(hotel => {
+      const pictures = [
+        {
+          photo1: hotel.photoUrl,
+          photo2: hotel.photoUrl2
+        }
+        ];
+    
+
+
       //filter goes here
       return (
         // this is for for an individual hotel card below
         <Grid container className={classes.root} xs={12} md={12} lg={12}>
-          <Grid item xs={11} md={11} lg={11}>
+          <Grid item xs={12} md={11} lg={11}>
             <Paper className={classes.mainpaper}>
               <Grid container key={hotel.id}>
                 <Grid
@@ -231,7 +242,6 @@ const SearchResult = ({ hotels, classes, disabled }) => {
               </Grid>
             </Paper>
           </Grid>
-          <Grid item xs={1} md={1} lg={1} />
         </Grid>
       );
     })

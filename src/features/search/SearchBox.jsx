@@ -623,7 +623,7 @@ class SearchBox extends Component {
         </Grid>
 
         <Grid item xs={1} md={1} lg={1} />
-        <Grid item xs={2} md={2} lg={2}>
+        <Grid item xs={12} md={2} lg={2}>
           <Grid xs={12} md={12} lg={12}>
             <FilterBox />
             <Button
@@ -640,7 +640,7 @@ class SearchBox extends Component {
             <Rewards reward={this.state.reward} />
           </Grid>
         </Grid>
-        <Grid item xs={9} md={9} lg={8}>
+        <Grid item xs={12} md={9} lg={9}>
           <SearchResult
             disabled={this.state.disabled}
             hotels={this.state.hotels}
@@ -680,7 +680,7 @@ class SearchBox extends Component {
           </div>
         </Modal>
 
-        <Grid item xs={1} md={1} lg={1} />
+        {/* <Grid item xs={0} md={1} lg={1} /> */}
       </Grid>
     );
   }
