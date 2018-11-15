@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
-import StarRatings from 'react-star-ratings';
+import StarRatings from "react-star-ratings";
 
 const styles = theme => ({
   root: {
@@ -15,11 +15,11 @@ const styles = theme => ({
   divider: {
     width: "90%",
     marginTop: "10px",
-    marginLeft: "10px",
+    marginLeft: "10px"
   },
   mainpaper: {
     width: "100%",
-    marginBottom: "10px",
+    marginBottom: "10px"
   },
   stars: {
     paddingLeft: "10px"
@@ -27,7 +27,7 @@ const styles = theme => ({
   hotelDetails: {
     marginTop: "10px",
     marginBottom: "10px",
-    paddingLeft: "10px",
+    paddingLeft: "10px"
   },
   hotelTitle: {
     fontFamily: "Times",
@@ -53,7 +53,7 @@ const styles = theme => ({
   photo: {
     width: "100%",
     height: "100%",
-    objectFit: "cover",
+    objectFit: "cover"
   },
   photoContainer: {
     marginTop: "0px"
@@ -74,20 +74,26 @@ const SearchResult = ({ hotels, classes, disabled }) => {
   const hotelList = hotels.length ? (
     hotels.map(hotel => {
       //filter goes here
-      return  (
+      return (
         // this is for for an individual hotel card below
         <Grid container className={classes.root} xs={12} md={12} lg={12}>
           <Grid item xs={11} md={11} lg={11}>
             <Paper className={classes.mainpaper}>
               <Grid container key={hotel.id}>
-                <Grid container xs={7} md={7} lg={7} className={classes.hotelDetails}>
-                  <Grid item xs >
+                <Grid
+                  container
+                  xs={7}
+                  md={7}
+                  lg={7}
+                  className={classes.hotelDetails}
+                >
+                  <Grid item xs>
                     <Grid xs={12} md={12} lg={12} container>
-                      <Grid item
+                      <Grid
+                        item
                         xs={8}
                         md={8}
                         lg={8}
-                        
                         style={{
                           paddingTop: "10px"
                         }}
@@ -110,7 +116,7 @@ const SearchResult = ({ hotels, classes, disabled }) => {
                       <Grid xs={2} md={2} lg={2} item className={classes.price}>
                         <Typography variant="subtitle1">
                           ${hotel.price}
-                          <div style={{ fontSize: "15px", color:"gray" }}>
+                          <div style={{ fontSize: "15px", color: "gray" }}>
                             per night
                           </div>
                         </Typography>
@@ -125,14 +131,14 @@ const SearchResult = ({ hotels, classes, disabled }) => {
                         <StarRatings
                           rating={parseFloat(hotel.rating)}
                           starRatedColor="red"
-                          starDimension='20px'
-                          starSpacing='3px'
+                          starDimension="20px"
+                          starSpacing="3px"
                           numberOfStars={5}
-                          name='rating'
+                          name="rating"
                         />
                       </Grid>
                     </Grid>
-                    <Divider className={classes.divider}/>
+                    <Divider className={classes.divider} />
                     <Grid
                       item
                       xs={8}
@@ -141,15 +147,16 @@ const SearchResult = ({ hotels, classes, disabled }) => {
                       className={classes.hotelInfo}
                     >
                       <p>Facilities:</p>
-                      <span style={{ fontSize: "15px", color:"gray" }}>
-                        {hotel.gym && <span>Gym,  </span>}
-                        {hotel.bar && <span>Bar,  </span>}
+                      <span style={{ fontSize: "15px", color: "gray" }}>
+                        {hotel.gym && <span>Gym, </span>}
+                        {hotel.bar && <span>Bar, </span>}
                         {hotel.swimmingPool && <span>Swimming Pool</span>}
-                        {!hotel.bar && !hotel.gym && !hotel.swimmingPool && <span>None</span>}
-
+                        {!hotel.bar && !hotel.gym && !hotel.swimmingPool && (
+                          <span>None</span>
+                        )}
                       </span>
                     </Grid>
-                    <Divider className={classes.divider}/>
+                    <Divider className={classes.divider} />
                     <Grid
                       item
                       xs={8}
@@ -158,9 +165,10 @@ const SearchResult = ({ hotels, classes, disabled }) => {
                       className={classes.hotelInfo}
                     >
                       <p>Address:</p>
-                      <p style={{ fontSize: "15px", color:"gray" }}>{hotel.address}</p>
+                      <p style={{ fontSize: "15px", color: "gray" }}>
+                        {hotel.address}
+                      </p>
                     </Grid>
-                    
                   </Grid>
                   <Grid
                     item
@@ -175,7 +183,7 @@ const SearchResult = ({ hotels, classes, disabled }) => {
                       {!disabled ? (
                         <Link
                           to={{
-                            pathname: "/payment/" + hotel.hID,
+                            pathname: "/payment/" + hotel.hID
                             // state: {
                             //   startDate: hotel.startDate,
                             //   endDate: hotel.endDate,
@@ -194,47 +202,38 @@ const SearchResult = ({ hotels, classes, disabled }) => {
                             // href={"/payment/" + hotel.hID}
                             color="primary"
                           >
-                              Book
+                            Book
                           </Button>
-                        </Link> )
-                        : (
-                          <span>
-                            <Button
-                              variant="contained"
-                              className={classes.searchButton}
-                              // href={"/payment/" + hotel.hID}
-                              color="primary"
-                              disabled
-                            >
-                                Book
-                            </Button>
-                          </span>)
-                      }
-                      <Button
-                        variant="contained"
-                        onClick={this.submit}
-                        className={classes.searchButton}
-                        color="primary"
-                        href={"/hotel/" + hotel.hID}
-                      >
-                        More Details
-                      </Button>
+                        </Link>
+                      ) : (
+                        <span>
+                          <Button
+                            variant="contained"
+                            className={classes.searchButton}
+                            // href={"/payment/" + hotel.hID}
+                            color="primary"
+                            disabled
+                          >
+                            Book
+                          </Button>
+                        </span>
+                      )}
                     </Grid>
                   </Grid>
                 </Grid>
                 <Grid xs={5} md={5} lg={5} className={classes.photoContainer}>
-                    <img
-                      src={hotel.photoUrl}
-                      className={classes.photo}
-                      alt="hotel pic"
-                    />
+                  <img
+                    src={hotel.photoUrl}
+                    className={classes.photo}
+                    alt="hotel pic"
+                  />
                 </Grid>
               </Grid>
             </Paper>
           </Grid>
           <Grid item xs={1} md={1} lg={1} />
         </Grid>
-      ) 
+      );
     })
   ) : (
     // <p> There is no hotel match your searching.</p>
