@@ -37,32 +37,26 @@ const styles = theme => ({
     width: "100%"
   },
   mainpaper: {
-    padding: "10px",
+    padding: "20px",
     opacity: "0.95",
     marginTop: "40px",
     zIndex: "1"
   },
   paper: {
-    position: 'absolute',
+    position: "absolute",
     width: theme.spacing.unit * 50,
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
-    padding: theme.spacing.unit * 4,
+    padding: theme.spacing.unit * 4
   },
   googleSearchContainer: {
-    paddingLeft: "15px",
-    paddingRight: "15px"
+    // paddingLeft: "15px",
+    // paddingRight: "15px"
   },
   droppedDownNumber: {
-    minWidth: "50px",
-    marginTop: "15px"
-  },
-  dateContainer: {
-    display: "flex",
-    flexWrap: "wrap",
-    marginLeft: "15px",
-    marginRight: "15px",
-    marginBottom: "15px"
+    // minWidth: "50px",
+    // marginTop: "15px"
+    paddingBottom: "15px"
   },
   googleSearch: {
     width: "100%",
@@ -72,34 +66,20 @@ const styles = theme => ({
     border: "none",
     borderBottomStyle: "solid",
     borderBottomWidth: "1px",
-    outline: "0",
-    marginBottom: "15px"
+    outline: "0"
   },
   searchButton: {
     backgroundColor: "primary",
     height: "47px",
     color: "#ffffff",
-    marginLeft: "15px",
-    marginRight: "15px",
     width: "100%",
-    marginBottom: "15px",
-    minWidth: "30px"
-  },
-  filterButton: {
-    backgroundColor: "primary",
-    height: "40px",
-    color: "#ffffff",
-    marginRight: "15px",
-    width: "96%",
-    marginBottom: "15px",
     minWidth: "30px"
   },
   applyButton: {
     backgroundColor: "primary",
     height: "40px",
     color: "#ffffff",
-    marginRight: "10px",
-    width: "96%",
+    width: "100%",
     minWidth: "30px"
   },
   searchButtonWrapper: {
@@ -107,15 +87,14 @@ const styles = theme => ({
     display: "flex"
   },
   typography: {
-    paddingTop: "17px",
-    paddingRight: "5px",
-    paddingLeft: "15px"
+    paddingTop: "2px"
+    // paddingRight: "5px",
+    // paddingLeft: "15px"
   },
   modal_title: {
     paddingBottom: "17px",
     fontSize: "24px"
-  },
-  rewardsBox: {}
+  }
 });
 
 class SearchBox extends Component {
@@ -134,7 +113,7 @@ class SearchBox extends Component {
       startDate: moment(), // set your initial start date here
       endDate: moment().add(1, "days"), // set your initial end date here
       // modal
-      open: false,
+      open: false
     };
   }
 
@@ -146,27 +125,25 @@ class SearchBox extends Component {
 
   //initially mount all the hotels info into the hotel list into state
   componentDidMount() {
-
     //convert the date object to string format yyyy-mm-dd
     //because hotels would not let me push a date object into to hotels array
     //startDate string
-    if(this.props.reservation.startDate !==null){
+    if (this.props.reservation.startDate !== null) {
       //update the local state
       const sDateMonmet = moment(this.props.reservation.startDate);
-      this.setState({startDate: sDateMonmet});
+      this.setState({ startDate: sDateMonmet });
     }
-    if(this.props.reservation.endDate !==null){
+    if (this.props.reservation.endDate !== null) {
       const eDateMoment = moment(this.props.reservation.endDate);
-      this.setState({endDate: eDateMoment});
+      this.setState({ endDate: eDateMoment });
     }
-    this.setState({ rooms : this.props.reservation.rooms });
-
+    this.setState({ rooms: this.props.reservation.rooms });
 
     const db = firebase.firestore();
 
     // if the home page pass the place to search page
-    if (this.props.reservation.place !== null){
-      this.setState({place: this.props.reservation.place});
+    if (this.props.reservation.place !== null) {
+      this.setState({ place: this.props.reservation.place });
 
       const searchKey = this.props.reservation.place.name;
 
@@ -199,94 +176,100 @@ class SearchBox extends Component {
                 doc.data().zip,
               gym: doc.data().gym,
               bar: doc.data().bar,
-              swimmingPool: doc.data().swimmingPool,
+              swimmingPool: doc.data().swimmingPool
             });
           });
 
           this.setState({ hotels });
         });
-      }else{
-        //uery the hotel data from firestore
-        db.collection("testingHotels")
-          .get()
-          .then(collection => {
-            var hotels = [];
-            // console.log("hotels -----" + hotels);
+    } else {
+      //uery the hotel data from firestore
+      db.collection("testingHotels")
+        .get()
+        .then(collection => {
+          var hotels = [];
+          // console.log("hotels -----" + hotels);
 
-            //map all the needed hotel information to the state
-            collection.forEach(doc => {
-              // doc.data() is never undefined for query doc snapshots
-              //-----testing-----
-              // console.log(doc.id, " => ", doc.data());
-              hotels.push({
-                name: doc.data().name,
-                hID: doc.id,
-                photoUrl: doc.data().photoURL,
-                type: doc.data().type,
-                price: doc.data().price,
-                rating: doc.data().rating,
-                address:
-                  doc.data().street +
-                  ", " +
-                  doc.data().city +
-                  ", " +
-                  doc.data().state +
-                  ", " +
-                  doc.data().zip,
-                gym: doc.data().gym,
-                bar: doc.data().bar,
-                swimmingPool: doc.data().swimmingPool,
-              });
+          //map all the needed hotel information to the state
+          collection.forEach(doc => {
+            // doc.data() is never undefined for query doc snapshots
+            //-----testing-----
+            // console.log(doc.id, " => ", doc.data());
+            hotels.push({
+              name: doc.data().name,
+              hID: doc.id,
+              photoUrl: doc.data().photoURL,
+              type: doc.data().type,
+              price: doc.data().price,
+              rating: doc.data().rating,
+              address:
+                doc.data().street +
+                ", " +
+                doc.data().city +
+                ", " +
+                doc.data().state +
+                ", " +
+                doc.data().zip,
+              gym: doc.data().gym,
+              bar: doc.data().bar,
+              swimmingPool: doc.data().swimmingPool
             });
-
-            this.setState({ hotels });
           });
-        }
 
-      this.checkReservationConflicts();
+          this.setState({ hotels });
+        });
+    }
+
+    this.checkReservationConflicts();
   }
 
   checkReservationConflicts = () => {
     const db = firebase.firestore();
 
-      // Get users reservation dates if logged in
-      if (this.props.auth.uid) {
-        const reservationsQuery = db.collection("reservations")
-          .where('userId', '==', this.props.auth.uid)
-          .where('isCanceled', '==', false);
+    // Get users reservation dates if logged in
+    if (this.props.auth.uid) {
+      const reservationsQuery = db
+        .collection("reservations")
+        .where("userId", "==", this.props.auth.uid)
+        .where("isCanceled", "==", false);
 
-        reservationsQuery.get()
-          .then(collection => {
-            //get all reservation for booking conflict check
-            const userReservations = [];
+      reservationsQuery.get().then(collection => {
+        //get all reservation for booking conflict check
+        const userReservations = [];
 
-            collection.forEach(doc => {
-              const { startDate, endDate } = doc.data();
-              userReservations.push({ startDate: startDate.toDate(), endDate: endDate.toDate() });
-            })
-            this.setState({ userReservations });
-            this._updateButtonDisable({ startDate: this.state.startDate, endDate: this.state.endDate})
-          })
-
-          //get the user rewards info
-          var docRef = firebase
-            .firestore()
-            .collection("users")
-            .doc(this.props.auth.uid);
-          docRef.get().then(doc => {
-            if (doc.exists) {
-              this.setState({
-                reward: doc.data().reward
-              });
-            } else {
-              console.log("No such document!");
-            }
+        collection.forEach(doc => {
+          const { startDate, endDate } = doc.data();
+          userReservations.push({
+            startDate: startDate.toDate(),
+            endDate: endDate.toDate()
           });
-      }
+        });
+        this.setState({ userReservations });
+        this._updateButtonDisable({
+          startDate: this.state.startDate,
+          endDate: this.state.endDate
+        });
+      });
+
+      //get the user rewards info
+      var docRef = firebase
+        .firestore()
+        .collection("users")
+        .doc(this.props.auth.uid);
+      docRef.get().then(doc => {
+        if (doc.exists) {
+          this.setState({
+            reward: doc.data().reward
+          });
+        } else {
+          console.log("No such document!");
+        }
+      });
     }
+  };
 
   //convert the ISO format data "2018-10-15" string to data object
-  stringToDate = (date) => {
+  stringToDate = date => {
     var year = date.substring(0, 4);
     var month = date.substring(5, 7);
     var day = date.substring(8, 10);
@@ -294,34 +277,34 @@ class SearchBox extends Component {
     return d;
   };
 
-  dateToString = (date) => {
+  dateToString = date => {
     const temp = date;
     const year = temp.getFullYear();
     const month = temp.getMonth() + 1;
     const day = temp.getDate();
     return year + "-" + month + "-" + day;
-  }
+  };
 
-  // Close the modal 
+  // Close the modal
   handleClose = () => {
     this.setState({
-      open: false,
+      open: false
     });
   };
 
   getModalStyle = () => {
-    const top = 50 
-    const left = 50 
-  
+    const top = 50;
+    const left = 50;
+
     return {
       top: `${top}%`,
       left: `${left}%`,
       transform: `translate(-${top}%, -${left}%)`,
-      borderRadius: 15,
+      borderRadius: 15
     };
-  }
+  };
 
-    //--------------------- Search button -----------------------------
+  //--------------------- Search button -----------------------------
   submit = () => {
     //do functional here
     const startDateObj = new Date(this.state.startDate);
@@ -506,7 +489,7 @@ class SearchBox extends Component {
           userReservations[reservation].startDate.getTime()
       ) {
         disabled = true;
-        this.setState( {open: true})
+        this.setState({ open: true });
       }
     }
 
@@ -535,7 +518,7 @@ class SearchBox extends Component {
           <Grid item xs={8} md={8} lg={8}>
             <Paper className={classes.mainpaper}>
               <Grid container>
-                <Grid container>
+                <Grid item xs={12} md={12} lg={12} container>
                   <Grid item>
                     <Typography
                       gutterBottom
@@ -546,7 +529,7 @@ class SearchBox extends Component {
                     </Typography>
                   </Grid>
                   <Grid item>
-                    <FormControl className={classes.droppedDownNumber}>
+                    <FormControl>
                       <Select
                         value={this.state.rooms}
                         onChange={this._handleNumOfRoomsChange}
@@ -581,7 +564,16 @@ class SearchBox extends Component {
                     componentRestrictions={{ country: "us" }}
                   />
                 </Grid>
-                <Grid item xs={12} md={12} lg={4}>
+                <Grid
+                  item
+                  xs={12}
+                  md={12}
+                  lg={4}
+                  style={{
+                    paddingLeft: "10px",
+                    paddingRight: "10px"
+                  }}
+                >
                   <DateRangePicker
                     startDateId="startDate"
                     endDateId="endDate"
@@ -594,9 +586,6 @@ class SearchBox extends Component {
                     focusedInput={this.state.focusedInput}
                     onFocusChange={focusedInput => {
                       this.setState({ focusedInput });
-                    }}
-                    style={{
-                      zIndex: "0"
                     }}
                   />
                 </Grid>
@@ -624,7 +613,7 @@ class SearchBox extends Component {
 
         <Grid item xs={1} md={1} lg={1} />
         <Grid item xs={12} md={2} lg={2}>
-          <Grid xs={12} md={12} lg={12}>
+          <Grid xs={12} md={12} lg={12} style={{}}>
             <FilterBox />
             <Button
               variant="contained"
@@ -644,7 +633,6 @@ class SearchBox extends Component {
           <SearchResult
             disabled={this.state.disabled}
             hotels={this.state.hotels}
-            x
           />
         </Grid>
         <Modal
@@ -657,7 +645,7 @@ class SearchBox extends Component {
             <Typography variant="h6" className={classes.modal_title}>
               Alert: conflict reservation dates
             </Typography>
-            <div></div>
+            <div />
             <Typography variant="subtitle1" id="simple-modal-description">
               Please pick a different Checkin date or Checkout date
             </Typography>
@@ -665,17 +653,17 @@ class SearchBox extends Component {
               to enable the book button.
             </Typography>
             <div style={{ textAlign: "right" }}>
-                <button
-                  style={{
-                    border: "none",
-                    background: "transparent",
-                    cursor: "pointer",
-                    outline: "none"
-                  }}
-                  onClick={this.handleClose}
-                >
-                  <CloseIcon className={classes.iconHover} />
-                </button>
+              <button
+                style={{
+                  border: "none",
+                  background: "transparent",
+                  cursor: "pointer",
+                  outline: "none"
+                }}
+                onClick={this.handleClose}
+              >
+                <CloseIcon className={classes.iconHover} />
+              </button>
             </div>
           </div>
         </Modal>

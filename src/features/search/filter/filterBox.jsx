@@ -21,8 +21,8 @@ const styles = theme => ({
   },
   mainpaper: {
     width: "100%",
-    marginRight: "10px",
-    backgroundColor: "#E6F6FF"
+    backgroundColor: "#E6F6FF",
+    marginTop: "10px"
   },
   budgetRange1: {
     width: "90%",
@@ -53,22 +53,11 @@ const styles = theme => ({
     marginRight: "15px",
     marginBottom: "15px"
   },
-  typeContainer: {
-    marginTop: "15px",
-    marginLeft: "15px"
-  },
   typeTitle: {
     fontFamily: "Times",
     fontSize: "20px",
     marginTop: "10px",
     marginLeft: "10px"
-  },
-  typeHeading: {
-    backgroundColor: "#409BE6",
-    color: "#ffffff",
-    fontFamily: "Times",
-    fontSize: "25px",
-    paddingLeft: "10px"
   },
   checkboxTitle: {
     paddingTop: "12px"

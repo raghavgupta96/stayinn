@@ -12,26 +12,18 @@ const styles = theme => ({
   mainpaper: {
     width: "100%",
     padding: "15px",
-    marginTop: "10px",
-    marginRight: "10px"
+    marginTop: "10px"
   },
   label: {
     fontFamily: "Times",
     fontSize: "18px"
-  },
-  typeHeading: {
-    backgroundColor: "#409BE6",
-    color: "#ffffff",
-    fontFamily: "Times",
-    fontSize: "25px",
   }
 });
 
 class Rewards extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
   render() {
     const { classes } = this.props;
@@ -51,9 +43,13 @@ class Rewards extends Component {
               }}
             >
               <Avatar alt="Billiards" src={rewards} />
-              <div style={{
-                paddingTop: "5px"
-              }}>Rewards :{this.props.reward} </div>
+              <div
+                style={{
+                  paddingTop: "5px"
+                }}
+              >
+                Rewards :{this.props.reward}{" "}
+              </div>
             </Grid>
           </Grid>
         </Paper>

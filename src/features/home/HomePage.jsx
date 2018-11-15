@@ -17,7 +17,6 @@ import bg from "./bg.jpg";
 import moment from "moment";
 import { Link } from "react-router-dom";
 
-
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -29,12 +28,12 @@ const styles = theme => ({
     backgroundPosition: "top",
     position: "fix",
     top: "0",
-    marginTop: "-64px"
+    marginTop: "-100px"
   },
   mainpaper: {
     padding: "10px",
     opacity: "0.95",
-    marginTop : "350px"
+    marginTop: "350px"
   },
   googleSearchContainer: {
     paddingLeft: "15px",
@@ -93,21 +92,21 @@ class HomePage extends Component {
     };
   }
 
-  componentDidMount () {
-    if(this.props.reservation.startDate !== null){
+  componentDidMount() {
+    if (this.props.reservation.startDate !== null) {
       //update the local state
       const sDateMonmet = moment(this.props.reservation.startDate);
-      this.setState({startDate: sDateMonmet});
-    }else{
+      this.setState({ startDate: sDateMonmet });
+    } else {
       this.props.setStartDate(new Date());
-      console.log(">>>>>>>_______new data here" + (new Date()))
+      console.log(">>>>>>>_______new data here" + new Date());
     }
-    if(this.props.reservation.endDate !==  null){
+    if (this.props.reservation.endDate !== null) {
       const eDateMoment = moment(this.props.reservation.endDate);
-      this.setState({endDate: eDateMoment});
+      this.setState({ endDate: eDateMoment });
     }
-    if(this.props.reservation.rooms !== null ){
-      this.setState({ rooms : this.props.reservation.rooms });
+    if (this.props.reservation.rooms !== null) {
+      this.setState({ rooms: this.props.reservation.rooms });
     }
   }
 
@@ -117,16 +116,16 @@ class HomePage extends Component {
   };
 
   _handleDateChange = (sDate, eDate) => {
-    if(sDate !== null){
+    if (sDate !== null) {
       const sDateObj = sDate.toDate();
       this.props.setStartDate(sDateObj);
     }
-    
-    if(eDate !== null) {
+
+    if (eDate !== null) {
       const eDateObj = eDate.toDate();
       this.props.setEndDate(eDateObj);
     }
-  }
+  };
 
   render() {
     const { classes } = this.props;
@@ -233,7 +232,7 @@ class HomePage extends Component {
 
 const mapStateToProps = state => {
   return {
-    reservation: state.reservation,
+    reservation: state.reservation
   };
 };
 

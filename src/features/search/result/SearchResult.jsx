@@ -13,16 +13,11 @@ const styles = theme => ({
     flexGrow: 1
   },
   divider: {
-    width: "90%",
-    marginTop: "10px",
-    marginLeft: "10px"
-  },
-  mainpaper: {
-    width: "100%",
+    width: "95%",
     marginTop: "10px"
   },
-  stars: {
-    paddingLeft: "10px"
+  mainpaper: {
+    width: "100%"
   },
   hotelDetails: {
     marginTop: "10px",
@@ -32,22 +27,13 @@ const styles = theme => ({
   hotelTitle: {
     fontFamily: "Times",
     fontSize: "32px",
-    display: "inline",
-    marginLeft: "10px"
-  },
-  subTypography: {
-    fontFamily: "Times",
-    fontSize: "25px",
-    marginLeft: "10px"
+    display: "inline"
   },
   searchButton: {
     backgroundColor: "primary",
     height: "47px",
     color: "#ffffff",
-    marginLeft: "15px",
-    marginRight: "15px",
     width: "150px",
-    marginBottom: "5px",
     minWidth: "30px"
   },
   photo: {
@@ -55,21 +41,16 @@ const styles = theme => ({
     height: "100%",
     objectFit: "cover"
   },
-  photoContainer: {
-    marginTop: "0px"
-  },
+  photoContainer: {},
   hotelInfo: {
-    marginTop: "10px",
-    marginLeft: "10px"
+    marginTop: "10px"
   },
   price: {
     paddingTop: "10px",
-    fontSize: "30px",
-    marginLeft: "40px"
+    fontSize: "30px"
+    // background : "#685F74"
   }
 });
-
-
 
 const SearchResult = ({ hotels, classes, disabled }) => {
   //check if the search result is empty
@@ -80,20 +61,26 @@ const SearchResult = ({ hotels, classes, disabled }) => {
           photo1: hotel.photoUrl,
           photo2: hotel.photoUrl2
         }
-        ];
-    
-
+      ];
 
       //filter goes here
       return (
         // this is for for an individual hotel card below
         <Grid container className={classes.root} xs={12} md={12} lg={12}>
-          <Grid item xs={12} md={11} lg={11}>
+          <Grid
+            item
+            xs={12}
+            md={12}
+            lg={12}
+            style={{
+              padding: 10
+            }}
+          >
             <Paper className={classes.mainpaper}>
               <Grid container key={hotel.id}>
                 <Grid
                   container
-                  xs={7}
+                  xs={12}
                   md={7}
                   lg={7}
                   className={classes.hotelDetails}
@@ -102,29 +89,29 @@ const SearchResult = ({ hotels, classes, disabled }) => {
                     <Grid xs={12} md={12} lg={12} container>
                       <Grid
                         item
-                        xs={8}
+                        xs={12}
                         md={8}
                         lg={8}
                         style={{
                           paddingTop: "10px"
+                          // background: "#F2BEFC"
                         }}
                       >
-                        <Link
-                          to={"/hotel/" + hotel.hID}
-                          style={{
-                            textDecoration: "none"
-                          }}
+                        <Typography
+                          gutterBottom
+                          variant="title"
+                          className={classes.hotelTitle}
                         >
-                          <Typography
-                            gutterBottom
-                            variant="title"
-                            className={classes.hotelTitle}
-                          >
-                            {hotel.name}
-                          </Typography>
-                        </Link>
+                          {hotel.name}
+                        </Typography>
                       </Grid>
-                      <Grid xs={2} md={2} lg={2} item className={classes.price}>
+                      <Grid
+                        xs={12}
+                        md={4}
+                        lg={4}
+                        item
+                        className={classes.price}
+                      >
                         <Typography variant="subtitle1">
                           ${hotel.price}
                           <div style={{ fontSize: "15px", color: "gray" }}>
@@ -132,13 +119,7 @@ const SearchResult = ({ hotels, classes, disabled }) => {
                           </div>
                         </Typography>
                       </Grid>
-                      <Grid
-                        item
-                        xs={12}
-                        md={12}
-                        lg={12}
-                        className={classes.stars}
-                      >
+                      <Grid item xs={12} md={12} lg={12}>
                         <StarRatings
                           rating={parseFloat(hotel.rating)}
                           starRatedColor="red"
@@ -152,9 +133,9 @@ const SearchResult = ({ hotels, classes, disabled }) => {
                     <Divider className={classes.divider} />
                     <Grid
                       item
-                      xs={8}
-                      md={8}
-                      lg={8}
+                      xs={12}
+                      md={12}
+                      lg={12}
                       className={classes.hotelInfo}
                     >
                       <p>Facilities:</p>
@@ -170,9 +151,9 @@ const SearchResult = ({ hotels, classes, disabled }) => {
                     <Divider className={classes.divider} />
                     <Grid
                       item
-                      xs={8}
-                      md={8}
-                      lg={8}
+                      xs={12}
+                      md={12}
+                      lg={12}
                       className={classes.hotelInfo}
                     >
                       <p>Address:</p>
@@ -232,7 +213,7 @@ const SearchResult = ({ hotels, classes, disabled }) => {
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid xs={5} md={5} lg={5} className={classes.photoContainer}>
+                <Grid xs={12} md={5} lg={5} className={classes.photoContainer}>
                   <img
                     src={hotel.photoUrl}
                     className={classes.photo}
