@@ -182,7 +182,7 @@ class UserProfile extends Component {
                   justify="center"
                   spacing={16}
                 >
-                  <Grid item xs={4}>
+                  <Grid item sm={12} md={4}>
                     <h1 style={{textAlign: "center",}}>User Profile</h1>
                     <Paper className={classes.paper}style={{textAlign: "center",}}>
                       {auth.photoURL && (
@@ -226,7 +226,7 @@ class UserProfile extends Component {
                       </Button>
                     </Paper>
                   </Grid>
-                  <Grid item xs={8}>
+                  <Grid item ms={12} md={8}>
                     <MyBooking />
                   </Grid>
                 </Grid>
