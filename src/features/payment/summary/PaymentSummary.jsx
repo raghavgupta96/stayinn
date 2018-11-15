@@ -32,7 +32,7 @@ const styles = theme => ({
   },
   subtotal: {
     '& h2': {
-      color: theme.palette.tertiary_orange.main
+      color: theme.palette.secondary.dark
     }
   },
   total: {
@@ -40,7 +40,7 @@ const styles = theme => ({
     flexFlow: 'row nowrap',
     justifyContent: 'space-between',
     padding: '16px',
-    color: theme.palette.primary.main,
+    color: theme.palette.primary.dark,
     backgroundColor: theme.palette.tertiary_lightblue.main
   }
 });
@@ -131,7 +131,7 @@ const paymentSummary = props => {
           </div>
           <div>
             <h2>Tax + Service Fees</h2>
-            <h2>USD {`${tax + fees}`}</h2>
+            <h2>USD {`${(tax + fees).toFixed(2)}`}</h2>
           </div>
         </section>
       </div>

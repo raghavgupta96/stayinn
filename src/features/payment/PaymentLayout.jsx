@@ -191,7 +191,7 @@ class PaymentLayout extends Component {
     const tax = subtotal * summary.taxRate;
     const fees = subtotal * summary.feesRate;
     // let total = subtotal + tax + fees - rewardsSavings;
-    let total = subtotal + tax + fees;
+    let total = parseFloat((subtotal + tax + fees).toFixed(2));
 
     // Calc earned points
     const earnedPoints = points.usePoints ? 0 : Math.floor(subtotal) * 10;
