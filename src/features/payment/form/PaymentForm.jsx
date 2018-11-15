@@ -132,7 +132,7 @@ for (let i = expiryYearSelectStart; i <= expiryYearSelectEnd; i++) {
 
 const PaymentForm = (props) => {
   const { classes, form, points, guestUser } = props;
-  const { setForm, toggleRewards, checkout, cancel } = props.handlers;
+  const { setForm, toggleRewards, checkout, cancel, validateName, validateNumber } = props.handlers;
 
   return (
     <form className={classes.paymentForm}>
@@ -193,22 +193,39 @@ const PaymentForm = (props) => {
         <div className={classes.cardDetails}>
           <h2>Card Information</h2>
           <TextField
+          required
             id="cardname"
             label="Cardholder's Name"
             value={form.cardName}
+            type = "text"
+            
             onChange={event => setForm({ cardName: event.target.value })}
+            onInput = {(e) =>{
+              var letters = /^[A-Za-z]+$/;
+              var space = '&nbsp;'
+              if(!(e.target.value).match(letters) && !e.target.value == space)
+              {
+                e.target.value = e.target.value.substring(0,e.target.value.length-1)
+              }
+              }} 
             className={classes.cardName}
           />
           <TextField
+          required
             id="cardnumber"
             label="Card Number"
+            type = "number"
             value={form.cardNumber}
             onChange={event => setForm({ cardNumber: event.target.value })}
+            onInput={(e) =>{e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,16)}}
             className={classes.cardNumber}
           />
         </div>
         <div className={classes.cardSecurity}>
           <TextField
+          required
+          type = "number"
+          onInput = {(e) =>{e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,3)}}
             id="cvc"
             label="CVC Code"
             value={form.cvc}
@@ -221,6 +238,7 @@ const PaymentForm = (props) => {
           >
             <InputLabel>Month</InputLabel>
             <Select
+            required
               value={form.expiryMonth}
               onChange={event => setForm({ expiryMonth: event.target.value })}
               inputProps={{ name: "expiryMonth" }}
@@ -233,6 +251,7 @@ const PaymentForm = (props) => {
           >
             <InputLabel>Year</InputLabel>
             <Select
+            required
               value={form.expiryYear}
               onChange={event => setForm({ expiryYear: event.target.value })}
               inputProps={{ name: "expiryYear" }}
@@ -245,8 +264,11 @@ const PaymentForm = (props) => {
       <p></p>
       <section className={classes.controls}>
         <Button
+        disabled = {validateName}
+        disabled = {validateNumber}
           variant="contained"
           color="primary"
+          //onClick = {validate}
           onClick={checkout}
         > Submit
         </Button>
