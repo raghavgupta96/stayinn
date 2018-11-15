@@ -223,13 +223,11 @@ const SearchResult = ({ hotels, classes, disabled }) => {
                   </Grid>
                 </Grid>
                 <Grid xs={5} md={5} lg={5} className={classes.photoContainer}>
-                  <Link to={"/hotel/" + hotel.hID}>
                     <img
                       src={hotel.photoUrl}
                       className={classes.photo}
                       alt="hotel pic"
                     />
-                  </Link>
                 </Grid>
               </Grid>
             </Paper>
