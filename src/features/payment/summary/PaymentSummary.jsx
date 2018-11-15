@@ -131,7 +131,7 @@ const paymentSummary = props => {
           </div>
           <div>
             <h2>Tax + Service Fees</h2>
-            <h2>USD {`${tax} + ${fees}`}</h2>
+            <h2>USD {`${tax + fees}`}</h2>
           </div>
         </section>
       </div>
