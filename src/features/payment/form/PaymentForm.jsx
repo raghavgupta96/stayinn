@@ -134,6 +134,18 @@ const PaymentForm = (props) => {
   const { classes, form, points, guestUser } = props;
   const { setForm, toggleRewards, checkout, cancel, validateName, validateNumber } = props.handlers;
 
+  const isMissingFields = (
+    form.firstName === ""
+    || form.lastName === ""
+    || form.email === ""
+    || form.phoneNumber === ""
+    || form.cardName === ""
+    || form.cardNumber.toString().length !== 16
+    || form.cvc.toString().length !== 3
+    || form.expiryMonth === ""
+    || form.expiryYear === ""
+  );
+
   return (
     <form className={classes.paymentForm}>
       <section className={classes.traveler}>
@@ -264,8 +276,7 @@ const PaymentForm = (props) => {
       <p></p>
       <section className={classes.controls}>
         <Button
-        disabled = {validateName}
-        disabled = {validateNumber}
+          disabled={isMissingFields}
           variant="contained"
           color="primary"
           //onClick = {validate}
