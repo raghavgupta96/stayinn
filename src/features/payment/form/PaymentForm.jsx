@@ -241,7 +241,7 @@ const PaymentForm = (props) => {
             </Select>
           </FormControl>
          </div>
-      </section>reservation
+      </section>
       <p></p>
       <section className={classes.controls}>
         <Button
