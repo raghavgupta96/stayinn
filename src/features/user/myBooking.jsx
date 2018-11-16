@@ -188,7 +188,7 @@ class myBooking extends Component {
               .doc(doc.data().HID);
 
             docRef.get().then(hotelDoc => {
-              if (hotelDoc.exists) {
+              if (hotelDoc.exists && doc.data().userId === user.uid) {
                 // console.log("hotel data", hotelDoc.data());
                 reservations.push({
                   HID: doc.data().HID,
@@ -205,12 +205,12 @@ class myBooking extends Component {
                   startDate: doc.data().startDate,
                   endDate: doc.data().endDate,
                   bookDate: doc.data().bookDate,
-                  totalPrice: doc.data().totalPrice.toFixed(2), // added precision to the price (;
+                  totalPrice: doc.data().totalPrice, // added precision to the price (;
                   userId: doc.data().userId,
                   isCanceled: doc.data().isCanceled,
                   photoURL: hotelDoc.data().photoURL,
                   hotelName: hotelDoc.data().name,
-                  rate: hotelDoc.data().room2 //<-------- CHANGE THIS TO RATE WHEN IT IS UPDATED FROM JUN !!!!!
+                  rate: hotelDoc.data().price //<-------- CHANGE THIS TO RATE WHEN IT IS UPDATED FROM JUN !!!!!
                 });
                 obj.setState({ reservations: reservations });
                 // console.log(reservations);
@@ -318,21 +318,26 @@ class myBooking extends Component {
 
     const startDateObj = new Date(startDate);
     const endDateObj = new Date(endDate);
-
+    console.log(startDateObj);
     // Go through each reservation to check if there is any conflict
     for (let reservation in this.state.reservations) {
-      // console.log("YOOO", this.state.reservations[reservation]);
-      if (
-        startDateObj.getTime() <=
-          this.state.reservations[reservation].endDate.toDate().getTime() &&
-        endDateObj.getTime() >=
-          this.state.reservations[reservation].startDate.toDate().getTime()
-      ) {
-        isMultipleBooking = true;
-      } else {
-        isMultipleBooking = false;
+      console.log("YOOO", this.state.reservations[reservation]);
+      if(!this.state.reservations[reservation].isCanceled) {
+        if (
+          startDateObj.getTime() <=
+            this.state.reservations[reservation].endDate.toDate().getTime() &&
+          endDateObj.getTime() >=
+            this.state.reservations[reservation].startDate.toDate().getTime()
+        ) {
+          isMultipleBooking = true;
+          break;
+        } else {
+          isMultipleBooking = false;
+        }
       }
+
     }
+
 
     this.setState({ isMultipleBooking });
   };
@@ -380,11 +385,14 @@ class myBooking extends Component {
     const checkin = this.state.checkin;
     const checkout = this.state.checkout;
     const currentRes = this.state.currRes;
+    console.log(currentRes)
     if (this.dateCheck(checkin, checkout)) {
       this.setState({
         noDateConflict: true
       });
       // Split checkin and checkout dates to separate year, month, day
+      console.log(checkin);
+      console.log(checkout);
       const dateIn = checkin.split("-");
       const dateOut = checkout.split("-");
 
@@ -399,11 +407,13 @@ class myBooking extends Component {
       if (this.state.isMultipleBooking) {
         return;
       }
+      console.log(this.state.isMultipleBooking)
 
       let numOfNights = this.datediff(startDate, endDate);
 
       let adjustedSubtotal = this.state.currRes.rate * numOfNights;
-      let adjustedPrice = adjustedSubtotal * 1.15;
+      let adjustedPrice = (adjustedSubtotal * 1.15).toFixed(2);
+      console.log(adjustedSubtotal)
 
       await firebase.auth().onAuthStateChanged(async function(user) {
         if (!user) {
@@ -786,6 +796,10 @@ class myBooking extends Component {
                       {/* cancel choice */}
                       <div style={{ padding: 15 }}>
                         <Button
+                          className={classes.customButton}
+                          style={{
+                            color: "#ffffff"
+                          }}
                           component={renderButton}
                           onClick={() => {
                             this.state.currRes &&
@@ -798,6 +812,7 @@ class myBooking extends Component {
                           Yes
                         </Button>
                         <Button
+                          className={classes.customButton}
                           component={warningButton}
                           onClick={() => {
                             this.handleClose();
@@ -877,10 +892,10 @@ class myBooking extends Component {
                           {editCharge && (
                             <div>
                               <Typography style={regTextStyle}>
-                                do you want to make the change?
+                                Do you want to make the change?
                               </Typography>
                               <Typography style={regTextStyle}>
-                                ${editCharge} more will be charged on the
+                                ${editCharge.toFixed(2)} more will be charged on the
                                 following card :
                               </Typography>
                               <Typography style={regTextStyle}>
@@ -896,19 +911,19 @@ class myBooking extends Component {
                           {/* The user selects the same date period */}
                           {editCharge === 0 &&
                             editRefund === 0 && (
-                              <Typography color="error">
-                                The price will stay the same
+                              <Typography style={regTextStyle}>
+                                The price will stay the same.
                               </Typography>
-                            )}
+                          )}
 
                           {/* the user will be refunded */}
                           {editRefund && (
                             <div>
                               <Typography style={regTextStyle}>
-                                do you want to make the change?
+                                Do you want to make this change?
                               </Typography>
                               <Typography style={regTextStyle}>
-                                ${editRefund} will be refunded to the following
+                                ${editRefund.toFixed(2)} will be refunded to the following
                                 card:
                               </Typography>
                               <Typography style={regTextStyle}>
@@ -925,6 +940,10 @@ class myBooking extends Component {
                           !editCharge && (
                             <div style={{ padding: 15 }}>
                               <Button
+                                className={classes.customButton}
+                                style={{
+                                  color: "#ffffff"
+                                }}
                                 component={renderButton}
                                 onClick={() => {
                                   this.state.currRes &&
@@ -936,6 +955,7 @@ class myBooking extends Component {
                                 Confirm
                               </Button>
                               <Button
+                                className={classes.customButton}
                                 component={warningButton}
                                 onClick={() => {
                                   this.handleEditClose();
@@ -948,6 +968,10 @@ class myBooking extends Component {
                         {(editRefund || editCharge) && (
                           <div style={{ padding: 15 }}>
                             <Button
+                              className={classes.customButton}
+                              style={{
+                                color: "#ffffff"
+                              }}
                               component={renderButton}
                               onClick={() => {
                                 this.setState({
@@ -962,6 +986,7 @@ class myBooking extends Component {
                               Yes
                             </Button>
                             <Button
+                              className={classes.customButton}
                               component={warningButton}
                               onClick={() => {
                                 this.handleEditClose();
