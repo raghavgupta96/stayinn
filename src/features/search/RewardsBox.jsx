@@ -15,7 +15,6 @@ const styles = theme => ({
     marginTop: "10px"
   },
   label: {
-    fontFamily: "Times",
     fontSize: "18px"
   }
 });

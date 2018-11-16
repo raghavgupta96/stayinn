@@ -56,7 +56,6 @@ const styles = theme => ({
     width: "100%",
     height: "45px",
     fontSize: "21px",
-    fontFamily: "Times",
     border: "none",
     borderBottomStyle: "solid",
     borderBottomWidth: "1px",

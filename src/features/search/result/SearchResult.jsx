@@ -25,7 +25,6 @@ const styles = theme => ({
     paddingLeft: "10px"
   },
   hotelTitle: {
-    fontFamily: "Times",
     fontSize: "32px",
     display: "inline"
   },

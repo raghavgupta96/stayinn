@@ -54,7 +54,6 @@ const styles = theme => ({
     marginBottom: "15px"
   },
   typeTitle: {
-    fontFamily: "Times",
     fontSize: "20px",
     marginTop: "10px",
     marginLeft: "10px"
