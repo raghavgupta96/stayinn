@@ -35,14 +35,14 @@ const styles = theme => ({
     marginTop: "0px"
   },
   mainpaper: {
-    marginBottom: 20,
+    marginBottom: 20
   },
   reservationDetails: {
     width: "100%",
     marginTop: "15px",
     paddingLeft: 20,
     paddingRight: 20,
-    paddingBottom: 20,
+    paddingBottom: 20
   },
   customButton: {
     marginRight: 10
@@ -56,14 +56,23 @@ const styles = theme => ({
     color: "lightGray",
     "&:hover": {
       color: "Gray",
-      transition: "color 300ms"
+      transition: "color 200ms"
     }
   },
   divider: {
     width: "90%",
     marginTop: "10px",
-    marginLeft: "10px",
+    marginLeft: "10px"
   },
+
+  hotelTitle: {
+    fontSize: 32,
+    underline: "none",
+    "&:hover": {
+      color: "#F69A33",
+      transition: "color 300ms"
+    }
+  }
 });
 
 const actions = {};
@@ -88,14 +97,27 @@ const warningButton = ({ ...custom }) => (
   <Button variant="contained" justify="right" {...custom} />
 );
 
+// cancel modal style
 const modalStyle = {
   backgroundColor: "white",
   padding: 30,
   textAlign: "center",
   borderRadius: 10,
   marginLeft: 450,
-  marginRight: 450
+  marginRight: 450,
 };
+
+
+// edit modal style
+const editModalStyle = {
+  backgroundColor: "white",
+  padding: 30,
+  textAlign: "center",
+  borderRadius: 10,
+  marginLeft: 450,
+  marginRight: 450,
+  marginTop: 250
+}
 
 const regTextStyle = {
   fontSize: 18
@@ -122,9 +144,10 @@ class myBooking extends Component {
       userCard: null,
       editRefund: null,
       editCharge: null,
+      focusedInput: "startDate",
       saveEdit: false,
       startDate: moment(), // set your initial start date here
-      endDate: moment().add(1, "days"), // set your initial end date here
+      endDate: moment().add(1, "days") // set your initial end date here
     };
     this.state = this.state;
   }
@@ -139,7 +162,6 @@ class myBooking extends Component {
   // };
 
   async componentDidMount() {
-
     // initialize the calendar dates for edit dates of reservation
     const startDateObj = new Date(this.state.startDate);
     const startDateStr = this.dateToString(startDateObj);
@@ -149,7 +171,7 @@ class myBooking extends Component {
 
     this.setState({
       checkin: startDateStr,
-      checkout: endDateStr,
+      checkout: endDateStr
     });
 
     const { firebase } = this.props;
@@ -233,8 +255,32 @@ class myBooking extends Component {
     return r2.startDate.toDate().getTime() - r1.startDate.toDate().getTime();
   };
 
+  // Sort user's reservation without including
+  // cancelled reservations
+  sortWithoutCancel(reservationList) {
+    reservationList.sort(this.sortByCheckinDate);
+    let removedRes = [];
+    for (let r = 0; r < reservationList.length; r++) {
+      if (reservationList[r].isCanceled) {
+        console.log("pushing removed Reservation: " + reservationList[r]);
+        removedRes.push(reservationList[r]);
+      }
+    }
+
+    let indexToRemove = -1;
+    for (let i = 0; i < removedRes.length; i++) {
+      indexToRemove = reservationList.indexOf(removedRes[i]);
+      if (indexToRemove >= 0) {
+        reservationList.splice(indexToRemove, 1);
+        reservationList.push(removedRes[i]);
+      }
+    }
+
+    return reservationList;
+  }
+
   _handleCheckinDate = e => {
-    console.log("CHECKIN");
+    // console.log("CHECKIN");
     const date = e.target.value;
     // console.log(date);
     this.setState({
@@ -243,7 +289,7 @@ class myBooking extends Component {
   };
 
   _handleCheckoutDate = e => {
-    console.log("CHECKOUT");
+    // console.log("CHECKOUT");
     const date = e.target.value;
     // console.log(date);
     this.setState({
@@ -253,7 +299,6 @@ class myBooking extends Component {
 
   // for airbnb calendar
   handleDatesChange = ({ startDate, endDate }) => {
-
     const startDateObj = new Date(startDate);
     const startDateStr = this.dateToString(startDateObj);
 
@@ -262,17 +307,17 @@ class myBooking extends Component {
 
     this.setState({
       checkin: startDateStr,
-      checkout: endDateStr,
+      checkout: endDateStr
     });
-  }
+  };
 
-  dateToString = (date) => {
+  dateToString = date => {
     const temp = date;
     const year = temp.getFullYear();
     const month = temp.getMonth() + 1;
     const day = temp.getDate();
     return year + "-" + month + "-" + day;
-  }
+  };
 
   dateCheck = (date1, date2) => {
     // Split checkin and checkout dates to separate year, month, day
@@ -318,11 +363,11 @@ class myBooking extends Component {
 
     const startDateObj = new Date(startDate);
     const endDateObj = new Date(endDate);
-    console.log(startDateObj);
+    // console.log(startDateObj);
     // Go through each reservation to check if there is any conflict
     for (let reservation in this.state.reservations) {
-      console.log("YOOO", this.state.reservations[reservation]);
-      if(!this.state.reservations[reservation].isCanceled) {
+      // console.log("YOOO", this.state.reservations[reservation]);
+      if (!this.state.reservations[reservation].isCanceled) {
         if (
           startDateObj.getTime() <=
             this.state.reservations[reservation].endDate.toDate().getTime() &&
@@ -335,9 +380,7 @@ class myBooking extends Component {
           isMultipleBooking = false;
         }
       }
-
     }
-
 
     this.setState({ isMultipleBooking });
   };
@@ -385,14 +428,14 @@ class myBooking extends Component {
     const checkin = this.state.checkin;
     const checkout = this.state.checkout;
     const currentRes = this.state.currRes;
-    console.log(currentRes)
+    console.log(currentRes);
     if (this.dateCheck(checkin, checkout)) {
       this.setState({
         noDateConflict: true
       });
       // Split checkin and checkout dates to separate year, month, day
-      console.log(checkin);
-      console.log(checkout);
+      // console.log(checkin);
+      // console.log(checkout);
       const dateIn = checkin.split("-");
       const dateOut = checkout.split("-");
 
@@ -407,13 +450,13 @@ class myBooking extends Component {
       if (this.state.isMultipleBooking) {
         return;
       }
-      console.log(this.state.isMultipleBooking)
+      // console.log(this.state.isMultipleBooking);
 
       let numOfNights = this.datediff(startDate, endDate);
 
       let adjustedSubtotal = this.state.currRes.rate * numOfNights;
       let adjustedPrice = (adjustedSubtotal * 1.15).toFixed(2);
-      console.log(adjustedSubtotal)
+      // console.log(adjustedSubtotal);
 
       await firebase.auth().onAuthStateChanged(async function(user) {
         if (!user) {
@@ -478,7 +521,7 @@ class myBooking extends Component {
                   .update({
                     startDate: startDate,
                     endDate: endDate,
-                    subtotal: adjustedSubtotal, 
+                    subtotal: adjustedSubtotal,
                     totalPrice: adjustedPrice,
                     reward: resNewReward,
                     numOfNight: numOfNights
@@ -588,14 +631,15 @@ class myBooking extends Component {
     const editCharge = this.state.editCharge;
     const editRefund = this.state.editRefund;
     const today = new Date();
-    // console.log(this.props);
-    // var thisRes = null;
-    // console.log(this.state.reservations);
-    // if (this.state.reservations) {
+
+    if (this.state.reservations) {
+      this.sortWithoutCancel(this.state.reservations);
+    }
+
     // sorting checkin date and map the reservations to show
     const resList =
       this.state.reservations &&
-      this.state.reservations.sort(this.sortByCheckinDate) &&
+      // this.sortWithoutCancel(this.state.reservations) &&
       this.state.reservations.map(res => {
         // convert timestamps to date objects first
         // console.log(res);
@@ -607,338 +651,71 @@ class myBooking extends Component {
         return (
           <div key={res.reservationId}>
             {/* Only show reservation that the user has instead of all*/}
-            {auth.uid === res.userId &&
-              !res.isCanceled && (
-                <div>
-                  <Grid
-                    container
-                    className={classes.root}
-                    xs={12}
-                    md={12}
-                    lg={12}
-                  >
-                    <Grid item xs={11} md={11} lg={11}>
-                      <Paper className={classes.mainpaper}>
-                        <Grid container key={res.HID}>
-                          <Grid container xs={7} md={7} lg={7}
-                            className={classes.reservationDetails}>
-                            <Grid item xs>
-                              <Grid xs={12} md={12} lg={12}>
+            {auth.uid === res.userId && !res.isCanceled && (
+              <div>
+                <Grid
+                  container
+                  className={classes.root}
+                  xs={12}
+                  md={12}
+                  lg={12}
+                >
+                  <Grid item xs={11} md={11} lg={11}>
+                    <Paper className={classes.mainpaper}>
+                      <Grid container key={res.HID}>
+                        <Grid
+                          container
+                          xs={7}
+                          md={7}
+                          lg={7}
+                          className={classes.reservationDetails}
+                        >
+                          <Grid item xs>
+                            <Grid xs={12} md={12} lg={12}>
+                              <a
+                                href={
+                                  "https://www.google.com/maps/place/" +
+                                  res.hotelAddress
+                                }
+                                style={{
+                                  textDecoration: "none"
+                                }}
+                              >
                                 <Typography
-                                  gutterBottom
                                   variant="title"
                                   className={classes.hotelTitle}
                                 >
-                                  Reservation @
+                                  {res.hotelName}
                                 </Typography>
-                                <Link to={"/hotel/" + res.HID}>
-                                  <Typography
-                                    gutterBottom
-                                    variant="title"
-                                    className={classes.hotelTitle}
-                                  >
-                                    {res.hotelName}
-                                  </Typography>
-                                  <Divider className={classes.divider}/>
-                                </Link>
-                              </Grid>
-                              <Grid
-                                item
-                                xs={12}
-                                md={12}
-                                lg={12}
-                                className={classes.hotelInfo}
-                              >
-                                <h3>Hotel Name: {res.hotelName}</h3>
-                                <h3>Book Date: {bookDate.toString()}</h3>
-                                <Divider className={classes.divider}/>
-                                <h3>Check-in Date: {startDate.toString()}</h3>
-                                <h3>Check-out Date: {endDate.toString()}</h3>
-                                <Divider className={classes.divider}/>
-                                <h3>Total Price: ${res.totalPrice}</h3>
-                                <h3>Address: {res.hotelAddress}</h3>
-                              </Grid>
+                                <Divider className={classes.divider} />
+                              </a>
                             </Grid>
                             <Grid
                               item
                               xs={12}
                               md={12}
                               lg={12}
-                              container
-                              direction="column"
+                              className={classes.hotelInfo}
                             >
-                              <Grid item xs />
-                              <Grid item>
-                                <Button
-                                  className={classes.customButton}
-                                  style={{
-                                    color: "#ffffff"
-                                  }}
-                                  component={renderButton}
-                                  onClick={() => {
-                                    this.handleEditOpen(res);
-                                  }}
-                                >
-                                  Edit
-                                </Button>
-                                <Button
-                                  className={classes.customButton}
-                                  component={warningButton}
-                                  onClick={() => {
-                                    // this.handleCancel(res.reservationId);
-                                    this.handleOpen(res);
-                                  }}
-                                >
-                                  Cancel
-                                </Button>
-                              </Grid>
+                              <h3>Book Date: {bookDate.toString()}</h3>
+                              <Divider className={classes.divider} />
+                              <h3>Check-in Date: {startDate.toString()}</h3>
+                              <h3>Check-out Date: {endDate.toString()}</h3>
+                              <Divider className={classes.divider} />
+                              <h3>Total Price: ${res.totalPrice}</h3>
+                              <h3>Address: {res.hotelAddress}</h3>
                             </Grid>
                           </Grid>
                           <Grid
-                            xs={5}
-                            md={5}
-                            lg={5}
-                            className={classes.photoContainer}
+                            item
+                            xs={12}
+                            md={12}
+                            lg={12}
+                            container
+                            direction="column"
                           >
-                            <img
-                              src={res.photoURL}
-                              className={classes.photo}
-                              alt="hotel pic"
-                            />
-                          </Grid>
-                        </Grid>
-                      </Paper>
-                    </Grid>
-                    <Grid item xs={1} md={1} lg={1} />
-                  </Grid>
-                  {/* <h3>Hotel PhotoURL: {this.state.currHotel.photoURL}</h3> */}
-                  {/* <img
-                    src={res.photoURL}
-                    alt=""
-                    style={{
-                      width: 400,
-                      height: 200
-                    }}
-                  /> */}
-                  {/* <h3>PhotoURL: {res.photoURL}</h3>
-                  <h3>Reservation ID: {res.reservationId}</h3>
-                  <h3>Hotel ID: {res.HID}</h3> */}
-                  {/* <h3>Hotel Name: {res.hotelName}</h3>
-                  <h3>Book Date: {res.bookDate}</h3>
-                  <h3>Check-in Date: {res.checkinDate}</h3>
-                  <h3>Check-out Date: {res.checkoutDate}</h3>
-                  <h3>Total Price: ${res.totalPrice}</h3> */}
-                  {/* <h3>isCanceled: {String(res.isCanceled)}</h3> */}
-
-                  {/* CANCEL MODAL */}
-                  <Modal
-                    aria-labelledby="simple-modal-title"
-                    aria-describedby="simple-modal-description"
-                    open={this.state.open}
-                    onClose={this.handleClose}
-                    style={{ paddingTop: 50, zIndex: 1, overflow: "auto" }}
-                  >
-                    {/* The cross sign for closing the modal */}
-                    <div style={modalStyle}>
-                      <div style={{ textAlign: "right" }}>
-                        <button
-                          style={{
-                            border: "none",
-                            background: "transparent",
-                            cursor: "pointer",
-                            outline: "none"
-                          }}
-                          onClick={this.handleClose}
-                        >
-                          <CloseIcon className={classes.iconHover} />
-                        </button>
-                      </div>
-                      {/* cancel description */}
-                      <div style={{ marginBottom: 10 }}>
-                        <Typography style={regTextStyle}>
-                          Do you want to cancel this reservation? <br />
-                          Cancelling this reservation will be charged 10%
-                          cancellation fee: <br />
-                          <br />
-                          Reservation Price: $
-                          {this.state.currRes && this.state.currRes.totalPrice}
-                          <br />
-                        </Typography>
-                        <Typography style={highlightTextStyle}>
-                          Cancellation Fee: -$
-                          {this.state.currRes &&
-                            (this.state.currRes.totalPrice * 0.1).toFixed(2)}
-                          <br />
-                        </Typography>
-                        <Typography style={regTextStyle}>
-                          Refund: $
-                          {this.state.currRes &&
-                            (this.state.currRes.totalPrice * 0.9).toFixed(2)}
-                          <br />
-                        </Typography>
-                      </div>
-
-                      {/* card that the refund will go to */}
-
-                      {this.state.userCard && (
-                        <Grid>
-                          <Divider />
-                          <Typography style={regTextStyle}>
-                            The refund will be returned to the following card:
-                          </Typography>
-                          <Typography style={regTextStyle}>
-                            Card Number: ****{" "}
-                            {this.state.userCard.cardNumber.substring(12, 16)}
-                          </Typography>
-                        </Grid>
-                      )}
-
-                      {/* cancel choice */}
-                      <div style={{ padding: 15 }}>
-                        <Button
-                          className={classes.customButton}
-                          style={{
-                            color: "#ffffff"
-                          }}
-                          component={renderButton}
-                          onClick={() => {
-                            this.state.currRes &&
-                              this.handleCancel(
-                                this.state.currRes.reservationId,
-                                this.state.currRes.totalPrice * 0.9
-                              );
-                          }}
-                        >
-                          Yes
-                        </Button>
-                        <Button
-                          className={classes.customButton}
-                          component={warningButton}
-                          onClick={() => {
-                            this.handleClose();
-                          }}
-                        >
-                          No
-                        </Button>
-                      </div>
-                    </div>
-                  </Modal>
-
-                  {/* EDIT MODAL */}
-                  <Modal
-                    aria-labelledby="simple-modal-title"
-                    aria-describedby="simple-modal-description"
-                    open={this.state.editOpen}
-                    onClose={this.handleEditClose}
-                    style={{ paddingTop: 50, zIndex: 1, overflow: "auto" }}
-                  >
-                    <div style={modalStyle}>
-                      {/* Adding cross icon for users to close modal */}
-                      <div style={{ textAlign: "right" }}>
-                        <button
-                          style={{
-                            border: "none",
-                            background: "transparent",
-                            cursor: "pointer",
-                            outline: "none"
-                          }}
-                          onClick={() => {
-                            this.handleEditClose();
-                          }}
-                        >
-                          <CloseIcon className={classes.iconHover} />
-                        </button>
-                      </div>
-                      <div sytle={{display: "inline-block"}}>
-                        <Typography style={regTextStyle}>
-                          Select a new checkin and checkout date for your
-                          reservation.
-                        </Typography>
-                        <br />
- 
-                     
-                            <DateRangePicker
-                              startDateId="startDate"
-                              endDateId="endDate"
-                              startDate={this.state.startDate}
-                              endDate={this.state.endDate}
-                              onDatesChange={({ startDate, endDate }) => {
-                                this.setState({ startDate, endDate });
-                                this.handleDatesChange({ startDate, endDate });
-                              }}
-                              focusedInput={this.state.focusedInput}
-                              onFocusChange={focusedInput => {
-                                this.setState({ focusedInput });
-                              }}
-                              style={{
-                                zIndex: "0"
-                              }}
-                            />
-                      </div>
-                      <Grid padding={20} spacing={24}>
-                        <div>
-                          {!noDateConflict && (
-                            <Typography color="error">
-                              The checkin date must be before the checkout date.
-                            </Typography>
-                          )}
-                          {isMultipleBooking && (
-                            <Typography color="error">
-                              You have conflicting reservation date
-                            </Typography>
-                          )}
-
-                          {/* The user will be charged more */}
-                          {editCharge && (
-                            <div>
-                              <Typography style={regTextStyle}>
-                                Do you want to make the change?
-                              </Typography>
-                              <Typography style={regTextStyle}>
-                                ${editCharge.toFixed(2)} more will be charged on the
-                                following card :
-                              </Typography>
-                              <Typography style={regTextStyle}>
-                                Card Number: ****{" "}
-                                {this.state.userCard.cardNumber.substring(
-                                  12,
-                                  16
-                                )}
-                              </Typography>
-                            </div>
-                          )}
-
-                          {/* The user selects the same date period */}
-                          {editCharge === 0 &&
-                            editRefund === 0 && (
-                              <Typography style={regTextStyle}>
-                                The price will stay the same.
-                              </Typography>
-                          )}
-
-                          {/* the user will be refunded */}
-                          {editRefund && (
-                            <div>
-                              <Typography style={regTextStyle}>
-                                Do you want to make this change?
-                              </Typography>
-                              <Typography style={regTextStyle}>
-                                ${editRefund.toFixed(2)} will be refunded to the following
-                                card:
-                              </Typography>
-                              <Typography style={regTextStyle}>
-                                Card Number: ****{" "}
-                                {this.state.userCard.cardNumber.substring(
-                                  12,
-                                  16
-                                )}
-                              </Typography>
-                            </div>
-                          )}
-                        </div>
-                        {!editRefund &&
-                          !editCharge && (
-                            <div style={{ padding: 15 }}>
+                            <Grid item xs />
+                            <Grid item>
                               <Button
                                 className={classes.customButton}
                                 style={{
@@ -946,83 +723,379 @@ class myBooking extends Component {
                                 }}
                                 component={renderButton}
                                 onClick={() => {
-                                  this.state.currRes &&
-                                    this.handleEditRes(
-                                      this.state.currRes.reservationId
-                                    );
+                                  this.handleEditOpen(res);
                                 }}
                               >
-                                Confirm
+                                Edit
                               </Button>
                               <Button
                                 className={classes.customButton}
                                 component={warningButton}
                                 onClick={() => {
-                                  this.handleEditClose();
+                                  // this.handleCancel(res.reservationId);
+                                  this.handleOpen(res);
                                 }}
                               >
                                 Cancel
                               </Button>
-                            </div>
-                          )}
-                        {(editRefund || editCharge) && (
-                          <div style={{ padding: 15 }}>
-                            <Button
-                              className={classes.customButton}
-                              style={{
-                                color: "#ffffff"
-                              }}
-                              component={renderButton}
-                              onClick={() => {
-                                this.setState({
-                                  saveEdit: true
-                                });
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid
+                          xs={5}
+                          md={5}
+                          lg={5}
+                          className={classes.photoContainer}
+                        >
+                          <img
+                            src={res.photoURL}
+                            className={classes.photo}
+                            alt="hotel pic"
+                          />
+                        </Grid>
+                      </Grid>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={1} md={1} lg={1} />
+                </Grid>
+                {/* <h3>Hotel PhotoURL: {this.state.currHotel.photoURL}</h3> */}
+                {/* <img
+                    src={res.photoURL}
+                    alt=""
+                    style={{
+                      width: 400,
+                      height: 200
+                    }}
+                  /> */}
+                {/* <h3>PhotoURL: {res.photoURL}</h3>
+                  <h3>Reservation ID: {res.reservationId}</h3>
+                  <h3>Hotel ID: {res.HID}</h3> */}
+                {/* <h3>Hotel Name: {res.hotelName}</h3>
+                  <h3>Book Date: {res.bookDate}</h3>
+                  <h3>Check-in Date: {res.checkinDate}</h3>
+                  <h3>Check-out Date: {res.checkoutDate}</h3>
+                  <h3>Total Price: ${res.totalPrice}</h3> */}
+                {/* <h3>isCanceled: {String(res.isCanceled)}</h3> */}
+
+                {/* CANCEL MODAL */}
+                <Modal
+                  aria-labelledby="simple-modal-title"
+                  aria-describedby="simple-modal-description"
+                  open={this.state.open}
+                  onClose={this.handleClose}
+                  style={{ paddingTop: 50, zIndex: 1, overflow: "auto" }}
+                >
+                  {/* The cross sign for closing the modal */}
+                  <div style={modalStyle}>
+                    <div style={{ textAlign: "right" }}>
+                      <button
+                        style={{
+                          border: "none",
+                          background: "transparent",
+                          cursor: "pointer",
+                          outline: "none"
+                        }}
+                        onClick={this.handleClose}
+                      >
+                        <CloseIcon className={classes.iconHover} />
+                      </button>
+                    </div>
+                    {/* cancel description */}
+                    <div style={{ marginBottom: 10 }}>
+                      <Typography style={regTextStyle}>
+                        Do you want to cancel this reservation? <br />
+                        Cancelling this reservation will be charged 10%
+                        cancellation fee: <br />
+                        <br />
+                        Reservation Price: $
+                        {this.state.currRes && this.state.currRes.totalPrice}
+                        <br />
+                      </Typography>
+                      <Typography style={highlightTextStyle}>
+                        Cancellation Fee: -$
+                        {this.state.currRes &&
+                          (this.state.currRes.totalPrice * 0.1).toFixed(2)}
+                        <br />
+                      </Typography>
+                      <Typography style={regTextStyle}>
+                        Refund: $
+                        {this.state.currRes &&
+                          (this.state.currRes.totalPrice * 0.9).toFixed(2)}
+                        <br />
+                      </Typography>
+                    </div>
+
+                    {/* card that the refund will go to */}
+
+                    {this.state.userCard && (
+                      <Grid>
+                        <Divider />
+                        <Typography style={regTextStyle}>
+                          The refund will be returned to the following card:
+                        </Typography>
+                        <Typography style={regTextStyle}>
+                          Card Number: ****{" "}
+                          {this.state.userCard.cardNumber.substring(12, 16)}
+                        </Typography>
+                      </Grid>
+                    )}
+
+                    {/* cancel choice */}
+                    <div style={{ padding: 15 }}>
+                      <Button
+                        className={classes.customButton}
+                        style={{
+                          color: "#ffffff"
+                        }}
+                        component={renderButton}
+                        onClick={() => {
+                          this.state.currRes &&
+                            this.handleCancel(
+                              this.state.currRes.reservationId,
+                              this.state.currRes.totalPrice * 0.9
+                            );
+                        }}
+                      >
+                        Yes
+                      </Button>
+                      <Button
+                        className={classes.customButton}
+                        component={warningButton}
+                        onClick={() => {
+                          this.handleClose();
+                        }}
+                      >
+                        No
+                      </Button>
+                    </div>
+                  </div>
+                </Modal>
+
+                {/* EDIT MODAL */}
+                <Modal
+                  aria-labelledby="simple-modal-title"
+                  aria-describedby="simple-modal-description"
+                  open={this.state.editOpen}
+                  onClose={this.handleEditClose}
+                  style={{ paddingTop: 50, zIndex: 1, overflow: "auto" }}
+                >
+                  <div style={editModalStyle}>
+                    {/* Adding cross icon for users to close modal */}
+                    <div style={{ textAlign: "right" }}>
+                      <button
+                        style={{
+                          border: "none",
+                          background: "transparent",
+                          cursor: "pointer",
+                          outline: "none"
+                        }}
+                        onClick={() => {
+                          this.handleEditClose();
+                        }}
+                      >
+                        <CloseIcon className={classes.iconHover} />
+                      </button>
+                    </div>
+
+                    {/* dispaly date pickers to users to choose editted dates */}
+                    <div sytle={{ display: "inline-block" }}>
+                      {/* <Typography style={regTextStyle}>
+                        Select a new checkin and checkout date for your
+                        reservation.
+                      </Typography> */}
+                      <br />
+                      <DateRangePicker
+                        startDateId="startDate"
+                        endDateId="endDate"
+                        startDate={this.state.startDate}
+                        endDate={this.state.endDate}
+                        openDirection="up"
+                        calendarInfoPosition="top"
+                        renderCalendarInfo={() => (
+                          <div style={{
+                            textAlign: "center",
+                            fontSize: 20,
+                            margin: 5,
+                          }}>
+                            Select a new checkin and checkout date for your
+                            reservation.
+                          </div>
+                        )}
+                        onDatesChange={({ startDate, endDate }) => {
+                          this.setState({ startDate, endDate });
+                          this.handleDatesChange({ startDate, endDate });
+                        }}
+                        focusedInput={this.state.focusedInput}
+                        onFocusChange={focusedInput => {
+                          if (!focusedInput) return; // doesn't update the focusedInput if it is trying to close the DRP
+                          this.setState({ focusedInput });
+                        }}
+                        style={{
+                          zIndex: "0"
+                        }}
+                      />
+                    </div>
+                    <Grid padding={20} spacing={24}>
+                      <div>
+                        {!noDateConflict && (
+                          <Typography color="error">
+                            The checkin date must be before the checkout date.
+                          </Typography>
+                        )}
+                        {isMultipleBooking && (
+                          <Typography color="error">
+                            You have conflicting reservation date
+                          </Typography>
+                        )}
+
+                        {/* The user will be charged more */}
+                        {editCharge && editCharge !== 0 ? (
+                          <div>
+                            <Typography style={regTextStyle}>
+                              Do you want to make the change?
+                            </Typography>
+                            <Typography style={regTextStyle}>
+                              ${editCharge.toFixed(2)} more will be charged on
+                              the following card :
+                            </Typography>
+                            <Typography style={regTextStyle}>
+                              Card Number: ****{" "}
+                              {this.state.userCard.cardNumber.substring(12, 16)}
+                            </Typography>
+                          </div>
+                        ) : (
+                          <div />
+                        )}
+
+                        {/* The user selects the same date period
+                            no refund or additional charge */}
+                        {editCharge === 0 && editRefund === 0 ? (
+                          <div>
+                            <Typography style={regTextStyle}>
+                              There will not be extra charges and refunds.
+                              <br />
+                              The price will stay the same.
+                            </Typography>
+                          </div>
+                        ) : (
+                          <div />
+                        )}
+
+                        {/* the user will be refunded */}
+                        {editRefund && editRefund !== 0 ? (
+                          <div>
+                            <Typography style={regTextStyle}>
+                              Do you want to make this change?
+                            </Typography>
+                            <Typography style={regTextStyle}>
+                              {/* ${editRefund.toFixed(2)} will be refunded to the following */}
+                              card:
+                            </Typography>
+                            <Typography style={regTextStyle}>
+                              Card Number: ****{" "}
+                              {this.state.userCard.cardNumber.substring(12, 16)}
+                            </Typography>
+                          </div>
+                        ) : (
+                          <div />
+                        )}
+                      </div>
+
+                      {/* display YES and NO if users enter valid date
+                          to calculate the refund or charge */}
+                      {editRefund !== null || editCharge !== null ? (
+                        <div style={{ padding: 15 }}>
+                          <Button
+                            className={classes.customButton}
+                            style={{
+                              color: "#ffffff"
+                            }}
+                            component={renderButton}
+                            onClick={() => {
+                              this.setState({
+                                saveEdit: true
+                              });
+                              this.handleEditRes(
+                                this.state.currRes.reservationId
+                              );
+                            }}
+                            sytle={{ padding: "20px" }}
+                          >
+                            Yes
+                          </Button>
+                          <Button
+                            className={classes.customButton}
+                            component={warningButton}
+                            onClick={() => {
+                              this.handleEditClose();
+                            }}
+                          >
+                            No
+                          </Button>
+                        </div>
+                      ) : (
+                        <div />
+                      )}
+
+                      {/* display confirm and cancel if the user has not entered dates yet */}
+                      {editRefund === null && editCharge === null ? (
+                        <div style={{ padding: 15 }}>
+                          <Button
+                            className={classes.customButton}
+                            style={{
+                              color: "#ffffff"
+                            }}
+                            component={renderButton}
+                            onClick={() => {
+                              this.state.currRes &&
                                 this.handleEditRes(
                                   this.state.currRes.reservationId
                                 );
-                              }}
-                              sytle={{padding:"20px"}}
-                            >
-                              Yes
-                            </Button>
-                            <Button
-                              className={classes.customButton}
-                              component={warningButton}
-                              onClick={() => {
-                                this.handleEditClose();
-                              }}
-                            >
-                              No
-                            </Button>
-                          </div>
-                        )}
-                      </Grid>
-                    </div>
-                  </Modal>
-                </div>
-              )}
+                            }}
+                          >
+                            Confirm
+                          </Button>
+                          <Button
+                            className={classes.customButton}
+                            component={warningButton}
+                            onClick={() => {
+                              this.handleEditClose();
+                            }}
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                      ) : (
+                        <div />
+                      )}
+                    </Grid>
+                  </div>
+                </Modal>
+              </div>
+            )}
 
             {/* Show the reservation that has been cancelled */}
-            {auth.uid === res.userId &&
-              res.isCanceled && (
-                <div>
-                  <Grid item xs={11}>
-                    <Paper className={classes.mainpaper}>
-                      <h2>This Reservation has been Cancelled</h2>
-                      <s>
-                        {/* <h3>Reservation ID: {res.reservationId}</h3>
+            {auth.uid === res.userId && res.isCanceled ? (
+              <div>
+                <Grid item xs={11}>
+                  <Paper className={classes.mainpaper}>
+                    <h2>This Reservation has been Cancelled</h2>
+                    <s>
+                      {/* <h3>Reservation ID: {res.reservationId}</h3>
                         <h3>Hotel ID: {res.HID}</h3> */}
-                        <h3>Hotel Name: {res.hotelName}</h3>
-                        <h3>Book Date: {bookDate.toString()}</h3>
-                        <h3>Check-in Date: {startDate.toString()}</h3>
-                        <h3>Check-out Date: {endDate.toString()}</h3>
-                        <h3>Total Price: ${res.totalPrice}</h3>
-                        {/* <h3>isCanceled: {String(res.isCanceled)}</h3> */}
-                      </s>
-                    </Paper>
-                  </Grid>
-                </div>
-              )}
+                      <h3>Hotel Name: {res.hotelName}</h3>
+                      <h3>Book Date: {bookDate.toString()}</h3>
+                      <h3>Check-in Date: {startDate.toString()}</h3>
+                      <h3>Check-out Date: {endDate.toString()}</h3>
+                      <h3>Total Price: ${res.totalPrice}</h3>
+                      {/* <h3>isCanceled: {String(res.isCanceled)}</h3> */}
+                    </s>
+                  </Paper>
+                </Grid>
+              </div>
+            ) : (
+              <div />
+            )}
           </div>
         );
       });
