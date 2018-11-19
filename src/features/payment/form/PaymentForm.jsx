@@ -6,6 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
+import Grid from "@material-ui/core/Grid";
 
 const styles = theme => ({
   paymentForm: {
@@ -147,7 +148,8 @@ const PaymentForm = (props) => {
   );
 
   return (
-    <form className={classes.paymentForm}>
+    <Grid container className={classes.paymentForm} xs={12} md={12} lg={12}>
+    {/* <form className={classes.paymentForm}> */}
       <section className={classes.traveler}>
         <h1>Traveler Information</h1>
         <p>* = Required</p>
@@ -289,7 +291,8 @@ const PaymentForm = (props) => {
         > Cancel
         </Button>
       </section>
-    </form>
+    {/* </form> */}
+    </Grid>
   )
 };
 
