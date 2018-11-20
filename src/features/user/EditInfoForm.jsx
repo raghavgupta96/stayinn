@@ -96,7 +96,8 @@ const renderButton = ({ loading, classes, ...custom }) => (
     type="submit"
     {...custom}
     style={{
-      color: "white"
+      color: "white",
+      marginRight: 10
     }}
   >
     Update
@@ -216,7 +217,12 @@ const EditInfoForm = ({
                 label="Phone Number"
                 component={PhoneInput}
               />
-              <Typography className={classes.headerInfo}>
+              <Typography
+                className={classes.headerInfo}
+                style={{
+                  margin: "20px 0px"
+                }}
+              >
                 Email: {auth.email}
               </Typography>
               <Button
@@ -224,6 +230,7 @@ const EditInfoForm = ({
                 disabled={invalid || submitting}
                 component={renderButton}
                 type="submit"
+
               >
                 Update
               </Button>

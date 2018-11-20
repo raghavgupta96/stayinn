@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Stayinn",
+  "name": "Stayinn",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,8 +8,6 @@
       "type": "image/x-icon"
     }
   ],
-  "start_url": "./index.html",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "default_locale": "en",
+  "description": "Stayinn is a hotel reservation application built for organizing and presenting best and appropriate hotels to users."
 }

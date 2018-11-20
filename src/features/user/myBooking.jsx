@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import CloseIcon from "@material-ui/icons/Close";
 import { DateRangePicker } from "react-dates";
 import moment from "moment";
+import LocationIcon from "@material-ui/icons/LocationOn";
 
 const styles = theme => ({
   dateContainer: {
@@ -66,8 +67,8 @@ const styles = theme => ({
   },
 
   hotelTitle: {
+    display: "inline",
     fontSize: 32,
-    underline: "none",
     "&:hover": {
       color: "#F69A33",
       transition: "color 300ms"
@@ -104,9 +105,9 @@ const modalStyle = {
   textAlign: "center",
   borderRadius: 10,
   marginLeft: 450,
-  marginRight: 450,
+  margin: "auto",
+  width: "50%"
 };
-
 
 // edit modal style
 const editModalStyle = {
@@ -116,8 +117,9 @@ const editModalStyle = {
   borderRadius: 10,
   marginLeft: 450,
   marginRight: 450,
-  marginTop: 250
-}
+  marginTop: 250,
+  width: "50%",
+};
 
 const regTextStyle = {
   fontSize: 18
@@ -677,10 +679,12 @@ class myBooking extends Component {
                                   "https://www.google.com/maps/place/" +
                                   res.hotelAddress
                                 }
+                                target="_blank"
                                 style={{
                                   textDecoration: "none"
                                 }}
                               >
+                                <LocationIcon color="primary" />
                                 <Typography
                                   variant="title"
                                   className={classes.hotelTitle}
@@ -912,11 +916,13 @@ class myBooking extends Component {
                         openDirection="up"
                         calendarInfoPosition="top"
                         renderCalendarInfo={() => (
-                          <div style={{
-                            textAlign: "center",
-                            fontSize: 20,
-                            margin: 5,
-                          }}>
+                          <div
+                            style={{
+                              textAlign: "center",
+                              fontSize: 20,
+                              margin: 5
+                            }}
+                          >
                             Select a new checkin and checkout date for your
                             reservation.
                           </div>
@@ -1076,20 +1082,94 @@ class myBooking extends Component {
 
             {/* Show the reservation that has been cancelled */}
             {auth.uid === res.userId && res.isCanceled ? (
-              <div>
+              <div style={{ opacity: 0.6 }}>
                 <Grid item xs={11}>
                   <Paper className={classes.mainpaper}>
-                    <h2>This Reservation has been Cancelled</h2>
-                    <s>
-                      {/* <h3>Reservation ID: {res.reservationId}</h3>
-                        <h3>Hotel ID: {res.HID}</h3> */}
-                      <h3>Hotel Name: {res.hotelName}</h3>
-                      <h3>Book Date: {bookDate.toString()}</h3>
-                      <h3>Check-in Date: {startDate.toString()}</h3>
-                      <h3>Check-out Date: {endDate.toString()}</h3>
-                      <h3>Total Price: ${res.totalPrice}</h3>
-                      {/* <h3>isCanceled: {String(res.isCanceled)}</h3> */}
-                    </s>
+                    <Grid
+                      container
+                      className={classes.root}
+                      xs={12}
+                      md={12}
+                      lg={12}
+                    >
+                      <Grid item xs={12} md={12} lg={12}>
+                        <Grid container key={res.HID}>
+                          <Grid
+                            container
+                            xs={7}
+                            md={7}
+                            lg={7}
+                            className={classes.reservationDetails}
+                          >
+                            <Grid item xs>
+                              <Grid xs={12} md={12} lg={12}>
+                                <s>
+                                  <Typography
+                                    variant="title"
+                                    style={{ fontSize: 32 }}
+                                  >
+                                    {res.hotelName}
+                                  </Typography>
+                                </s>
+                                <Divider className={classes.divider} />
+                              </Grid>
+                              <Grid
+                                item
+                                xs={12}
+                                md={12}
+                                lg={12}
+                                className={classes.hotelInfo}
+                              >
+                                <s>
+                                  <h3>Book Date: {bookDate.toString()}</h3>
+                                  <Divider className={classes.divider} />
+                                  <h3>Check-in Date: {startDate.toString()}</h3>
+                                  <h3>Check-out Date: {endDate.toString()}</h3>
+                                  <Divider className={classes.divider} />
+                                  <h3>Total Price: ${res.totalPrice}</h3>
+                                  <h3>Address: {res.hotelAddress}</h3>
+                                </s>
+                              </Grid>
+                            </Grid>
+                            <Grid
+                              item
+                              xs={12}
+                              md={12}
+                              lg={12}
+                              container
+                              direction="column"
+                            >
+                              <Grid item xs />
+                            </Grid>
+                          </Grid>
+                          <h3
+                            style={{
+                              position: "absolute",
+                              backgroundColor: "red",
+                              color: "white",
+                              fontWeight: "bold",
+                              padding: "8px",
+                              right: "5%"
+                            }}
+                          >
+                            CANCELLED
+                          </h3>
+                          <Grid
+                            xs={5}
+                            md={5}
+                            lg={5}
+                            className={classes.photoContainer}
+                          >
+                            <img
+                              src={res.photoURL}
+                              className={classes.photo}
+                              alt="hotel pic"
+                            />
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                      <Grid item xs={1} md={1} lg={1} />
+                    </Grid>
                   </Paper>
                 </Grid>
               </div>
@@ -1104,7 +1184,7 @@ class myBooking extends Component {
       <div>
         {resList && (
           <div>
-            <h1>MyBooking</h1>
+            <h1 style={{textAlign: "center"}}>MyBooking</h1>
             {resList}
           </div>
         )}

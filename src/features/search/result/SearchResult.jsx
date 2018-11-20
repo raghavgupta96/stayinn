@@ -33,6 +33,7 @@ const styles = theme => ({
     height: "47px",
     color: "#ffffff",
     width: "150px",
+    marginRight: "15px",
     minWidth: "30px"
   },
   photo: {
@@ -172,30 +173,51 @@ const SearchResult = ({ hotels, classes, disabled }) => {
                     <Grid item xs />
                     <Grid item>
                       {!disabled ? (
-                        <Link
-                          to={{
-                            pathname: "/payment/" + hotel.hID
-                            // state: {
-                            //   startDate: hotel.startDate,
-                            //   endDate: hotel.endDate,
-                            //   roomType: hotel.roomType,
-                            //   rooms: hotel.rooms
-                            // }
-                          }}
-                          style={{
-                            color: "#ffffff",
-                            textDecoration: "none"
-                          }}
-                        >
-                          <Button
-                            variant="contained"
-                            className={classes.searchButton}
-                            // href={"/payment/" + hotel.hID}
-                            color="primary"
+                        <div>
+                          <Link
+                            to={{
+                              pathname: "/payment/" + hotel.hID
+                              // state: {
+                              //   startDate: hotel.startDate,
+                              //   endDate: hotel.endDate,
+                              //   roomType: hotel.roomType,
+                              //   rooms: hotel.rooms
+                              // }
+                            }}
+                            style={{
+                              color: "#ffffff",
+                              textDecoration: "none"
+                            }}
                           >
-                            Book
-                          </Button>
-                        </Link>
+                            <Button
+                              variant="contained"
+                              className={classes.searchButton}
+                              // href={"/payment/" + hotel.hID}
+                              color="primary"
+                            >
+                              Book
+                            </Button>
+                          </Link>
+                          <a
+                            href={
+                              "https://www.google.com/maps/place/" +
+                              hotel.address
+                            }
+                            target="_blank"
+                            style={{
+                              textDecoration: "none"
+                            }}
+                          >
+                            <Button
+                              variant="contained"
+                              className={classes.searchButton}
+                              // href={"/payment/" + hotel.hID}
+                              color="primary"
+                            >
+                              More Details
+                            </Button>
+                          </a>
+                        </div>
                       ) : (
                         <span>
                           <Button
@@ -207,6 +229,25 @@ const SearchResult = ({ hotels, classes, disabled }) => {
                           >
                             Book
                           </Button>
+                          <a
+                            href={
+                              "https://www.google.com/maps/place/" +
+                              hotel.address
+                            }
+                            target="_blank"
+                            style={{
+                              textDecoration: "none"
+                            }}
+                          >
+                            <Button
+                              variant="contained"
+                              className={classes.searchButton}
+                              // href={"/payment/" + hotel.hID}
+                              color="primary"
+                            >
+                              More Details
+                            </Button>
+                          </a>
                         </span>
                       )}
                     </Grid>
