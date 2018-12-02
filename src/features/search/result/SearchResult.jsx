@@ -38,7 +38,7 @@ const styles = theme => ({
   },
   photo: {
     width: "100%",
-    height: "100%",
+    height: "400px",
     objectFit: "cover"
   },
   photoContainer: {},
