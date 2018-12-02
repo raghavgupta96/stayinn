@@ -228,7 +228,7 @@ const SearchResult = ({ hotels, classes, disabled, isLoading }) => {
                                 // href={"/payment/" + hotel.hID}
                                 color="primary"
                               >
-                                More Details
+                                Show on map
                               </Button>
                             </a>
                           </div>
