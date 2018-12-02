@@ -104,6 +104,7 @@ class SearchBox extends Component {
       focusedInput: null,
       userReservations: [],
       disabled: false,
+      isLoading: true,
       reward: null,
       startDate: moment(), // set your initial start date here
       endDate: moment().add(1, "days"), // set your initial end date here
@@ -176,6 +177,7 @@ class SearchBox extends Component {
           });
 
           this.setState({ hotels });
+          this.setState({isLoading: false});
         });
     } else {
       //uery the hotel data from firestore
@@ -212,6 +214,7 @@ class SearchBox extends Component {
           });
 
           this.setState({ hotels });
+          this.setState({isLoading: false});
         });
     }
 
@@ -379,7 +382,8 @@ class SearchBox extends Component {
           if (this.props.filter.maxPrice !== "") {
             hotels = hotels.filter(v => v.price <= this.props.filter.maxPrice);
           }
-          this.setState({ hotels });
+          this.setState({ hotels })
+          this.setState({isLoading: false});;
         });
     } else {
       const searchKey = this.state.place.name;
@@ -452,7 +456,8 @@ class SearchBox extends Component {
           }
 
           this.setState({ hotels });
-        });
+          this.setState({isLoading: false});
+        })
     }
   };
 
@@ -625,6 +630,7 @@ class SearchBox extends Component {
           <SearchResult
             disabled={this.state.disabled}
             hotels={this.state.hotels}
+            isLoading={this.state.isLoading}
           />
         </Grid>
         <Modal
