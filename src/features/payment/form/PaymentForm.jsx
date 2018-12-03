@@ -243,7 +243,7 @@ const PaymentForm = (props) => {
           <FormControl
             className={classes.month}
           >
-            <InputLabel>Month</InputLabel>
+            <InputLabel>Month *</InputLabel>
             <Select
             required
               value={form.expiryMonth}
@@ -256,7 +256,7 @@ const PaymentForm = (props) => {
           <FormControl
             className={classes.year}
           >
-            <InputLabel>Year</InputLabel>
+            <InputLabel>Year *</InputLabel>
             <Select
             required
               value={form.expiryYear}
