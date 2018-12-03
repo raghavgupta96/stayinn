@@ -214,14 +214,7 @@ const PaymentForm = (props) => {
             type = "text"
             
             onChange={event => setForm({ cardName: event.target.value })}
-            onInput = {(e) =>{
-              var letters = /^[A-Za-z]+$/;
-              var space = '&nbsp;'
-              if(!(e.target.value).match(letters) && e.target.value !== space)
-              {
-                e.target.value = e.target.value.substring(0,e.target.value.length-1)
-              }
-              }} 
+
             className={classes.cardName}
           />
           <TextField
