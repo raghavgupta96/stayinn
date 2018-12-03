@@ -156,14 +156,14 @@ const PaymentForm = (props) => {
         <div className={classes.name}>
           <TextField
             id="firstname"
-            label="First Name"
+            label="First Name *"
             value={form.firstName}
             onChange={event => setForm({ ...form, firstName: event.target.value })}
             className={classes.firstName}
           />
           <TextField
             id="lastname"
-            label="Last Name"
+            label="Last Name *"
             value={form.lastName}
             onChange={event => setForm({ ...form, lastName: event.target.value })}
             className={classes.lastName}
@@ -171,14 +171,14 @@ const PaymentForm = (props) => {
         </div>
         <TextField
           id="email"
-          label="Email"
+          label="Email *"
           value={form.email}
           onChange={event => setForm({ ...form, email: event.target.value })}
           className={classes.textField}
         />
         <TextField
           id="phonenumber"
-          label="Phone Number"
+          label="Phone Number *"
           value={form.phoneNumber}
           onChange={event => setForm({ ...form, phoneNumber: event.target.value })}
           className={classes.textField}
